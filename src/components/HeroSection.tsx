@@ -50,6 +50,7 @@ const HeroSection = () => {
                   src={profileImg}
                   alt="Adil Rahman Akash"
                   className="w-full h-full object-cover"
+                  fetchPriority="high"
                 />
               </div>
               <div className="absolute -inset-3 rounded-full border border-primary/10 animate-float pointer-events-none" />
