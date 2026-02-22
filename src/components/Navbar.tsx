@@ -1,10 +1,11 @@
-import { useState } from "react";
-import { Menu, X, Trash2, Settings } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Menu, X, Trash2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate, Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -28,9 +29,27 @@ const navLinks = [
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [displayName, setDisplayName] = useState<string | null>(null);
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (!user) { setAvatarUrl(null); setDisplayName(null); return; }
+    const fetch = async () => {
+      const { data } = await supabase
+        .from("profiles")
+        .select("avatar_url, display_name")
+        .eq("user_id", user.id)
+        .single();
+      if (data) {
+        setAvatarUrl(data.avatar_url);
+        setDisplayName(data.display_name);
+      }
+    };
+    fetch();
+  }, [user]);
 
   const handleDeleteAccount = async () => {
     if (!user) return;
@@ -103,8 +122,13 @@ const Navbar = () => {
           </ul>
           {user && (
             <>
-              <Link to="/profile" className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
-                <Settings size={14} />
+              <Link to="/profile" className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+                <Avatar className="h-7 w-7 border border-primary/30">
+                  <AvatarImage src={avatarUrl ?? undefined} alt="Avatar" />
+                  <AvatarFallback className="bg-secondary text-secondary-foreground text-xs">
+                    {(displayName || user.email || "?").slice(0, 2).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
                 Settings
               </Link>
               <DeleteButton />
@@ -146,8 +170,13 @@ const Navbar = () => {
               {user && (
                 <>
                   <li>
-                    <Link to="/profile" onClick={() => setOpen(false)} className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
-                      <Settings size={14} />
+                    <Link to="/profile" onClick={() => setOpen(false)} className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+                      <Avatar className="h-7 w-7 border border-primary/30">
+                        <AvatarImage src={avatarUrl ?? undefined} alt="Avatar" />
+                        <AvatarFallback className="bg-secondary text-secondary-foreground text-xs">
+                          {(displayName || user.email || "?").slice(0, 2).toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
                       Settings
                     </Link>
                   </li>
