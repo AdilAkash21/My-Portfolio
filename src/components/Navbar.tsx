@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Menu, X, Trash2 } from "lucide-react";
+import { Menu, X, Trash2, Settings } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import {
   AlertDialog,
@@ -101,7 +101,15 @@ const Navbar = () => {
               </li>
             ))}
           </ul>
-          {user && <DeleteButton />}
+          {user && (
+            <>
+              <Link to="/profile" className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+                <Settings size={14} />
+                Settings
+              </Link>
+              <DeleteButton />
+            </>
+          )}
         </div>
 
         {/* Mobile toggle */}
@@ -136,9 +144,17 @@ const Navbar = () => {
                 </li>
               ))}
               {user && (
-                <li>
-                  <DeleteButton />
-                </li>
+                <>
+                  <li>
+                    <Link to="/profile" onClick={() => setOpen(false)} className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+                      <Settings size={14} />
+                      Settings
+                    </Link>
+                  </li>
+                  <li>
+                    <DeleteButton />
+                  </li>
+                </>
               )}
             </ul>
           </motion.div>
