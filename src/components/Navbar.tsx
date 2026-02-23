@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Menu, X, Trash2 } from "lucide-react";
+import { Menu, X, Trash2, LogOut } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -131,6 +131,13 @@ const Navbar = () => {
                 </Avatar>
                 Settings
               </Link>
+              <button
+                onClick={signOut}
+                className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+              >
+                <LogOut size={14} />
+                Sign Out
+              </button>
               <DeleteButton />
             </>
           )}
@@ -179,6 +186,15 @@ const Navbar = () => {
                       </Avatar>
                       Settings
                     </Link>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => { setOpen(false); signOut(); }}
+                      className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+                    >
+                      <LogOut size={14} />
+                      Sign Out
+                    </button>
                   </li>
                   <li>
                     <DeleteButton />
