@@ -120,17 +120,19 @@ const Navbar = () => {
               </li>
             ))}
           </ul>
+          <Link to="/profile" className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+            {user ? (
+              <Avatar className="h-7 w-7 border border-primary/30">
+                <AvatarImage src={avatarUrl ?? undefined} alt="Avatar" />
+                <AvatarFallback className="bg-secondary text-secondary-foreground text-xs">
+                  {(displayName || user.email || "?").slice(0, 2).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+            ) : null}
+            Settings
+          </Link>
           {user && (
             <>
-              <Link to="/profile" className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
-                <Avatar className="h-7 w-7 border border-primary/30">
-                  <AvatarImage src={avatarUrl ?? undefined} alt="Avatar" />
-                  <AvatarFallback className="bg-secondary text-secondary-foreground text-xs">
-                    {(displayName || user.email || "?").slice(0, 2).toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
-                Settings
-              </Link>
               <button
                 onClick={signOut}
                 className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
@@ -174,19 +176,13 @@ const Navbar = () => {
                   </a>
                 </li>
               ))}
+              <li>
+                <Link to="/profile" onClick={() => setOpen(false)} className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+                  Settings
+                </Link>
+              </li>
               {user && (
                 <>
-                  <li>
-                    <Link to="/profile" onClick={() => setOpen(false)} className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
-                      <Avatar className="h-7 w-7 border border-primary/30">
-                        <AvatarImage src={avatarUrl ?? undefined} alt="Avatar" />
-                        <AvatarFallback className="bg-secondary text-secondary-foreground text-xs">
-                          {(displayName || user.email || "?").slice(0, 2).toUpperCase()}
-                        </AvatarFallback>
-                      </Avatar>
-                      Settings
-                    </Link>
-                  </li>
                   <li>
                     <button
                       onClick={() => { setOpen(false); signOut(); }}
