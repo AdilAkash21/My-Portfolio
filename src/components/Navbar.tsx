@@ -1,22 +1,10 @@
 import { useState, useEffect } from "react";
-import { Menu, X, Trash2, LogOut } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
-import { useNavigate, Link } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
+import { Link } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 
 const navLinks = [
   { label: "Home", href: "#home" },
@@ -28,12 +16,9 @@ const navLinks = [
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
-  const [deleting, setDeleting] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [displayName, setDisplayName] = useState<string | null>(null);
-  const { user, signOut } = useAuth();
-  const navigate = useNavigate();
-  const { toast } = useToast();
+  const { user } = useAuth();
 
   useEffect(() => {
     if (!user) { setAvatarUrl(null); setDisplayName(null); return; }
@@ -51,62 +36,37 @@ const Navbar = () => {
     fetch();
   }, [user]);
 
-  const handleDeleteAccount = async () => {
-    if (!user) return;
-    setDeleting(true);
-    try {
-      const { error } = await supabase
-        .from("profiles")
-        .delete()
-        .eq("user_id", user.id);
-      if (error) throw error;
-      await signOut();
-      toast({ title: "Account deleted", description: "Your profile has been removed." });
-      navigate("/");
-    } catch (err: any) {
-      toast({ title: "Error", description: err.message || "Failed to delete account.", variant: "destructive" });
-    } finally {
-      setDeleting(false);
-    }
-  };
+  const initials = user
+    ? (displayName || user.email || "?").slice(0, 2).toUpperCase()
+    : "?";
 
-  const DeleteButton = ({ className }: { className?: string }) => (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <button className={`inline-flex items-center gap-1.5 text-sm font-medium text-destructive transition-colors hover:text-destructive/80 ${className || ""}`}>
-          <Trash2 size={14} />
-          Delete Account
-        </button>
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Delete your account?</AlertDialogTitle>
-          <AlertDialogDescription>
-            This will permanently delete your profile data. This action cannot be undone.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction
-            onClick={handleDeleteAccount}
-            disabled={deleting}
-            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-          >
-            {deleting ? "Deleting…" : "Yes, delete my account"}
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+  const AvatarIcon = () => (
+    <Link to="/profile" aria-label="Settings">
+      <Avatar className="h-8 w-8 border border-primary/30 transition-transform hover:scale-105">
+        <AvatarImage src={avatarUrl ?? undefined} alt="Avatar" />
+        <AvatarFallback className="bg-secondary text-secondary-foreground text-xs">
+          {initials}
+        </AvatarFallback>
+      </Avatar>
+    </Link>
   );
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/80 backdrop-blur-xl">
       <div className="container mx-auto flex items-center justify-between px-6 py-4">
-        <a href="#home" className="font-mono text-lg font-semibold text-primary">
-          {"<ARA />"}
-        </a>
+        <div className="flex items-center gap-4">
+          {/* Avatar before logo on desktop */}
+          {user && (
+            <span className="hidden md:inline-flex">
+              <AvatarIcon />
+            </span>
+          )}
+          <a href="#home" className="font-mono text-lg font-semibold text-primary">
+            {"<ARA />"}
+          </a>
+        </div>
 
-        {/* Desktop */}
+        {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-8">
           <ul className="flex items-center gap-8">
             {navLinks.map((l) => (
@@ -120,39 +80,25 @@ const Navbar = () => {
               </li>
             ))}
           </ul>
-          <Link to="/profile" className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
-            {user ? (
-              <Avatar className="h-7 w-7 border border-primary/30">
-                <AvatarImage src={avatarUrl ?? undefined} alt="Avatar" />
-                <AvatarFallback className="bg-secondary text-secondary-foreground text-xs">
-                  {(displayName || user.email || "?").slice(0, 2).toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
-            ) : null}
+          <Link
+            to="/profile"
+            className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+          >
             Settings
           </Link>
-          {user && (
-            <>
-              <button
-                onClick={signOut}
-                className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-              >
-                <LogOut size={14} />
-                Sign Out
-              </button>
-              <DeleteButton />
-            </>
-          )}
         </div>
 
-        {/* Mobile toggle */}
-        <button
-          onClick={() => setOpen(!open)}
-          className="md:hidden text-foreground"
-          aria-label="Toggle menu"
-        >
-          {open ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        {/* Mobile: avatar + hamburger */}
+        <div className="flex md:hidden items-center gap-3">
+          {user && <AvatarIcon />}
+          <button
+            onClick={() => setOpen(!open)}
+            className="text-foreground"
+            aria-label="Toggle menu"
+          >
+            {open ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu */}
@@ -177,26 +123,14 @@ const Navbar = () => {
                 </li>
               ))}
               <li>
-                <Link to="/profile" onClick={() => setOpen(false)} className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+                <Link
+                  to="/profile"
+                  onClick={() => setOpen(false)}
+                  className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+                >
                   Settings
                 </Link>
               </li>
-              {user && (
-                <>
-                  <li>
-                    <button
-                      onClick={() => { setOpen(false); signOut(); }}
-                      className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-                    >
-                      <LogOut size={14} />
-                      Sign Out
-                    </button>
-                  </li>
-                  <li>
-                    <DeleteButton />
-                  </li>
-                </>
-              )}
             </ul>
           </motion.div>
         )}
