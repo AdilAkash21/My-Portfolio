@@ -22,9 +22,13 @@ export type Database = {
           created_at: string
           display_name: string | null
           gender: string | null
+          github_url: string | null
           id: string
+          linkedin_url: string | null
+          twitter_url: string | null
           updated_at: string
           user_id: string
+          website_url: string | null
         }
         Insert: {
           age?: number | null
@@ -33,9 +37,13 @@ export type Database = {
           created_at?: string
           display_name?: string | null
           gender?: string | null
+          github_url?: string | null
           id?: string
+          linkedin_url?: string | null
+          twitter_url?: string | null
           updated_at?: string
           user_id: string
+          website_url?: string | null
         }
         Update: {
           age?: number | null
@@ -44,9 +52,13 @@ export type Database = {
           created_at?: string
           display_name?: string | null
           gender?: string | null
+          github_url?: string | null
           id?: string
+          linkedin_url?: string | null
+          twitter_url?: string | null
           updated_at?: string
           user_id?: string
+          website_url?: string | null
         }
         Relationships: []
       }

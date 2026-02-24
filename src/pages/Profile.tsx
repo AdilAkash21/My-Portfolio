@@ -9,7 +9,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "@/hooks/use-toast";
-import { ArrowLeft, Camera, Loader2, LogOut, Trash2 } from "lucide-react";
+import { ArrowLeft, Camera, Loader2, LogOut, Trash2, Github, Linkedin, Twitter, Globe } from "lucide-react";
+import ImageCropDialog from "@/components/ImageCropDialog";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -31,16 +32,22 @@ const Profile = () => {
   const [bio, setBio] = useState("");
   const [gender, setGender] = useState("");
   const [age, setAge] = useState("");
+  const [githubUrl, setGithubUrl] = useState("");
+  const [linkedinUrl, setLinkedinUrl] = useState("");
+  const [twitterUrl, setTwitterUrl] = useState("");
+  const [websiteUrl, setWebsiteUrl] = useState("");
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
+  // Crop state
+  const [cropSrc, setCropSrc] = useState<string | null>(null);
+  const [pendingFile, setPendingFile] = useState<File | null>(null);
+
   useEffect(() => {
-    if (!authLoading && !user) {
-      navigate("/login");
-    }
+    if (!authLoading && !user) navigate("/login");
   }, [authLoading, user, navigate]);
 
   useEffect(() => {
@@ -48,7 +55,7 @@ const Profile = () => {
     const fetchProfile = async () => {
       const { data, error } = await supabase
         .from("profiles")
-        .select("display_name, bio, avatar_url, gender, age")
+        .select("display_name, bio, avatar_url, gender, age, github_url, linkedin_url, twitter_url, website_url")
         .eq("user_id", user.id)
         .single();
       if (!error && data) {
@@ -56,6 +63,10 @@ const Profile = () => {
         setBio(data.bio || "");
         setGender(data.gender || "");
         setAge(data.age != null ? String(data.age) : "");
+        setGithubUrl(data.github_url || "");
+        setLinkedinUrl(data.linkedin_url || "");
+        setTwitterUrl(data.twitter_url || "");
+        setWebsiteUrl(data.website_url || "");
         setAvatarUrl(data.avatar_url);
       }
       setLoading(false);
@@ -63,26 +74,34 @@ const Profile = () => {
     fetchProfile();
   }, [user]);
 
-  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !user) return;
-
     if (!file.type.startsWith("image/")) {
       toast({ title: "Invalid file", description: "Please upload an image file.", variant: "destructive" });
       return;
     }
-    if (file.size > 2 * 1024 * 1024) {
-      toast({ title: "File too large", description: "Avatar must be under 2 MB.", variant: "destructive" });
+    if (file.size > 5 * 1024 * 1024) {
+      toast({ title: "File too large", description: "Image must be under 5 MB.", variant: "destructive" });
       return;
     }
+    setPendingFile(file);
+    setCropSrc(URL.createObjectURL(file));
+    // reset so same file can be re-selected
+    e.target.value = "";
+  };
+
+  const handleCropComplete = async (blob: Blob) => {
+    setCropSrc(null);
+    setPendingFile(null);
+    if (!user) return;
 
     setUploading(true);
-    const ext = file.name.split(".").pop();
-    const path = `${user.id}/avatar.${ext}`;
+    const path = `${user.id}/avatar.jpg`;
 
     const { error: uploadError } = await supabase.storage
       .from("avatars")
-      .upload(path, file, { upsert: true });
+      .upload(path, blob, { upsert: true, contentType: "image/jpeg" });
 
     if (uploadError) {
       toast({ title: "Upload failed", description: uploadError.message, variant: "destructive" });
@@ -119,6 +138,10 @@ const Profile = () => {
         bio: bio.trim(),
         gender: gender.trim() || null,
         age: age.trim() ? parseInt(age.trim(), 10) : null,
+        github_url: githubUrl.trim() || null,
+        linkedin_url: linkedinUrl.trim() || null,
+        twitter_url: twitterUrl.trim() || null,
+        website_url: websiteUrl.trim() || null,
       })
       .eq("user_id", user.id);
 
@@ -134,10 +157,7 @@ const Profile = () => {
     if (!user) return;
     setDeleting(true);
     try {
-      const { error } = await supabase
-        .from("profiles")
-        .delete()
-        .eq("user_id", user.id);
+      const { error } = await supabase.from("profiles").delete().eq("user_id", user.id);
       if (error) throw error;
       await signOut();
       toast({ title: "Account deleted", description: "Your profile has been removed." });
@@ -198,21 +218,15 @@ const Profile = () => {
                 type="file"
                 accept="image/*"
                 className="hidden"
-                onChange={handleAvatarUpload}
+                onChange={handleFileSelect}
               />
-              <p className="text-xs text-muted-foreground">Click to upload (max 2 MB)</p>
+              <p className="text-xs text-muted-foreground">Click to upload & crop (max 5 MB)</p>
             </div>
 
             {/* Display Name */}
             <div className="space-y-2">
               <Label htmlFor="displayName">Display Name</Label>
-              <Input
-                id="displayName"
-                placeholder="Your name"
-                value={displayName}
-                onChange={(e) => setDisplayName(e.target.value)}
-                maxLength={100}
-              />
+              <Input id="displayName" placeholder="Your name" value={displayName} onChange={(e) => setDisplayName(e.target.value)} maxLength={100} />
             </div>
 
             {/* Gender */}
@@ -235,29 +249,37 @@ const Profile = () => {
             {/* Age */}
             <div className="space-y-2">
               <Label htmlFor="age">Age</Label>
-              <Input
-                id="age"
-                type="number"
-                placeholder="Your age"
-                value={age}
-                onChange={(e) => setAge(e.target.value)}
-                min={1}
-                max={150}
-              />
+              <Input id="age" type="number" placeholder="Your age" value={age} onChange={(e) => setAge(e.target.value)} min={1} max={150} />
             </div>
 
             {/* Bio */}
             <div className="space-y-2">
               <Label htmlFor="bio">Bio</Label>
-              <Textarea
-                id="bio"
-                placeholder="Tell us about yourself…"
-                value={bio}
-                onChange={(e) => setBio(e.target.value)}
-                maxLength={500}
-                rows={4}
-              />
+              <Textarea id="bio" placeholder="Tell us about yourself…" value={bio} onChange={(e) => setBio(e.target.value)} maxLength={500} rows={4} />
               <p className="text-xs text-muted-foreground text-right">{bio.length}/500</p>
+            </div>
+
+            {/* Social Links */}
+            <div className="space-y-4 border-t border-border pt-6">
+              <h3 className="text-sm font-semibold text-foreground">Social Links</h3>
+              <div className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <Github size={18} className="text-muted-foreground flex-shrink-0" />
+                  <Input placeholder="https://github.com/username" value={githubUrl} onChange={(e) => setGithubUrl(e.target.value)} />
+                </div>
+                <div className="flex items-center gap-3">
+                  <Linkedin size={18} className="text-muted-foreground flex-shrink-0" />
+                  <Input placeholder="https://linkedin.com/in/username" value={linkedinUrl} onChange={(e) => setLinkedinUrl(e.target.value)} />
+                </div>
+                <div className="flex items-center gap-3">
+                  <Twitter size={18} className="text-muted-foreground flex-shrink-0" />
+                  <Input placeholder="https://twitter.com/username" value={twitterUrl} onChange={(e) => setTwitterUrl(e.target.value)} />
+                </div>
+                <div className="flex items-center gap-3">
+                  <Globe size={18} className="text-muted-foreground flex-shrink-0" />
+                  <Input placeholder="https://yourwebsite.com" value={websiteUrl} onChange={(e) => setWebsiteUrl(e.target.value)} />
+                </div>
+              </div>
             </div>
 
             <Button type="submit" className="w-full" disabled={saving}>
@@ -271,8 +293,7 @@ const Profile = () => {
                 onClick={signOut}
                 className="w-full inline-flex items-center justify-center gap-2 rounded-md border border-border px-4 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
               >
-                <LogOut size={16} />
-                Sign Out
+                <LogOut size={16} /> Sign Out
               </button>
 
               <AlertDialog>
@@ -281,8 +302,7 @@ const Profile = () => {
                     type="button"
                     className="w-full inline-flex items-center justify-center gap-2 rounded-md border border-destructive/30 px-4 py-2.5 text-sm font-medium text-destructive transition-colors hover:bg-destructive/10"
                   >
-                    <Trash2 size={16} />
-                    Delete Account
+                    <Trash2 size={16} /> Delete Account
                   </button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
@@ -308,6 +328,16 @@ const Profile = () => {
           </CardContent>
         </form>
       </Card>
+
+      {/* Crop dialog */}
+      {cropSrc && (
+        <ImageCropDialog
+          open={!!cropSrc}
+          imageSrc={cropSrc}
+          onClose={() => { setCropSrc(null); setPendingFile(null); }}
+          onCropComplete={handleCropComplete}
+        />
+      )}
     </div>
   );
 };

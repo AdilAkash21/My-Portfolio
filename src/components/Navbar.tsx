@@ -5,6 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const navLinks = [
   { label: "Home", href: "#home" },
@@ -86,11 +87,13 @@ const Navbar = () => {
           >
             Settings
           </Link>
+          <ThemeToggle />
         </div>
 
         {/* Mobile: avatar + hamburger */}
         <div className="flex md:hidden items-center gap-3">
           {user && <AvatarIcon />}
+          <ThemeToggle />
           <button
             onClick={() => setOpen(!open)}
             className="text-foreground"
