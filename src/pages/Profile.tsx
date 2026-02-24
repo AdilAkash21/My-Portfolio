@@ -29,6 +29,8 @@ const Profile = () => {
 
   const [displayName, setDisplayName] = useState("");
   const [bio, setBio] = useState("");
+  const [gender, setGender] = useState("");
+  const [age, setAge] = useState("");
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -46,12 +48,14 @@ const Profile = () => {
     const fetchProfile = async () => {
       const { data, error } = await supabase
         .from("profiles")
-        .select("display_name, bio, avatar_url")
+        .select("display_name, bio, avatar_url, gender, age")
         .eq("user_id", user.id)
         .single();
       if (!error && data) {
         setDisplayName(data.display_name || "");
         setBio(data.bio || "");
+        setGender(data.gender || "");
+        setAge(data.age != null ? String(data.age) : "");
         setAvatarUrl(data.avatar_url);
       }
       setLoading(false);
@@ -113,6 +117,8 @@ const Profile = () => {
       .update({
         display_name: displayName.trim(),
         bio: bio.trim(),
+        gender: gender.trim() || null,
+        age: age.trim() ? parseInt(age.trim(), 10) : null,
       })
       .eq("user_id", user.id);
 
@@ -206,6 +212,37 @@ const Profile = () => {
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
                 maxLength={100}
+              />
+            </div>
+
+            {/* Gender */}
+            <div className="space-y-2">
+              <Label htmlFor="gender">Gender</Label>
+              <select
+                id="gender"
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              >
+                <option value="">Prefer not to say</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="non-binary">Non-binary</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            {/* Age */}
+            <div className="space-y-2">
+              <Label htmlFor="age">Age</Label>
+              <Input
+                id="age"
+                type="number"
+                placeholder="Your age"
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+                min={1}
+                max={150}
               />
             </div>
 
