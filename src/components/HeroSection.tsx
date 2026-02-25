@@ -4,7 +4,7 @@ import profileImg from "@/assets/profile.jpg";
 
 const HeroSection = () => {
   return (
-    <section id="home" className="relative min-h-screen flex items-center pt-20">
+    <section id="home" className="relative min-h-screen flex items-center pt-32">
       {/* Subtle bg glow */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-primary/5 blur-[120px] pointer-events-none" />
 
