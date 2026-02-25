@@ -64,7 +64,7 @@ const Navbar = () => {
             </span>
           )}
           <a href="#home" className="flex items-center">
-            <img src={logoImg} alt="AR Logo" className="h-8 w-auto" />
+            <img src={logoImg} alt="AR Logo" className="h-10 w-auto drop-shadow-[0_0_8px_hsl(var(--primary)/0.6)]" />
           </a>
         </div>
 
