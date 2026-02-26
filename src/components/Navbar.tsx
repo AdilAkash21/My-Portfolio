@@ -6,7 +6,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import ThemeToggle from "@/components/ThemeToggle";
-import logoImg from "@/assets/logo.png";
 
 const navLinks = [
   { label: "Home", href: "#home" },
@@ -63,15 +62,8 @@ const Navbar = () => {
               <AvatarIcon />
             </span>
           )}
-          <a href="#home" className="flex items-center">
-            <motion.img
-              src={logoImg}
-              alt="AR Logo"
-              className="h-12 w-auto drop-shadow-[0_0_12px_hsl(var(--primary)/0.5)] hover:drop-shadow-[0_0_20px_hsl(var(--primary)/0.8)] hover:scale-110 transition-all duration-300"
-              initial={{ opacity: 0, scale: 0.6, rotate: -10 }}
-              animate={{ opacity: 1, scale: 1, rotate: 0 }}
-              transition={{ type: "spring", stiffness: 200, damping: 15, delay: 0.2 }}
-            />
+          <a href="#home" className="font-mono text-lg font-semibold text-primary">
+            {"<ARA />"}
           </a>
         </div>
 
