@@ -9,7 +9,7 @@ const HeroSection = () => {
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-primary/5 blur-[120px] pointer-events-none" />
 
       <div className="container mx-auto px-6">
-        <div className="flex flex-col-reverse lg:flex-row items-center gap-12 lg:gap-16">
+        <div className="flex flex-col-reverse lg:flex-row items-center justify-center gap-12 lg:gap-16 max-w-5xl mx-auto">
           {/* Text */}
           <motion.div
             className="flex-1 text-center lg:text-left"
