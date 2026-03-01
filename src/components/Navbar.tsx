@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import ThemeToggle from "@/components/ThemeToggle";
+import logoImg from "@/assets/logo.png";
 
 const navLinks = [
   { label: "Home", href: "#home" },
@@ -62,8 +63,8 @@ const Navbar = () => {
               <AvatarIcon />
             </span>
           )}
-          <a href="#home" className="font-mono text-lg font-semibold text-primary">
-            {"<ARA />"}
+          <a href="#home" className="flex items-center">
+            <img src={logoImg} alt="ARA Logo" className="h-10 drop-shadow-[0_0_8px_hsl(var(--primary)/0.5)]" />
           </a>
         </div>
 
