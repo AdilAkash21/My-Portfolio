@@ -2,6 +2,7 @@ import { lazy, Suspense, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
+import ScrollReveal from "@/components/ScrollReveal";
 
 const AboutSection = lazy(() => import("@/components/AboutSection"));
 const SkillsSection = lazy(() => import("@/components/SkillsSection"));
@@ -63,11 +64,21 @@ const Index = () => {
         <Navbar />
         <HeroSection />
         <Suspense fallback={null}>
-          <AboutSection />
-          <SkillsSection />
-          <ProjectsSection />
-          <ContactSection />
-          <Footer />
+          <ScrollReveal direction="up" delay={0}>
+            <AboutSection />
+          </ScrollReveal>
+          <ScrollReveal direction="left" delay={0.05}>
+            <SkillsSection />
+          </ScrollReveal>
+          <ScrollReveal direction="right" delay={0.05}>
+            <ProjectsSection />
+          </ScrollReveal>
+          <ScrollReveal direction="up" delay={0.05}>
+            <ContactSection />
+          </ScrollReveal>
+          <ScrollReveal direction="up" delay={0} duration={0.4}>
+            <Footer />
+          </ScrollReveal>
         </Suspense>
       </motion.div>
     </div>
