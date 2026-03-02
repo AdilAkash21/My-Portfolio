@@ -185,6 +185,15 @@ const Profile = () => {
     if (!user) return;
     setDeleting(true);
     try {
+      // Delete avatar files from storage first
+      const { data: files } = await supabase.storage
+        .from("avatars")
+        .list(user.id);
+      if (files && files.length > 0) {
+        const filePaths = files.map((f) => `${user.id}/${f.name}`);
+        await supabase.storage.from("avatars").remove(filePaths);
+      }
+
       const { error } = await supabase.from("profiles").delete().eq("user_id", user.id);
       if (error) throw error;
       await signOut();
