@@ -30,7 +30,7 @@ const SkillsSection = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: false }}
           transition={{ duration: 0.5 }}
         >
           <h2 className="font-mono text-sm text-primary mb-2">02.</h2>
@@ -45,7 +45,7 @@ const SkillsSection = () => {
           className="flex flex-wrap gap-3 mb-16"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
+          viewport={{ once: false }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
           {skills.map((s) => (
@@ -65,7 +65,7 @@ const SkillsSection = () => {
               key={svc.title}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: false }}
               transition={{ duration: 0.4, delay: 0.1 * i }}
               className="group rounded-xl border border-border bg-card p-6 transition-all hover:border-primary/40 hover:border-glow"
             >
