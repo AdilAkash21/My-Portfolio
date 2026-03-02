@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { ArrowDown } from "lucide-react";
-import profileImg from "@/assets/profile.jpg";
+import profileImg from "@/assets/profile-optimized.webp";
 
 const HeroSection = () => {
   return (
@@ -51,6 +51,9 @@ const HeroSection = () => {
                   alt="Adil Rahman Akash"
                   className="w-full h-full object-cover"
                   fetchPriority="high"
+                  width={288}
+                  height={288}
+                  decoding="async"
                 />
               </div>
               <div className="absolute -inset-3 rounded-full border border-primary/10 animate-float pointer-events-none" />
