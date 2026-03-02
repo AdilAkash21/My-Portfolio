@@ -14,7 +14,7 @@ const Index = () => {
   const [showIntro, setShowIntro] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => setShowIntro(false), 1800);
+    const timer = setTimeout(() => setShowIntro(false), 800);
     return () => clearTimeout(timer);
   }, []);
 
