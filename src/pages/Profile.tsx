@@ -126,9 +126,37 @@ const Profile = () => {
     setUploading(false);
   };
 
+  const validateUrl = (url: string, label: string): boolean => {
+    if (!url) return true;
+    try {
+      const parsed = new URL(url);
+      if (!["http:", "https:"].includes(parsed.protocol)) {
+        toast({ title: `Invalid ${label}`, description: "URL must start with http:// or https://", variant: "destructive" });
+        return false;
+      }
+      return true;
+    } catch {
+      toast({ title: `Invalid ${label}`, description: "Please enter a valid URL.", variant: "destructive" });
+      return false;
+    }
+  };
+
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) return;
+
+    const trimmedGithub = githubUrl.trim();
+    const trimmedLinkedin = linkedinUrl.trim();
+    const trimmedTwitter = twitterUrl.trim();
+    const trimmedWebsite = websiteUrl.trim();
+
+    if (
+      !validateUrl(trimmedGithub, "GitHub URL") ||
+      !validateUrl(trimmedLinkedin, "LinkedIn URL") ||
+      !validateUrl(trimmedTwitter, "Twitter URL") ||
+      !validateUrl(trimmedWebsite, "Website URL")
+    ) return;
+
     setSaving(true);
 
     const { error } = await supabase
@@ -138,10 +166,10 @@ const Profile = () => {
         bio: bio.trim(),
         gender: gender.trim() || null,
         age: age.trim() ? parseInt(age.trim(), 10) : null,
-        github_url: githubUrl.trim() || null,
-        linkedin_url: linkedinUrl.trim() || null,
-        twitter_url: twitterUrl.trim() || null,
-        website_url: websiteUrl.trim() || null,
+        github_url: trimmedGithub || null,
+        linkedin_url: trimmedLinkedin || null,
+        twitter_url: trimmedTwitter || null,
+        website_url: trimmedWebsite || null,
       })
       .eq("user_id", user.id);
 
