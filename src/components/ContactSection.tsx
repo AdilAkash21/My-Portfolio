@@ -1,6 +1,13 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, Github, Linkedin, Facebook, Instagram, Send } from "lucide-react";
+import { z } from "zod";
+
+const contactSchema = z.object({
+  name: z.string().trim().min(1, "Name is required").max(100, "Name must be under 100 characters"),
+  email: z.string().trim().email("Please enter a valid email").max(255, "Email must be under 255 characters"),
+  message: z.string().trim().min(1, "Message is required").max(1000, "Message must be under 1000 characters"),
+});
 
 const socials = [
   { icon: Mail, href: "mailto:adil@example.com", label: "Email" },
@@ -12,9 +19,20 @@ const socials = [
 
 const ContactSection = () => {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const result = contactSchema.safeParse(form);
+    if (!result.success) {
+      const fieldErrors: Record<string, string> = {};
+      result.error.errors.forEach((err) => {
+        if (err.path[0]) fieldErrors[err.path[0] as string] = err.message;
+      });
+      setErrors(fieldErrors);
+      return;
+    }
+    setErrors({});
     // placeholder – integrate backend later
     alert("Thanks for reaching out! I'll get back to you soon.");
     setForm({ name: "", email: "", message: "" });
@@ -45,30 +63,42 @@ const ContactSection = () => {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="max-w-lg mx-auto space-y-5"
         >
-          <input
-            type="text"
-            placeholder="Your Name"
-            required
-            value={form.name}
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
-            className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-colors"
-          />
-          <input
-            type="email"
-            placeholder="Your Email"
-            required
-            value={form.email}
-            onChange={(e) => setForm({ ...form, email: e.target.value })}
-            className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-colors"
-          />
-          <textarea
-            placeholder="Your Message"
-            required
-            rows={5}
-            value={form.message}
-            onChange={(e) => setForm({ ...form, message: e.target.value })}
-            className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-colors resize-none"
-          />
+          <div>
+            <input
+              type="text"
+              placeholder="Your Name"
+              required
+              maxLength={100}
+              value={form.name}
+              onChange={(e) => { setForm({ ...form, name: e.target.value }); setErrors((prev) => ({ ...prev, name: "" })); }}
+              className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-colors"
+            />
+            {errors.name && <p className="text-destructive text-xs mt-1">{errors.name}</p>}
+          </div>
+          <div>
+            <input
+              type="email"
+              placeholder="Your Email"
+              required
+              maxLength={255}
+              value={form.email}
+              onChange={(e) => { setForm({ ...form, email: e.target.value }); setErrors((prev) => ({ ...prev, email: "" })); }}
+              className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-colors"
+            />
+            {errors.email && <p className="text-destructive text-xs mt-1">{errors.email}</p>}
+          </div>
+          <div>
+            <textarea
+              placeholder="Your Message"
+              required
+              rows={5}
+              maxLength={1000}
+              value={form.message}
+              onChange={(e) => { setForm({ ...form, message: e.target.value }); setErrors((prev) => ({ ...prev, message: "" })); }}
+              className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-colors resize-none"
+            />
+            {errors.message && <p className="text-destructive text-xs mt-1">{errors.message}</p>}
+          </div>
           <button
             type="submit"
             className="inline-flex items-center gap-2 rounded-lg border border-primary bg-primary/10 px-6 py-3 text-sm font-medium text-primary transition-all hover:bg-primary hover:text-primary-foreground"
