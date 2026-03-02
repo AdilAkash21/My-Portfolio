@@ -35,7 +35,7 @@ const ProjectsSection = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: false }}
           transition={{ duration: 0.5 }}
         >
           <h2 className="font-mono text-sm text-primary mb-2">03.</h2>
@@ -48,7 +48,7 @@ const ProjectsSection = () => {
               key={p.title}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: false }}
               transition={{ duration: 0.4, delay: 0.1 * i }}
               className="group relative rounded-xl border border-border bg-card p-6 transition-all hover:border-primary/40 hover:border-glow flex flex-col"
             >

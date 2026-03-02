@@ -62,7 +62,9 @@ const Index = () => {
         transition={{ duration: 0.6, delay: 0.1 }}
       >
         <Navbar />
-        <HeroSection />
+        <ScrollReveal direction="up" delay={0}>
+          <HeroSection />
+        </ScrollReveal>
         <Suspense fallback={null}>
           <ScrollReveal direction="up" delay={0}>
             <AboutSection />
