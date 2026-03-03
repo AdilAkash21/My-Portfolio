@@ -45,11 +45,22 @@ const HeroSection = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <div className="relative group">
-              {/* Gradient ring background */}
-              <div className="absolute -inset-1 rounded-full bg-gradient-to-br from-primary via-primary/40 to-transparent opacity-60 blur-sm group-hover:opacity-80 transition-opacity duration-500" />
+              {/* Outer orbit ring with dots */}
+              <div className="absolute -inset-6 rounded-full animate-spin-slow pointer-events-none">
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-primary/60 shadow-[0_0_8px_hsl(var(--primary)/0.4)]" />
+                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-1.5 h-1.5 rounded-full bg-primary/30" />
+              </div>
 
-              {/* Main image container */}
-              <div className="relative w-56 h-56 sm:w-72 sm:h-72 rounded-full overflow-hidden ring-1 ring-primary/20 shadow-xl">
+              {/* Inner orbit ring with dots */}
+              <div className="absolute -inset-4 rounded-full border border-dashed border-primary/10 animate-spin-slow-reverse pointer-events-none">
+                <div className="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-primary/40" />
+              </div>
+
+              {/* Gradient glow behind */}
+              <div className="absolute -inset-1 rounded-full bg-gradient-to-br from-primary via-primary/30 to-transparent opacity-50 blur-md group-hover:opacity-75 transition-opacity duration-500" />
+
+              {/* Main image */}
+              <div className="relative w-56 h-56 sm:w-72 sm:h-72 rounded-full overflow-hidden ring-2 ring-primary/25 shadow-xl">
                 <img
                   src={profileImg}
                   alt="Adil Rahman Akash"
@@ -61,17 +72,14 @@ const HeroSection = () => {
                 />
               </div>
 
-              {/* Status dot */}
-              <div className="absolute bottom-2 right-2 flex items-center gap-1.5 rounded-full bg-card px-3 py-1.5 shadow-lg ring-1 ring-border">
-                <span className="relative flex h-2.5 w-2.5">
+              {/* Status badge */}
+              <div className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full bg-card px-3 py-1.5 shadow-lg ring-1 ring-border z-10">
+                <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
                 </span>
                 <span className="text-xs font-medium text-foreground">Available</span>
               </div>
-
-              {/* Outer orbit ring */}
-              <div className="absolute -inset-3 rounded-full border border-primary/10 animate-float pointer-events-none" />
             </div>
           </motion.div>
         </div>
