@@ -1,6 +1,15 @@
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowDown } from "lucide-react";
 import profileImg from "@/assets/profile-optimized.webp";
+
+// Preload the profile image as early as possible
+const preloadLink = document.createElement("link");
+preloadLink.rel = "preload";
+preloadLink.as = "image";
+preloadLink.type = "image/webp";
+preloadLink.href = profileImg;
+document.head.appendChild(preloadLink);
 
 const HeroSection = () => {
   return (
@@ -66,9 +75,10 @@ const HeroSection = () => {
                   alt="Adil Rahman Akash"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   fetchPriority="high"
+                  loading="eager"
                   width={288}
                   height={288}
-                  decoding="async"
+                  decoding="sync"
                 />
               </div>
 
