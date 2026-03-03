@@ -44,19 +44,37 @@ const HeroSection = () => {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <div className="relative">
-              <div className="w-56 h-56 sm:w-72 sm:h-72 rounded-full overflow-hidden border-2 border-primary/30 border-glow">
+            <div className="relative group">
+              {/* Gradient ring background */}
+              <div className="absolute -inset-1 rounded-2xl bg-gradient-to-br from-primary via-primary/40 to-transparent opacity-60 blur-sm group-hover:opacity-80 transition-opacity duration-500" />
+
+              {/* Main image container */}
+              <div className="relative w-56 h-56 sm:w-72 sm:h-72 rounded-2xl overflow-hidden ring-1 ring-primary/20 shadow-xl">
                 <img
                   src={profileImg}
                   alt="Adil Rahman Akash"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   fetchPriority="high"
                   width={288}
                   height={288}
                   decoding="async"
                 />
+                {/* Overlay gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent pointer-events-none" />
               </div>
-              <div className="absolute -inset-3 rounded-full border border-primary/10 animate-float pointer-events-none" />
+
+              {/* Status dot */}
+              <div className="absolute -bottom-1 -right-1 flex items-center gap-1.5 rounded-full bg-card px-3 py-1.5 shadow-lg ring-1 ring-border">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
+                </span>
+                <span className="text-xs font-medium text-foreground">Available</span>
+              </div>
+
+              {/* Decorative corner accents */}
+              <div className="absolute -top-2 -left-2 w-5 h-5 border-t-2 border-l-2 border-primary/40 rounded-tl-lg pointer-events-none" />
+              <div className="absolute -bottom-2 -right-2 w-5 h-5 border-b-2 border-r-2 border-primary/40 rounded-br-lg pointer-events-none" />
             </div>
           </motion.div>
         </div>
