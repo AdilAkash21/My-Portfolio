@@ -151,6 +151,11 @@
     @apply border-border;
   }
 
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+  }
+
   body {
     @apply bg-background text-foreground font-sans antialiased;
     transition: background-color 0.3s ease, color 0.3s ease;
