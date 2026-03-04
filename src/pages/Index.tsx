@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import ScrollReveal from "@/components/ScrollReveal";
+import ScrollToTop from "@/components/ScrollToTop";
 import profileImg from "@/assets/profile-optimized.webp";
 
 const AboutSection = lazy(() => import("@/components/AboutSection"));
@@ -108,6 +109,7 @@ const Index = () => {
           </ScrollReveal>
         </Suspense>
       </motion.div>
+      <ScrollToTop />
     </div>
   );
 };
