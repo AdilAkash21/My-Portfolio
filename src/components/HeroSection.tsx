@@ -68,7 +68,7 @@ const HeroSection = () => {
               {/* Gradient glow behind */}
               <div className="absolute -inset-1 rounded-full bg-gradient-to-br from-primary via-primary/30 to-transparent opacity-50 blur-md group-hover:opacity-75 transition-opacity duration-500" />
 
-              {/* Main image */}
+          {/* Main image with eye-opening reveal */}
               <div className="relative w-56 h-56 sm:w-72 sm:h-72 rounded-full overflow-hidden ring-2 ring-primary/25 shadow-xl">
                 <img
                   src={profileImg}
@@ -79,6 +79,20 @@ const HeroSection = () => {
                   width={288}
                   height={288}
                   decoding="sync"
+                />
+                {/* Top eyelid */}
+                <motion.div
+                  className="absolute inset-x-0 top-0 h-1/2 bg-background z-10 origin-top"
+                  initial={{ scaleY: 1 }}
+                  animate={{ scaleY: 0 }}
+                  transition={{ duration: 1.2, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                />
+                {/* Bottom eyelid */}
+                <motion.div
+                  className="absolute inset-x-0 bottom-0 h-1/2 bg-background z-10 origin-bottom"
+                  initial={{ scaleY: 1 }}
+                  animate={{ scaleY: 0 }}
+                  transition={{ duration: 1.2, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
                 />
               </div>
 
