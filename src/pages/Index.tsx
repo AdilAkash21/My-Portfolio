@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import ScrollReveal from "@/components/ScrollReveal";
+import profileImg from "@/assets/profile-optimized.webp";
 
 const AboutSection = lazy(() => import("@/components/AboutSection"));
 const SkillsSection = lazy(() => import("@/components/SkillsSection"));
@@ -14,7 +15,7 @@ const Index = () => {
   const [showIntro, setShowIntro] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => setShowIntro(false), 800);
+    const timer = setTimeout(() => setShowIntro(false), 2000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -28,18 +29,28 @@ const Index = () => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
           >
-            <motion.div className="text-center">
+            <motion.div className="text-center flex flex-col items-center">
+              {/* Circular profile logo */}
               <motion.div
-                className="w-16 h-16 mx-auto mb-6 rounded-full border-2 border-primary"
+                className="w-24 h-24 sm:w-28 sm:h-28 mx-auto mb-6 rounded-full overflow-hidden ring-2 ring-primary/30 shadow-lg shadow-primary/10"
                 initial={{ scale: 0, rotate: -180 }}
                 animate={{ scale: 1, rotate: 0 }}
-                transition={{ duration: 0.6, ease: [0.34, 1.56, 0.64, 1] }}
-              />
+                transition={{ duration: 0.7, ease: [0.34, 1.56, 0.64, 1] }}
+              >
+                <img
+                  src={profileImg}
+                  alt="Adil Rahman Akash"
+                  className="w-full h-full object-cover"
+                  fetchPriority="high"
+                  loading="eager"
+                  decoding="sync"
+                />
+              </motion.div>
               <motion.h1
                 className="text-3xl sm:text-4xl font-bold"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.5 }}
+                transition={{ delay: 0.4, duration: 0.5 }}
               >
                 Adil Rahman <span className="gradient-text">Akash</span>
               </motion.h1>
@@ -47,7 +58,7 @@ const Index = () => {
                 className="text-muted-foreground font-mono text-sm mt-2"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.6, duration: 0.4 }}
+                transition={{ delay: 0.8, duration: 0.4 }}
               >
                 Loading experience...
               </motion.p>
