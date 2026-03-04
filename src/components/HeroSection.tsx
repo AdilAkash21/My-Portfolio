@@ -85,14 +85,14 @@ const HeroSection = () => {
                   className="absolute inset-x-0 top-0 h-1/2 bg-background z-10 origin-top"
                   initial={{ scaleY: 1 }}
                   animate={{ scaleY: 0 }}
-                  transition={{ duration: 1.2, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ duration: 1.4, delay: 2.2, ease: [0.22, 1, 0.36, 1] }}
                 />
                 {/* Bottom eyelid */}
                 <motion.div
                   className="absolute inset-x-0 bottom-0 h-1/2 bg-background z-10 origin-bottom"
                   initial={{ scaleY: 1 }}
                   animate={{ scaleY: 0 }}
-                  transition={{ duration: 1.2, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ duration: 1.4, delay: 2.2, ease: [0.22, 1, 0.36, 1] }}
                 />
               </div>
 
