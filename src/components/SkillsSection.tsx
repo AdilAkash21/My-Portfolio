@@ -51,7 +51,7 @@ const SkillsSection = () => {
           {skills.map((s) => (
             <span
               key={s}
-              className="rounded-md border border-border bg-secondary px-4 py-2 font-mono text-sm text-secondary-foreground transition-colors hover:border-primary hover:text-primary"
+              className="rounded-md border border-border bg-secondary px-4 py-2 font-mono text-sm text-secondary-foreground transition-colors hover:border-primary hover:text-primary hover-tag cursor-default"
             >
               {s}
             </span>
@@ -67,7 +67,7 @@ const SkillsSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false }}
               transition={{ duration: 0.4, delay: 0.1 * i }}
-              className="group rounded-xl border border-border bg-card p-6 transition-all hover:border-primary/40 hover:border-glow"
+              className="group rounded-xl border border-border bg-card p-6 hover:border-primary/40 hover:border-glow hover-lift"
             >
               <svc.icon className="text-primary mb-4" size={28} />
               <h4 className="text-lg font-semibold mb-2 text-foreground">{svc.title}</h4>

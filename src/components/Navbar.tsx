@@ -74,7 +74,7 @@ const Navbar = () => {
               <li key={l.href}>
                 <a
                   href={l.href}
-                  className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+                  className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hover-underline pb-0.5"
                 >
                   {l.label}
                 </a>
@@ -83,7 +83,7 @@ const Navbar = () => {
           </ul>
           <Link
             to="/profile"
-            className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+            className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hover-underline pb-0.5"
           >
             Settings
           </Link>
