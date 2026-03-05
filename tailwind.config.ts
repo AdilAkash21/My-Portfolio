@@ -130,6 +130,12 @@ export default {
 			'spin-slow-reverse': {
 				from: { transform: 'rotate(360deg)' },
 				to: { transform: 'rotate(0deg)' }
+			},
+			'bounce-click': {
+				'0%': { transform: 'scale(1)' },
+				'40%': { transform: 'scale(0.92)' },
+				'70%': { transform: 'scale(1.05)' },
+				'100%': { transform: 'scale(1)' }
 			}
 		},
 		animation: {
@@ -137,7 +143,8 @@ export default {
 			'accordion-up': 'accordion-up 0.2s ease-out',
 			float: 'float 6s ease-in-out infinite',
 			'spin-slow': 'spin-slow 20s linear infinite',
-			'spin-slow-reverse': 'spin-slow-reverse 15s linear infinite'
+			'spin-slow-reverse': 'spin-slow-reverse 15s linear infinite',
+			'bounce-click': 'bounce-click 0.35s ease-out'
 		},
   		boxShadow: {
   			'2xs': 'var(--shadow-2xs)',
