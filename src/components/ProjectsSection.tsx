@@ -50,7 +50,7 @@ const ProjectsSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false }}
               transition={{ duration: 0.4, delay: 0.1 * i }}
-              className="group relative rounded-xl border border-border bg-card p-6 transition-all hover:border-primary/40 hover:border-glow flex flex-col"
+              className="group relative rounded-xl border border-border bg-card p-6 hover:border-primary/40 hover:border-glow hover-lift flex flex-col"
             >
               <div className="flex items-center justify-between mb-4">
                 <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
