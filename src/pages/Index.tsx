@@ -16,7 +16,7 @@ const Index = () => {
   const [showIntro, setShowIntro] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => setShowIntro(false), 1200);
+    const timer = setTimeout(() => setShowIntro(false), 800);
     return () => clearTimeout(timer);
   }, []);
 
@@ -66,7 +66,7 @@ const Index = () => {
                   className="h-full rounded-full bg-primary"
                   initial={{ width: "0%" }}
                   animate={{ width: "100%" }}
-                  transition={{ duration: 1.0, delay: 0.1, ease: "easeInOut" }}
+                  transition={{ duration: 0.6, delay: 0.05, ease: "easeInOut" }}
                 />
               </motion.div>
               <motion.p
