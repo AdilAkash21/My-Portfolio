@@ -44,7 +44,7 @@ const TiltCard = ({ children, className }: { children: React.ReactNode; classNam
   const handleMouseLeave = useCallback(() => {
     const el = ref.current;
     if (!el) return;
-    el.style.transform = 'perspective(600px) rotateY(0deg) rotateX(0deg) translateY(0px)';
+    el.style.transform = 'perspective(600px) rotateY(0deg) rotateX(0deg) scale(1)';
   }, []);
 
   return (
