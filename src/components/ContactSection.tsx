@@ -101,7 +101,7 @@ const ContactSection = () => {
           </div>
           <button
             type="submit"
-            className="inline-flex items-center gap-2 rounded-lg border border-primary bg-primary/10 px-6 py-3 text-sm font-medium text-primary transition-all hover:bg-primary hover:text-primary-foreground hover:-translate-y-0.5 hover:shadow-lg"
+            className="inline-flex items-center gap-2 rounded-lg border border-primary bg-primary/10 px-6 py-3 text-sm font-medium text-primary btn-float-hover hover:bg-primary hover:text-primary-foreground hover:shadow-lg"
           >
             Send Message
             <Send size={16} />
