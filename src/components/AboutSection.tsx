@@ -56,7 +56,10 @@ const AboutSection = () => {
               <GraduationCap className="text-primary mt-1 flex-shrink-0" size={22} />
               <div>
                 <h4 className="font-semibold text-foreground">H.S.C. — Science</h4>
-                <p className="text-sm text-muted-foreground">Higher Secondary Certificate</p>
+                <p className="text-sm text-muted-foreground">Ghatail Cantonment Public School & College (G.C.P.S.C)</p>
+                <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
+                  <MapPin size={12} /> Ghatail, Tangail
+                </p>
               </div>
             </div>
           </motion.div>
