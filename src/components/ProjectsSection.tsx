@@ -38,13 +38,13 @@ const TiltCard = ({ children, className }: { children: React.ReactNode; classNam
     const rect = el.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
-    el.style.transform = `perspective(600px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg) scale(1.5)`;
+    el.style.transform = `perspective(600px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg) translateY(-4px)`;
   }, []);
 
   const handleMouseLeave = useCallback(() => {
     const el = ref.current;
     if (!el) return;
-    el.style.transform = 'perspective(600px) rotateY(0deg) rotateX(0deg) scale(1)';
+    el.style.transform = 'perspective(600px) rotateY(0deg) rotateX(0deg) translateY(0px)';
   }, []);
 
   return (
@@ -53,7 +53,7 @@ const TiltCard = ({ children, className }: { children: React.ReactNode; classNam
       className={className}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={{ transition: 'transform 2s ease-out', willChange: 'transform' }}
+      style={{ transition: 'transform 0.2s ease-out', willChange: 'transform' }}
     >
       {children}
     </div>
