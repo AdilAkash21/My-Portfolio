@@ -43,9 +43,6 @@ const HeroSection = () => {
             >
               View My Work
               <ArrowDown size={16} />
-            </a>
-              <ArrowDown size={16} />
-            </a>
           </motion.div>
 
           {/* Profile image */}
