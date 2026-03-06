@@ -53,7 +53,7 @@ const TiltCard = ({ children, className }: { children: React.ReactNode; classNam
       className={className}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={{ transition: 'transform 0.2s ease-out', willChange: 'transform' }}
+      style={{ transition: 'transform 2s ease-out', willChange: 'transform' }}
     >
       {children}
     </div>
