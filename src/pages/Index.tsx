@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import ScrollReveal from "@/components/ScrollReveal";
 import ScrollToTop from "@/components/ScrollToTop";
+import ParallaxBackground from "@/components/ParallaxBackground";
 import profileImg from "@/assets/profile-optimized.webp";
 
 const AboutSection = lazy(() => import("@/components/AboutSection"));
