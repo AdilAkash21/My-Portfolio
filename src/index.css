@@ -172,9 +172,9 @@
 
   /* Button float hover – lifts toward user with glow pulse */
   .btn-float-hover {
-    transition: transform 2s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                box-shadow 2s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                filter 2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                box-shadow 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                filter 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
   .btn-float-hover:hover {
     transform: translateY(-6px) scale(1.04);
