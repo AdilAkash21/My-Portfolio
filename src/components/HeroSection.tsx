@@ -58,7 +58,7 @@ const HeroSection = () => {
                 ? "The night is darkest just before the dawn. And I promise you, the dawn is coming. Gotham's silent guardian, writing clean code and cleaning up the streets."
                 : "Building functional, beautiful digital experiences from Nanchong to the world."}
             </p>
-            <div className="flex flex-wrap items-center gap-4">
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4">
               <a
                 href={isBatman ? "#about" : "#projects"}
                 className="inline-flex items-center gap-2 rounded-lg border border-primary bg-primary/10 px-6 py-3 text-sm font-medium text-primary btn-float-hover hover:bg-primary hover:text-primary-foreground hover:shadow-lg"
