@@ -1,4 +1,4 @@
-// ─── Theme Context ───
+// ─── Theme Context ─── 
 // Manages the application's theme state (dark ↔ batman).
 // Stores the selected theme in localStorage for persistence across sessions.
 // Applies the theme as a CSS class on <html> so CSS variables in index.css take effect.
