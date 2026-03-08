@@ -98,7 +98,9 @@ const ContactSection = () => {
             {errors.email && <p className="text-destructive text-xs mt-1">{errors.email}</p>}
           </div>
           <div>
+            <label htmlFor="contact-message" className="sr-only">{isBatman ? "Your Intel Report" : "Your Message"}</label>
             <textarea
+              id="contact-message"
               placeholder={isBatman ? "Your Intel Report" : "Your Message"}
               required
               rows={5}
