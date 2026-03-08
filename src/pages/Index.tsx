@@ -112,7 +112,6 @@ const Index = () => {
         <ScrollReveal direction="up" delay={0}>
           <HeroSection />
         </ScrollReveal>
-        <Suspense fallback={null}>
           <ScrollReveal direction="up" delay={0}>
             <AboutSection />
           </ScrollReveal>
@@ -128,7 +127,6 @@ const Index = () => {
           <ScrollReveal direction="up" delay={0} duration={0.4}>
             <Footer />
           </ScrollReveal>
-        </Suspense>
       </motion.div>
       <ScrollToTop />
     </div>
