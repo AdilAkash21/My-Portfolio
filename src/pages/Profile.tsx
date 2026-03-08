@@ -191,19 +191,11 @@ const Profile = () => {
     if (!user) return;
     setDeleting(true);
     try {
-      // Delete avatar files from storage first
-      const { data: files } = await supabase.storage
-        .from("avatars")
-        .list(user.id);
-      if (files && files.length > 0) {
-        const filePaths = files.map((f) => `${user.id}/${f.name}`);
-        await supabase.storage.from("avatars").remove(filePaths);
-      }
-
-      const { error } = await supabase.from("profiles").delete().eq("user_id", user.id);
+      const { data, error } = await supabase.functions.invoke("delete-account");
       if (error) throw error;
+      if (data?.error) throw new Error(data.error);
       await signOut();
-      toast({ title: "Account deleted", description: "Your profile has been removed." });
+      toast({ title: "Account deleted", description: "Your account and all data have been permanently removed." });
       navigate("/");
     } catch (err: any) {
       toast({ title: "Error", description: err.message || "Failed to delete account.", variant: "destructive" });
