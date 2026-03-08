@@ -52,7 +52,7 @@ const HeroSection = () => {
   const parallaxOffset = scrollY * 0.3;
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center pt-32 overflow-hidden">
+    <section ref={sectionRef} id="home" className="relative min-h-screen flex items-center pt-32 overflow-hidden">
       {/* Subtle background glow — parallax-scrolled radial gradient */}
       <div
         className="absolute left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-primary/5 blur-[120px] pointer-events-none will-change-transform"
