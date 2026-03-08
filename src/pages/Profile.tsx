@@ -157,6 +157,12 @@ const Profile = () => {
       !validateUrl(trimmedWebsite, "Website URL")
     ) return;
 
+    const parsedAge = age.trim() ? parseInt(age.trim(), 10) : null;
+    if (parsedAge !== null && (isNaN(parsedAge) || parsedAge < 1 || parsedAge > 150)) {
+      toast({ title: "Invalid age", description: "Age must be between 1 and 150.", variant: "destructive" });
+      return;
+    }
+
     setSaving(true);
 
     const { error } = await supabase
@@ -165,7 +171,7 @@ const Profile = () => {
         display_name: displayName.trim(),
         bio: bio.trim(),
         gender: gender.trim() || null,
-        age: age.trim() ? parseInt(age.trim(), 10) : null,
+        age: parsedAge,
         github_url: trimmedGithub || null,
         linkedin_url: trimmedLinkedin || null,
         twitter_url: trimmedTwitter || null,
