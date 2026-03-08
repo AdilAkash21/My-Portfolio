@@ -28,6 +28,19 @@ const HeroSection = () => {
 
   // Track scroll position for parallax offset on the background glow
   const [scrollY, setScrollY] = useState(0);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const sectionRef = useCallback((node: HTMLElement | null) => {
+    if (!node) return;
+    const handleMove = (e: MouseEvent) => {
+      const rect = node.getBoundingClientRect();
+      setMousePos({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+      });
+    };
+    node.addEventListener("mousemove", handleMove, { passive: true });
+    return () => node.removeEventListener("mousemove", handleMove);
+  }, []);
   const handleScroll = useCallback(() => setScrollY(window.scrollY), []);
 
   useEffect(() => {
