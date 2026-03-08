@@ -24,12 +24,22 @@ import Footer from "@/components/Footer";
 
 const Index = () => {
   const [showIntro, setShowIntro] = useState(true);
+  const [progress, setProgress] = useState(0);
   const { theme } = useTheme();
   const isBatman = theme === "batman";
 
   useEffect(() => {
-    const timer = setTimeout(() => setShowIntro(false), 4200);
-    return () => clearTimeout(timer);
+    const duration = 3000; // matches progress bar animation duration
+    const interval = 30;
+    const steps = duration / interval;
+    let step = 0;
+    const timer = setInterval(() => {
+      step++;
+      setProgress(Math.min(Math.round((step / steps) * 100), 100));
+      if (step >= steps) clearInterval(timer);
+    }, interval);
+    const hideTimer = setTimeout(() => setShowIntro(false), 4200);
+    return () => { clearInterval(timer); clearTimeout(hideTimer); };
   }, []);
 
   return (
@@ -98,7 +108,15 @@ const Index = () => {
                 />
               </motion.div>
               <motion.p
-                className="text-muted-foreground font-mono text-sm"
+                className="text-muted-foreground font-mono text-sm tabular-nums"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.8, duration: 0.3 }}
+              >
+                {progress}%
+              </motion.p>
+              <motion.p
+                className="text-muted-foreground font-mono text-xs mt-1"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1.2, duration: 0.4 }}
