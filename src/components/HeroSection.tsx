@@ -1,7 +1,9 @@
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowDown } from "lucide-react";
+import { useTheme } from "@/contexts/ThemeContext";
 import profileImg from "@/assets/profile-optimized.webp";
+import batmanImg from "@/assets/batman-profile.png";
 
 // Preload the profile image as early as possible
 const preloadLink = document.createElement("link");
@@ -11,7 +13,13 @@ preloadLink.type = "image/webp";
 preloadLink.href = profileImg;
 document.head.appendChild(preloadLink);
 
+const BAT_CLIP = "polygon(50% 0%, 42% 8%, 30% 2%, 20% 12%, 0% 10%, 5% 30%, 0% 50%, 8% 65%, 2% 80%, 15% 85%, 25% 100%, 40% 90%, 50% 100%, 60% 90%, 75% 100%, 85% 85%, 98% 80%, 92% 65%, 100% 50%, 95% 30%, 100% 10%, 80% 12%, 70% 2%, 58% 8%)";
+
 const HeroSection = () => {
+  const { theme } = useTheme();
+  const isBatman = theme === "batman";
+  const currentImg = isBatman ? batmanImg : profileImg;
+
   return (
     <section id="home" className="relative min-h-screen flex items-center pt-32">
       {/* Subtle bg glow */}
@@ -54,25 +62,57 @@ const HeroSection = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <div className="relative group">
-              {/* Outer orbit ring with dots */}
-              <div className="absolute -inset-6 rounded-full animate-spin-slow pointer-events-none">
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-primary/60 shadow-[0_0_8px_hsl(var(--primary)/0.4)]" />
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-1.5 h-1.5 rounded-full bg-primary/30" />
-              </div>
+              {/* Outer orbit ring with dots — hidden in batman mode */}
+              {!isBatman && (
+                <div className="absolute -inset-6 rounded-full animate-spin-slow pointer-events-none">
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-primary/60 shadow-[0_0_8px_hsl(var(--primary)/0.4)]" />
+                  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-1.5 h-1.5 rounded-full bg-primary/30" />
+                </div>
+              )}
 
-              {/* Inner orbit ring with dots */}
-              <div className="absolute -inset-4 rounded-full border border-dashed border-primary/10 animate-spin-slow-reverse pointer-events-none">
-                <div className="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-primary/40" />
-              </div>
+              {/* Inner orbit ring — hidden in batman mode */}
+              {!isBatman && (
+                <div className="absolute -inset-4 rounded-full border border-dashed border-primary/10 animate-spin-slow-reverse pointer-events-none">
+                  <div className="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-primary/40" />
+                </div>
+              )}
 
               {/* Gradient glow behind */}
-              <div className="absolute -inset-1 rounded-full bg-gradient-to-br from-primary via-primary/30 to-transparent opacity-50 blur-md group-hover:opacity-75 transition-opacity duration-500" />
+              <div
+                className="absolute -inset-1 opacity-50 blur-md group-hover:opacity-75 transition-opacity duration-500"
+                style={{
+                  background: isBatman
+                    ? "radial-gradient(circle, hsl(var(--primary) / 0.4), transparent 70%)"
+                    : undefined,
+                  clipPath: isBatman ? BAT_CLIP : undefined,
+                  borderRadius: isBatman ? undefined : "9999px",
+                  backgroundImage: isBatman
+                    ? undefined
+                    : "linear-gradient(to bottom right, hsl(var(--primary)), hsl(var(--primary) / 0.3), transparent)",
+                }}
+              />
 
-          {/* Main image with eye-opening reveal */}
-              <div className="relative w-56 h-56 sm:w-72 sm:h-72 rounded-full overflow-hidden ring-2 ring-primary/25 shadow-xl">
+              {/* Main image */}
+              <div
+                className="relative w-56 h-56 sm:w-72 sm:h-72 overflow-hidden shadow-xl transition-[clip-path,border-radius] duration-700"
+                style={{
+                  clipPath: isBatman ? BAT_CLIP : undefined,
+                  borderRadius: isBatman ? undefined : "9999px",
+                  boxShadow: isBatman
+                    ? "0 0 40px hsl(var(--primary) / 0.3), 0 0 80px hsl(var(--primary) / 0.15)"
+                    : undefined,
+                }}
+              >
+                <div
+                  className="absolute inset-0 ring-2 ring-primary/25 z-[1]"
+                  style={{
+                    clipPath: isBatman ? BAT_CLIP : undefined,
+                    borderRadius: isBatman ? undefined : "9999px",
+                  }}
+                />
                 <img
-                  src={profileImg}
-                  alt="Adil Rahman Akash"
+                  src={currentImg}
+                  alt={isBatman ? "Batman" : "Adil Rahman Akash"}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   fetchPriority="high"
                   loading="eager"
