@@ -82,18 +82,10 @@ const ContactSection = () => {
     setIsSubmitting(true);
     setSubmitStatus("idle");
 
-    // Insert the validated message into the contact_messages table
-    const { error } = await supabase.from("contact_messages").insert({
-      name: result.data.name,
-      email: result.data.email,
-      message: result.data.message,
-    });
+    // Simulate sending (replace with EmailJS, Formspree, or your own backend)
+    await new Promise((resolve) => setTimeout(resolve, 800));
 
     setIsSubmitting(false);
-    if (error) {
-      setSubmitStatus("error");
-      return;
-    }
     setSubmitStatus("success");
     setForm({ name: "", email: "", message: "" }); // Reset form on success
   };

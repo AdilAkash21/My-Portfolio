@@ -108,15 +108,6 @@ const Navbar = () => {
                   </a>
                 </li>
               ))}
-              <li>
-                <Link
-                  to="/profile"
-                  onClick={() => setOpen(false)}
-                  className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-                >
-                  Settings
-                </Link>
-              </li>
             </ul>
           </motion.div>
         )}
