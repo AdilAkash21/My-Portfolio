@@ -1,56 +1,42 @@
 # Frontend-Only Setup (Design Without Backend)
 
-This project has already been stripped of all backend (Supabase) dependencies. It runs as a pure frontend application.
+This project runs as a pure frontend application with no backend dependencies.
 
 ---
 
 ## What Was Removed
 
-- **Authentication**: Login, Signup, Forgot Password, Reset Password, and Profile pages are no longer routed or used.
-- **AuthContext**: The auth provider and context have been disconnected from the app.
-- **Supabase client calls**: Navbar no longer fetches user profiles. Contact form uses a simulated send instead of database insert.
-- **Settings link**: Removed from the navbar (desktop and mobile).
-- **User avatar**: Removed from the navbar.
+- **Authentication**: Login, Signup, Forgot Password, Reset Password, and Profile pages have been deleted.
+- **AuthContext**: The auth provider and context have been deleted.
+- **Edge Functions**: The `delete-account` edge function has been deleted.
+- **ImageCropDialog**: Avatar cropping component (was used on Profile) has been deleted.
+- **Supabase client calls**: Navbar does not fetch user profiles. Contact form uses a simulated send.
 
 ---
 
-## Files Still in the Repo (Unused)
+## System-Managed Files (Unused but Cannot Be Deleted)
 
-These files remain in the codebase but are **not imported or used** anywhere. You can safely delete them:
+These files are auto-generated/managed by the platform and remain in the repo but are not used:
 
-| File | Was Used For |
+| File | Note |
 |---|---|
-| `src/contexts/AuthContext.tsx` | Auth state management |
-| `src/pages/Login.tsx` | Login page |
-| `src/pages/Signup.tsx` | Signup page |
-| `src/pages/ForgotPassword.tsx` | Password reset request |
-| `src/pages/ResetPassword.tsx` | Password reset form |
-| `src/pages/Profile.tsx` | User profile/settings |
-| `src/components/ImageCropDialog.tsx` | Avatar cropping (used on Profile) |
-| `src/integrations/supabase/client.ts` | Supabase client (auto-generated, do not edit) |
-| `src/integrations/supabase/types.ts` | Supabase types (auto-generated, do not edit) |
-| `supabase/` | Backend config, migrations, edge functions |
-| `.env` | Backend credentials |
+| `src/integrations/supabase/client.ts` | Auto-generated, do not edit |
+| `src/integrations/supabase/types.ts` | Auto-generated, do not edit |
+| `supabase/config.toml` | System-managed |
+| `.env` | System-managed |
 
 ---
 
 ## Contact Form
 
-The contact form UI is fully functional but **does not send messages anywhere**. It currently simulates a successful send after 800ms.
+The contact form UI is fully functional but **does not send messages anywhere**. It simulates a successful send after 800ms.
 
 To make it functional, integrate a service like:
 - [EmailJS](https://www.emailjs.com/)
 - [Formspree](https://formspree.io/)
 - [Web3Forms](https://web3forms.com/)
 
-Replace the simulated handler in `src/components/ContactSection.tsx`:
-
-```tsx
-// Current (simulated)
-await new Promise((resolve) => setTimeout(resolve, 800));
-
-// Replace with your chosen service
-```
+Replace the simulated handler in `src/components/ContactSection.tsx`.
 
 ---
 
@@ -79,15 +65,15 @@ Deploy the `dist/` folder to any static host (Vercel, Netlify, Cloudflare Pages,
 
 ## What Still Works
 
-✅ Intro loading screen with progress bar and particle burst  
-✅ Hero section with parallax background and mouse-follow glow  
-✅ About section  
-✅ Skills/Services grid  
-✅ Projects section  
-✅ Contact form (UI only)  
-✅ Footer  
-✅ Dark / Batman theme toggle  
-✅ Scroll animations (ScrollReveal)  
-✅ Scroll progress bar in navbar  
-✅ Scroll-to-top button  
+✅ Intro loading screen with progress bar and particle burst
+✅ Hero section with parallax background and mouse-follow glow
+✅ About section
+✅ Skills/Services grid
+✅ Projects section
+✅ Contact form (UI only)
+✅ Footer
+✅ Dark / Batman theme toggle
+✅ Scroll animations (ScrollReveal)
+✅ Scroll progress bar in navbar
+✅ Scroll-to-top button
 ✅ Fully responsive (mobile + desktop)
