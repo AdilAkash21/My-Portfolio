@@ -70,6 +70,11 @@ const Navbar = () => {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/80 backdrop-blur-xl">
+      {/* Scroll progress bar */}
+      <div
+        className="absolute bottom-0 left-0 h-[2px] bg-primary transition-none"
+        style={{ width: `${scrollProgress * 100}%` }}
+      />
       <div className="container mx-auto flex items-center justify-between px-6 py-4">
         <div className="flex items-center gap-4">
           {/* Avatar before logo on desktop */}
