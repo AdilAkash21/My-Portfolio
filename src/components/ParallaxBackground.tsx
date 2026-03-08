@@ -1,5 +1,6 @@
 import { useRef, useMemo } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { useTheme } from "@/contexts/ThemeContext";
 
 interface Particle {
   id: number;
