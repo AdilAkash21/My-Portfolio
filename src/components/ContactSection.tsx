@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Mail, Github, Linkedin, Facebook, Instagram, Send, Shield } from "lucide-react";
+import { Mail, Github, Linkedin, Facebook, Instagram, Send, Shield, Loader2 } from "lucide-react";
 import { z } from "zod";
 import { useTheme } from "@/contexts/ThemeContext";
+import { supabase } from "@/integrations/supabase/client";
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100, "Name must be under 100 characters"),
@@ -14,17 +15,19 @@ const socials = [
   { icon: Mail, href: "mailto:adil@example.com", label: "Email" },
   { icon: Github, href: "https://github.com", label: "GitHub" },
   { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-  { icon: Facebook, href: "https://facebook.com", label: "Facebook" },
-  { icon: Instagram, href: "https://instagram.com", label: "Instagram" },
+  { icon: Facebook, href: "https://www.facebook.com/share/1CQp8ydvAt/", label: "Facebook" },
+  { icon: Instagram, href: "https://www.instagram.com/adilakash23", label: "Instagram" },
 ];
 
 const ContactSection = () => {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
   const { theme } = useTheme();
   const isBatman = theme === "batman";
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const result = contactSchema.safeParse(form);
     if (!result.success) {
@@ -36,7 +39,21 @@ const ContactSection = () => {
       return;
     }
     setErrors({});
-    alert(isBatman ? "Signal received. The Dark Knight will respond." : "Thanks for reaching out! I'll get back to you soon.");
+    setIsSubmitting(true);
+    setSubmitStatus("idle");
+
+    const { error } = await supabase.from("contact_messages").insert({
+      name: result.data.name,
+      email: result.data.email,
+      message: result.data.message,
+    });
+
+    setIsSubmitting(false);
+    if (error) {
+      setSubmitStatus("error");
+      return;
+    }
+    setSubmitStatus("success");
     setForm({ name: "", email: "", message: "" });
   };
 
@@ -113,11 +130,21 @@ const ContactSection = () => {
           </div>
           <button
             type="submit"
-            className="inline-flex items-center gap-2 rounded-lg border border-primary bg-primary/10 px-6 py-3 text-sm font-medium text-primary btn-float-hover hover:bg-primary hover:text-primary-foreground hover:shadow-lg"
+            disabled={isSubmitting}
+            className="inline-flex items-center gap-2 rounded-lg border border-primary bg-primary/10 px-6 py-3 text-sm font-medium text-primary btn-float-hover hover:bg-primary hover:text-primary-foreground hover:shadow-lg disabled:opacity-50 disabled:pointer-events-none"
           >
-            {isBatman ? "Send Signal" : "Send Message"}
-            {isBatman ? <Shield size={16} /> : <Send size={16} />}
+            {isSubmitting ? (
+              <><Loader2 size={16} className="animate-spin" /> Sending...</>
+            ) : (
+              <>{isBatman ? "Send Signal" : "Send Message"} {isBatman ? <Shield size={16} /> : <Send size={16} />}</>
+            )}
           </button>
+          {submitStatus === "success" && (
+            <p className="text-sm text-primary">{isBatman ? "Signal received. The Dark Knight will respond." : "Thanks for reaching out! I'll get back to you soon."}</p>
+          )}
+          {submitStatus === "error" && (
+            <p className="text-sm text-destructive">Something went wrong. Please try again.</p>
+          )}
         </motion.form>
 
         {/* Socials */}
