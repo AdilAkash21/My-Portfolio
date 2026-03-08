@@ -7,6 +7,7 @@ import ScrollToTop from "@/components/ScrollToTop";
 import ParallaxBackground from "@/components/ParallaxBackground";
 import profileImg from "@/assets/profile-optimized.webp";
 import logoImg from "@/assets/logo-ara.png";
+import { useTheme } from "@/contexts/ThemeContext";
 
 const AboutSection = lazy(() => import("@/components/AboutSection"));
 const SkillsSection = lazy(() => import("@/components/SkillsSection"));
@@ -16,6 +17,8 @@ const Footer = lazy(() => import("@/components/Footer"));
 
 const Index = () => {
   const [showIntro, setShowIntro] = useState(true);
+  const { theme } = useTheme();
+  const isBatman = theme === "batman";
 
   useEffect(() => {
     const timer = setTimeout(() => setShowIntro(false), 4200);
@@ -34,21 +37,31 @@ const Index = () => {
             transition={{ duration: 0.5, ease: "easeInOut" }}
           >
             <motion.div className="text-center flex flex-col items-center">
-              {/* ARA Logo */}
+              {/* Logo / Bat Symbol */}
               <motion.div
                 className="w-28 h-28 sm:w-36 sm:h-36 mx-auto mb-6 flex items-center justify-center"
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.8, ease: [0.34, 1.56, 0.64, 1] }}
               >
-                <img
-                  src={logoImg}
-                  alt="ARA Logo"
-                  className="w-full h-full object-contain drop-shadow-[0_0_15px_hsl(var(--primary)/0.4)]"
-                  fetchPriority="high"
-                  loading="eager"
-                  decoding="sync"
-                />
+                {isBatman ? (
+                  <svg
+                    viewBox="0 0 100 50"
+                    className="w-full h-full drop-shadow-[0_0_20px_hsl(var(--primary)/0.5)]"
+                    fill="hsl(var(--primary))"
+                  >
+                    <path d="M50 0 C50 0 46 8 42 12 C38 16 32 18 28 16 C24 14 22 8 20 6 C18 4 14 6 10 10 C6 14 2 20 0 26 C4 24 10 22 16 24 C22 26 26 32 28 38 C30 42 34 46 38 48 C42 50 46 50 50 50 C54 50 58 50 62 48 C66 46 70 42 72 38 C74 32 78 26 84 24 C90 22 96 24 100 26 C98 20 94 14 90 10 C86 6 82 4 80 6 C78 8 76 14 72 16 C68 18 62 16 58 12 C54 8 50 0 50 0Z" />
+                  </svg>
+                ) : (
+                  <img
+                    src={logoImg}
+                    alt="ARA Logo"
+                    className="w-full h-full object-contain drop-shadow-[0_0_15px_hsl(var(--primary)/0.4)]"
+                    fetchPriority="high"
+                    loading="eager"
+                    decoding="sync"
+                  />
+                )}
               </motion.div>
               <motion.h1
                 className="text-3xl sm:text-4xl font-bold"
@@ -56,7 +69,11 @@ const Index = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6, duration: 0.5 }}
               >
-                Adil Rahman <span className="gradient-text">Akash</span>
+                {isBatman ? (
+                  <>The Dark <span className="gradient-text">Knight</span></>
+                ) : (
+                  <>Adil Rahman <span className="gradient-text">Akash</span></>
+                )}
               </motion.h1>
               {/* Progress bar */}
               <motion.div
@@ -78,7 +95,7 @@ const Index = () => {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1.2, duration: 0.4 }}
               >
-                Loading experience...
+                {isBatman ? "Initializing Batcomputer..." : "Loading experience..."}
               </motion.p>
             </motion.div>
           </motion.div>
