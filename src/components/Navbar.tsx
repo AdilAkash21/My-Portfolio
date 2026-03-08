@@ -47,15 +47,7 @@ const Navbar = () => {
       />
 
       <div className="container mx-auto flex items-center justify-between px-6 py-4">
-        {/* Left side: avatar (desktop) + logo */}
         <div className="flex items-center gap-4">
-          {/* Avatar shown before logo on desktop only */}
-          {user && (
-            <span className="hidden md:inline-flex">
-              <AvatarIcon />
-            </span>
-          )}
-          {/* Logo: bat symbol in batman mode, text logo otherwise */}
           <a href="#home" className="font-mono text-lg font-semibold text-primary flex items-center gap-2">
             {isBatman ? (
               <img src={batLogoImg} alt="Bat Logo" className="h-10 w-auto drop-shadow-[0_0_8px_hsl(var(--primary)/0.5)]" />
