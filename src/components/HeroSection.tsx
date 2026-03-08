@@ -40,15 +40,29 @@ const HeroSection = () => {
   const currentImg = isBatman ? batmanImg : profileImg;
   const prevThemeRef = useRef(theme);
   const [showBurst, setShowBurst] = useState(false);
+  const [morphing, setMorphing] = useState(false);
 
   useEffect(() => {
     if (prevThemeRef.current !== theme) {
-      if (theme === "batman") {
-        setShowBurst(true);
+      const wasBatman = prevThemeRef.current === "batman";
+      const nowBatman = theme === "batman";
+
+      // Only use clip-path morph when transitioning to/from batman
+      if (wasBatman || nowBatman) {
+        setMorphing(true);
+        if (nowBatman) setShowBurst(true);
+        // After morph animation completes, revert to border-radius for non-batman
+        const timer = setTimeout(() => setMorphing(false), 850);
+        prevThemeRef.current = theme;
+        return () => clearTimeout(timer);
       }
       prevThemeRef.current = theme;
     }
   }, [theme]);
+
+  // Use clip-path only when in batman mode or mid-morph transition
+  const useClipPath = isBatman || morphing;
+  const activeClip = isBatman ? BAT_CLIP : CIRCLE_CLIP;
 
   return (
     <section id="home" className="relative min-h-screen flex items-center pt-32">
@@ -150,11 +164,10 @@ const HeroSection = () => {
               {/* Gradient glow behind */}
               <motion.div
                 className="absolute -inset-1 opacity-50 blur-md group-hover:opacity-75 transition-opacity duration-500"
-                animate={{
-                  clipPath: isBatman ? BAT_CLIP : CIRCLE_CLIP,
-                }}
+                animate={useClipPath ? { clipPath: activeClip } : { clipPath: "none" }}
                 transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
                 style={{
+                  borderRadius: useClipPath ? undefined : "9999px",
                   background: isBatman
                     ? "radial-gradient(circle, hsl(var(--primary) / 0.4), transparent 70%)"
                     : "linear-gradient(to bottom right, hsl(var(--primary)), hsl(var(--primary) / 0.3), transparent)",
@@ -164,18 +177,28 @@ const HeroSection = () => {
               {/* Main image */}
               <motion.div
                 className="relative w-56 h-56 sm:w-72 sm:h-72 overflow-hidden shadow-xl"
-                animate={{
-                  clipPath: isBatman ? BAT_CLIP : CIRCLE_CLIP,
-                  boxShadow: isBatman
-                    ? "0 0 40px hsl(var(--primary) / 0.3), 0 0 80px hsl(var(--primary) / 0.15)"
-                    : "0 0 0px transparent",
-                }}
+                animate={
+                  useClipPath
+                    ? {
+                        clipPath: activeClip,
+                        borderRadius: "0px",
+                        boxShadow: isBatman
+                          ? "0 0 40px hsl(var(--primary) / 0.3), 0 0 80px hsl(var(--primary) / 0.15)"
+                          : "0 0 0px transparent",
+                      }
+                    : {
+                        clipPath: "none",
+                        borderRadius: "9999px",
+                        boxShadow: "0 0 0px transparent",
+                      }
+                }
                 transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
               >
                 <motion.div
                   className="absolute inset-0 ring-2 ring-primary/25 z-[1]"
-                  animate={{ clipPath: isBatman ? BAT_CLIP : CIRCLE_CLIP }}
+                  animate={useClipPath ? { clipPath: activeClip } : { clipPath: "none" }}
                   transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
+                  style={{ borderRadius: useClipPath ? undefined : "9999px" }}
                 />
                 <img
                   src={currentImg}
