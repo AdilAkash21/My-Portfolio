@@ -70,7 +70,9 @@ const ContactSection = () => {
           className="max-w-lg mx-auto space-y-5"
         >
           <div>
+            <label htmlFor="contact-name" className="sr-only">{isBatman ? "Your Alias" : "Your Name"}</label>
             <input
+              id="contact-name"
               type="text"
               placeholder={isBatman ? "Your Alias" : "Your Name"}
               required
