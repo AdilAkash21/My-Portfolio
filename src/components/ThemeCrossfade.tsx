@@ -27,9 +27,9 @@ const ThemeCrossfade = () => {
           key={theme}
           className="fixed inset-0 z-[9999] pointer-events-none"
           style={{ backgroundColor: THEME_BG[theme] || THEME_BG.dark }}
-          initial={{ opacity: 0.5 }}
+          initial={{ opacity: 0.4 }}
           animate={{ opacity: 0 }}
-          transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+          transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
           onAnimationComplete={() => setShow(false)}
         />
       )}
