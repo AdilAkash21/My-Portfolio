@@ -84,7 +84,9 @@ const ContactSection = () => {
             {errors.name && <p className="text-destructive text-xs mt-1">{errors.name}</p>}
           </div>
           <div>
+            <label htmlFor="contact-email" className="sr-only">{isBatman ? "Secure Channel (Email)" : "Your Email"}</label>
             <input
+              id="contact-email"
               type="email"
               placeholder={isBatman ? "Secure Channel (Email)" : "Your Email"}
               required
