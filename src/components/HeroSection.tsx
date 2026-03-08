@@ -1,5 +1,5 @@
-import { useEffect, useState, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect } from "react";
+import { motion } from "framer-motion";
 import { ArrowDown } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 import profileImg from "@/assets/profile-optimized.webp";
@@ -14,55 +14,10 @@ preloadLink.href = profileImg;
 document.head.appendChild(preloadLink);
 
 const BAT_CLIP = "polygon(50% 0%, 42% 8%, 30% 2%, 20% 12%, 0% 10%, 5% 30%, 0% 50%, 8% 65%, 2% 80%, 15% 85%, 25% 100%, 40% 90%, 50% 100%, 60% 90%, 75% 100%, 85% 85%, 98% 80%, 92% 65%, 100% 50%, 95% 30%, 100% 10%, 80% 12%, 70% 2%, 58% 8%)";
-const CIRCLE_CLIP = "polygon(50% 0%, 63% 2%, 75% 7%, 85% 15%, 93% 25%, 98% 37%, 100% 50%, 98% 63%, 93% 75%, 85% 85%, 75% 93%, 63% 98%, 50% 100%, 37% 98%, 25% 93%, 15% 85%, 7% 75%, 2% 63%, 0% 50%, 2% 37%, 7% 25%, 15% 15%, 25% 7%, 37% 2%)";
-
-// Generate particles radiating outward from center
-const generateParticles = (count: number) =>
-  Array.from({ length: count }, (_, i) => {
-    const angle = (i / count) * 360 + (Math.random() - 0.5) * 30;
-    const rad = (angle * Math.PI) / 180;
-    const distance = 80 + Math.random() * 100;
-    return {
-      id: i,
-      x: Math.cos(rad) * distance,
-      y: Math.sin(rad) * distance,
-      size: 2 + Math.random() * 4,
-      delay: Math.random() * 0.3,
-      duration: 0.6 + Math.random() * 0.5,
-    };
-  });
-
-const PARTICLES = generateParticles(20);
 
 const HeroSection = () => {
   const { theme } = useTheme();
   const isBatman = theme === "batman";
-  const currentImg = isBatman ? batmanImg : profileImg;
-  const prevThemeRef = useRef(theme);
-  const [showBurst, setShowBurst] = useState(false);
-  const [morphing, setMorphing] = useState(false);
-
-  useEffect(() => {
-    if (prevThemeRef.current !== theme) {
-      const wasBatman = prevThemeRef.current === "batman";
-      const nowBatman = theme === "batman";
-
-      // Only use clip-path morph when transitioning to/from batman
-      if (wasBatman || nowBatman) {
-        setMorphing(true);
-        if (nowBatman) setShowBurst(true);
-        // After morph animation completes, revert to border-radius for non-batman
-        const timer = setTimeout(() => setMorphing(false), 850);
-        prevThemeRef.current = theme;
-        return () => clearTimeout(timer);
-      }
-      prevThemeRef.current = theme;
-    }
-  }, [theme]);
-
-  // Use clip-path only when in batman mode or mid-morph transition
-  const useClipPath = isBatman || morphing;
-  const activeClip = isBatman ? BAT_CLIP : CIRCLE_CLIP;
 
   return (
     <section id="home" className="relative min-h-screen flex items-center pt-32">
@@ -121,95 +76,68 @@ const HeroSection = () => {
                 </div>
               )}
 
-              {/* Golden particle burst on Batman morph */}
-              <AnimatePresence>
-                {showBurst && (
-                  <div className="absolute inset-0 z-20 pointer-events-none flex items-center justify-center">
-                    {PARTICLES.map((p) => (
-                      <motion.div
-                        key={p.id}
-                        className="absolute rounded-full"
-                        style={{
-                          width: p.size,
-                          height: p.size,
-                          background: `radial-gradient(circle, hsl(45 100% 65%), hsl(45 100% 45%))`,
-                          boxShadow: `0 0 ${p.size * 2}px hsl(45 100% 55% / 0.6)`,
-                        }}
-                        initial={{ x: 0, y: 0, opacity: 1, scale: 1 }}
-                        animate={{ x: p.x, y: p.y, opacity: 0, scale: 0.2 }}
-                        transition={{
-                          duration: p.duration,
-                          delay: p.delay,
-                          ease: [0.16, 1, 0.3, 1],
-                        }}
-                        onAnimationComplete={() => {
-                          if (p.id === PARTICLES.length - 1) setShowBurst(false);
-                        }}
-                      />
-                    ))}
-                    {/* Central flash */}
-                    <motion.div
-                      className="absolute w-40 h-40 rounded-full pointer-events-none"
-                      style={{
-                        background: `radial-gradient(circle, hsl(45 100% 70% / 0.4), transparent 70%)`,
-                      }}
-                      initial={{ opacity: 1, scale: 0.5 }}
-                      animate={{ opacity: 0, scale: 2 }}
-                      transition={{ duration: 0.7, ease: "easeOut" }}
-                    />
-                  </div>
-                )}
-              </AnimatePresence>
-
               {/* Gradient glow behind */}
-              <motion.div
-                className="absolute -inset-1 opacity-50 blur-md group-hover:opacity-75 transition-opacity duration-500"
-                animate={useClipPath ? { clipPath: activeClip } : { clipPath: "none" }}
-                transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
+              <div
+                className="absolute -inset-1 opacity-50 blur-md group-hover:opacity-75"
                 style={{
-                  borderRadius: useClipPath ? undefined : "9999px",
+                  borderRadius: isBatman ? undefined : "9999px",
+                  clipPath: isBatman ? BAT_CLIP : undefined,
                   background: isBatman
                     ? "radial-gradient(circle, hsl(var(--primary) / 0.4), transparent 70%)"
                     : "linear-gradient(to bottom right, hsl(var(--primary)), hsl(var(--primary) / 0.3), transparent)",
+                  transition: "clip-path 1.2s ease, border-radius 1.2s ease, background 1.2s ease, opacity 0.5s ease",
                 }}
               />
 
-              {/* Main image */}
-              <motion.div
+              {/* Main image container */}
+              <div
                 className="relative w-56 h-56 sm:w-72 sm:h-72 overflow-hidden shadow-xl"
-                animate={
-                  useClipPath
-                    ? {
-                        clipPath: activeClip,
-                        borderRadius: "0px",
-                        boxShadow: isBatman
-                          ? "0 0 40px hsl(var(--primary) / 0.3), 0 0 80px hsl(var(--primary) / 0.15)"
-                          : "0 0 0px transparent",
-                      }
-                    : {
-                        clipPath: "none",
-                        borderRadius: "9999px",
-                        boxShadow: "0 0 0px transparent",
-                      }
-                }
-                transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
+                style={{
+                  borderRadius: isBatman ? undefined : "9999px",
+                  clipPath: isBatman ? BAT_CLIP : undefined,
+                  boxShadow: isBatman
+                    ? "0 0 40px hsl(var(--primary) / 0.3), 0 0 80px hsl(var(--primary) / 0.15)"
+                    : undefined,
+                  transition: "clip-path 1.2s ease, border-radius 1.2s ease, box-shadow 1.2s ease",
+                }}
               >
-                <motion.div
+                <div
                   className="absolute inset-0 ring-2 ring-primary/25 z-[1]"
-                  animate={useClipPath ? { clipPath: activeClip } : { clipPath: "none" }}
-                  transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
-                  style={{ borderRadius: useClipPath ? undefined : "9999px" }}
+                  style={{
+                    borderRadius: isBatman ? undefined : "9999px",
+                    clipPath: isBatman ? BAT_CLIP : undefined,
+                    transition: "clip-path 1.2s ease, border-radius 1.2s ease",
+                  }}
                 />
+
+                {/* Both images stacked, crossfade via opacity */}
                 <img
-                  src={currentImg}
-                  alt={isBatman ? "Batman" : "Adil Rahman Akash"}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  src={profileImg}
+                  alt="Adil Rahman Akash"
+                  className="absolute inset-0 w-full h-full object-cover"
+                  style={{
+                    opacity: isBatman ? 0 : 1,
+                    transition: "opacity 1.2s ease",
+                  }}
                   fetchPriority="high"
                   loading="eager"
                   width={288}
                   height={288}
                   decoding="sync"
                 />
+                <img
+                  src={batmanImg}
+                  alt="Batman"
+                  className="absolute inset-0 w-full h-full object-cover"
+                  style={{
+                    opacity: isBatman ? 1 : 0,
+                    transition: "opacity 1.2s ease",
+                  }}
+                  loading="eager"
+                  width={288}
+                  height={288}
+                />
+
                 {/* Top eyelid */}
                 <motion.div
                   className="absolute inset-x-0 top-0 h-1/2 bg-background z-10 origin-top"
@@ -224,7 +152,7 @@ const HeroSection = () => {
                   animate={{ scaleY: 0 }}
                   transition={{ duration: 1.4, delay: 2.2, ease: [0.22, 1, 0.36, 1] }}
                 />
-              </motion.div>
+              </div>
 
               {/* Status badge */}
               <div className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full bg-card px-3 py-1.5 shadow-lg ring-1 ring-border z-10">
