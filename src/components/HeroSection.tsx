@@ -157,8 +157,7 @@ const HeroSection = () => {
                 <img
                   src={batmanImg}
                   alt="Batman"
-                  className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
-                  style={{ transform: "scale(0.8)" }}
+                  className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                   loading="eager"
                   width={288}
                   height={288}
