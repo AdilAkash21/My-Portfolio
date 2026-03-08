@@ -19,60 +19,21 @@ const navLinks = [
 ];
 
 const Navbar = () => {
-  const [open, setOpen] = useState(false); // Mobile menu open/closed state
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null); // User's profile avatar URL
-  const [displayName, setDisplayName] = useState<string | null>(null); // User's display name
-  const { user } = useAuth();
+  const [open, setOpen] = useState(false);
   const { theme } = useTheme();
-  const [scrollProgress, setScrollProgress] = useState(0); // 0–1 representing scroll position
+  const [scrollProgress, setScrollProgress] = useState(0);
   const isBatman = theme === "batman";
 
-  // Calculate scroll progress as a percentage of total scrollable height
   const handleScroll = useCallback(() => {
     const scrollTop = window.scrollY;
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
     setScrollProgress(docHeight > 0 ? Math.min(scrollTop / docHeight, 1) : 0);
   }, []);
 
-  // Attach passive scroll listener for the progress bar
   useEffect(() => {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
-
-  // Fetch user profile data (avatar & display name) when user changes
-  useEffect(() => {
-    if (!user) { setAvatarUrl(null); setDisplayName(null); return; }
-    const fetch = async () => {
-      const { data } = await supabase
-        .from("profiles")
-        .select("avatar_url, display_name")
-        .eq("user_id", user.id)
-        .single();
-      if (data) {
-        setAvatarUrl(data.avatar_url);
-        setDisplayName(data.display_name);
-      }
-    };
-    fetch();
-  }, [user]);
-
-  // Generate initials for the avatar fallback (first 2 chars of name or email)
-  const initials = user
-    ? (displayName || user.email || "?").slice(0, 2).toUpperCase()
-    : "?";
-
-  // Reusable avatar component linking to the profile/settings page
-  const AvatarIcon = () => (
-    <Link to="/profile" aria-label="Settings">
-      <Avatar className="h-8 w-8 border border-primary/30 transition-transform hover:scale-105">
-        <AvatarImage src={avatarUrl ?? undefined} alt="Avatar" />
-        <AvatarFallback className="bg-secondary text-secondary-foreground text-xs">
-          {initials}
-        </AvatarFallback>
-      </Avatar>
-    </Link>
-  );
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/80 backdrop-blur-xl">
