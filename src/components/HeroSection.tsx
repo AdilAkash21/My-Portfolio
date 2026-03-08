@@ -98,7 +98,7 @@ const HeroSection = () => {
                   boxShadow: isBatman
                     ? "0 0 40px hsl(var(--primary) / 0.3), 0 0 80px hsl(var(--primary) / 0.15)"
                     : undefined,
-                  transition: "clip-path 1.2s ease, border-radius 1.2s ease, box-shadow 1.2s ease",
+                  transition: "clip-path 1.5s cubic-bezier(0.4, 0, 0.2, 1), border-radius 1.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 1.5s cubic-bezier(0.4, 0, 0.2, 1)",
                 }}
               >
                 <div
