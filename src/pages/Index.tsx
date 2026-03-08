@@ -38,7 +38,7 @@ const Index = () => {
                 className="w-24 h-24 sm:w-28 sm:h-28 mx-auto mb-6 rounded-full overflow-hidden ring-2 ring-primary/30 shadow-lg shadow-primary/10"
                 initial={{ scale: 0, rotate: -180 }}
                 animate={{ scale: 1, rotate: 0 }}
-                transition={{ duration: 0.7, ease: [0.34, 1.56, 0.64, 1] }}
+                transition={{ duration: 0.8, ease: [0.34, 1.56, 0.64, 1] }}
               >
                 <img
                   src={profileImg}
