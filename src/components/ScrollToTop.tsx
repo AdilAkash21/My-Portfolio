@@ -2,7 +2,7 @@
 // A floating button that appears in the bottom-right corner after scrolling
 // past 400px. Clicking it smoothly scrolls the page back to the top.
 // Uses Framer Motion for enter/exit animations.
-// Wrapped in forwardRef to avoid React warnings when used inside AnimatePresence.
+// Wrapped in forwardRef to avoid React warnings when used inside motion containers.
 
 import { useState, useEffect, forwardRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -28,7 +28,7 @@ const ScrollToTopButton = forwardRef<HTMLButtonElement, { onClick: () => void }>
 
 ScrollToTopButton.displayName = "ScrollToTopButton";
 
-const ScrollToTop = () => {
+const ScrollToTop = forwardRef<HTMLDivElement>((_, ref) => {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -38,12 +38,16 @@ const ScrollToTop = () => {
   }, []);
 
   return (
-    <AnimatePresence>
-      {visible && (
-        <ScrollToTopButton onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} />
-      )}
-    </AnimatePresence>
+    <div ref={ref}>
+      <AnimatePresence>
+        {visible && (
+          <ScrollToTopButton onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} />
+        )}
+      </AnimatePresence>
+    </div>
   );
-};
+});
+
+ScrollToTop.displayName = "ScrollToTop";
 
 export default ScrollToTop;
