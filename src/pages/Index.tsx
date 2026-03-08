@@ -6,6 +6,7 @@ import ScrollReveal from "@/components/ScrollReveal";
 import ScrollToTop from "@/components/ScrollToTop";
 import ParallaxBackground from "@/components/ParallaxBackground";
 import profileImg from "@/assets/profile-optimized.webp";
+import logoImg from "@/assets/logo-ara.png";
 
 const AboutSection = lazy(() => import("@/components/AboutSection"));
 const SkillsSection = lazy(() => import("@/components/SkillsSection"));
@@ -33,17 +34,17 @@ const Index = () => {
             transition={{ duration: 0.5, ease: "easeInOut" }}
           >
             <motion.div className="text-center flex flex-col items-center">
-              {/* Circular profile logo */}
+              {/* ARA Logo */}
               <motion.div
-                className="w-24 h-24 sm:w-28 sm:h-28 mx-auto mb-6 rounded-full overflow-hidden ring-2 ring-primary/30 shadow-lg shadow-primary/10"
-                initial={{ scale: 0, rotate: -180 }}
-                animate={{ scale: 1, rotate: 0 }}
+                className="w-28 h-28 sm:w-36 sm:h-36 mx-auto mb-6 flex items-center justify-center"
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.8, ease: [0.34, 1.56, 0.64, 1] }}
               >
                 <img
-                  src={profileImg}
-                  alt="Adil Rahman Akash"
-                  className="w-full h-full object-cover"
+                  src={logoImg}
+                  alt="ARA Logo"
+                  className="w-full h-full object-contain drop-shadow-[0_0_15px_hsl(var(--primary)/0.4)]"
                   fetchPriority="high"
                   loading="eager"
                   decoding="sync"
