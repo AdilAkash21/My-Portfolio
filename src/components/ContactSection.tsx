@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Mail, Github, Linkedin, Facebook, Instagram, Send, Shield } from "lucide-react";
+import { Mail, Github, Linkedin, Facebook, Instagram, Send, Shield, Loader2 } from "lucide-react";
 import { z } from "zod";
 import { useTheme } from "@/contexts/ThemeContext";
+import { supabase } from "@/integrations/supabase/client";
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100, "Name must be under 100 characters"),
