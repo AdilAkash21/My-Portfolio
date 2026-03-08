@@ -68,7 +68,7 @@ const Navbar = () => {
           )}
           <a href="#home" className="font-mono text-lg font-semibold text-primary flex items-center gap-2">
             {isBatman ? (
-              <img src={batLogoImg} alt="Bat Logo" className="h-8 w-auto drop-shadow-[0_0_8px_hsl(var(--primary)/0.5)]" />
+              <img src={batLogoImg} alt="Bat Logo" className="h-10 w-auto drop-shadow-[0_0_8px_hsl(var(--primary)/0.5)]" />
             ) : (
               "< ARA />"
             )}
