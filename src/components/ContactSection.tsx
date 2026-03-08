@@ -17,24 +17,32 @@ const contactInfo = [
     label: "Location",
     value: "Nanchong, China",
     href: "https://maps.google.com/?q=Nanchong,China",
+    batmanValue: "Gotham City",
+    batmanHref: undefined as string | undefined,
   },
   {
     icon: Mail,
     label: "Email",
     value: "adilakash23@gmail.com",
     href: "mailto:adilakash23@gmail.com",
+    batmanValue: "████████@████.███",
+    batmanHref: undefined as string | undefined,
   },
   {
     icon: Github,
     label: "GitHub",
     value: "AdilAkash21",
     href: "https://github.com/AdilAkash21",
+    batmanValue: "██████████",
+    batmanHref: undefined as string | undefined,
   },
   {
     icon: Phone,
     label: "Mobile",
     value: "+86 17390219212",
     href: "tel:+8617390219212",
+    batmanValue: "███ ████████████",
+    batmanHref: undefined as string | undefined,
   },
 ];
 
@@ -109,7 +117,11 @@ const ContactSection = () => {
             <h4 className="text-lg font-semibold mb-6">
               {isBatman ? "Batcomputer Channels" : "Contact Info"}
             </h4>
-            {contactInfo.map((item, i) => (
+            {contactInfo.map((item, i) => {
+              const displayValue = isBatman ? (item.batmanValue ?? item.value) : item.value;
+              const displayHref = isBatman ? item.batmanHref : item.href;
+
+              return (
               <motion.div
                 key={item.label}
                 initial={{ opacity: 0, y: 12 }}
@@ -117,9 +129,9 @@ const ContactSection = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: 0.15 + i * 0.08 }}
               >
-                {item.href ? (
+                {displayHref ? (
                   <a
-                    href={item.href}
+                    href={displayHref}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="group flex items-start gap-4 p-4 rounded-xl border border-border bg-background hover:border-primary/50 hover:bg-primary/5 transition-all duration-300"
@@ -132,26 +144,27 @@ const ContactSection = () => {
                         {item.label}
                       </p>
                       <p className="text-sm font-medium text-foreground group-hover:text-primary transition-colors flex items-center gap-1.5">
-                        {item.value}
+                        {displayValue}
                         <ExternalLink size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" />
                       </p>
                     </div>
                   </a>
                 ) : (
-                  <div className="flex items-start gap-4 p-4 rounded-xl border border-border bg-background">
+                  <div className={`flex items-start gap-4 p-4 rounded-xl border border-border bg-background ${isBatman ? 'opacity-75' : ''}`}>
                     <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
                       <item.icon size={18} className="text-primary" />
                     </div>
                     <div className="min-w-0">
                       <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-0.5">
-                        {item.label}
+                        {isBatman ? "Classified" : item.label}
                       </p>
-                      <p className="text-sm font-medium text-foreground">{item.value}</p>
+                      <p className={`text-sm font-medium text-foreground ${isBatman ? 'font-mono tracking-widest' : ''}`}>{displayValue}</p>
                     </div>
                   </div>
                 )}
               </motion.div>
-            ))}
+              );
+            })}
           </motion.div>
 
           {/* Contact Form */}
