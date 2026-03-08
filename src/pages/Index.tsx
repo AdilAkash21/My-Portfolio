@@ -151,7 +151,7 @@ const Index = () => {
       <AnimatePresence>
         {showIntro && (
           <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-background overflow-hidden"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-background overflow-hidden cursor-pointer"
             initial={{ opacity: 1 }}
             exit={{
               clipPath: "inset(50% 0% 50% 0%)", // Horizontal iris-out effect
