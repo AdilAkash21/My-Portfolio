@@ -160,7 +160,7 @@ const ContactSection = () => {
                   </a>
                 ) : (
                   /* Non-clickable card (redacted in batman mode) */
-                  <div className={`flex items-start gap-4 p-4 rounded-xl border border-border bg-background ${isBatman ? 'opacity-75' : ''}`}>
+                  <div className={`flex items-start gap-4 p-4 rounded-xl border border-border bg-background ${isBatman ? 'opacity-90' : ''}`}>
                     <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
                       <item.icon size={18} className="text-primary" />
                     </div>
