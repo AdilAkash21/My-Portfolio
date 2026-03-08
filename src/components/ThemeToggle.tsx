@@ -1,4 +1,4 @@
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, Shield } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
@@ -13,11 +13,20 @@ const ThemeToggle = () => {
     setTimeout(() => setRipple(false), 500);
   };
 
+  const label =
+    theme === "dark"
+      ? "Switch to light mode"
+      : theme === "light"
+      ? "Switch to Batman mode"
+      : "Switch to dark mode";
+
+  const iconKey = theme === "dark" ? "sun" : theme === "light" ? "bat" : "moon";
+
   return (
     <button
       onClick={handleClick}
       className="relative rounded-full p-2 text-muted-foreground transition-colors hover:text-primary hover:bg-accent/50 overflow-hidden"
-      aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+      aria-label={label}
     >
       {/* Glow ripple */}
       <AnimatePresence>
@@ -35,29 +44,18 @@ const ThemeToggle = () => {
 
       {/* Icon */}
       <AnimatePresence mode="wait" initial={false}>
-        {theme === "dark" ? (
-          <motion.span
-            key="sun"
-            initial={{ rotate: -90, scale: 0, opacity: 0 }}
-            animate={{ rotate: 0, scale: 1, opacity: 1 }}
-            exit={{ rotate: 90, scale: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: "easeInOut" }}
-            className="relative block"
-          >
-            <Sun size={18} />
-          </motion.span>
-        ) : (
-          <motion.span
-            key="moon"
-            initial={{ rotate: 90, scale: 0, opacity: 0 }}
-            animate={{ rotate: 0, scale: 1, opacity: 1 }}
-            exit={{ rotate: -90, scale: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: "easeInOut" }}
-            className="relative block"
-          >
-            <Moon size={18} />
-          </motion.span>
-        )}
+        <motion.span
+          key={iconKey}
+          initial={{ rotate: -90, scale: 0, opacity: 0 }}
+          animate={{ rotate: 0, scale: 1, opacity: 1 }}
+          exit={{ rotate: 90, scale: 0, opacity: 0 }}
+          transition={{ duration: 0.25, ease: "easeInOut" }}
+          className="relative block"
+        >
+          {iconKey === "sun" && <Sun size={18} />}
+          {iconKey === "moon" && <Moon size={18} />}
+          {iconKey === "bat" && <Shield size={18} />}
+        </motion.span>
       </AnimatePresence>
     </button>
   );
