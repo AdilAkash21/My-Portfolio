@@ -4,7 +4,7 @@
 // 2. After the intro: the main content sections wrapped in ScrollReveal for fade-in animations
 // Sections: Navbar → Hero → About → Skills → Projects → Contact → Footer
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
@@ -103,41 +103,43 @@ const Index = () => {
   const { theme } = useTheme();
   const isBatman = theme === "batman";
 
+  // Skip intro immediately on click/tap
+  const skipIntro = useCallback(() => {
+    setShowIntro(false);
+    // Clean up running timers
+    if ((window as any).__introCounter) clearInterval((window as any).__introCounter);
+  }, []);
+
   // Animate the progress counter from 0 to 100 over 3 seconds, then hide intro
   useEffect(() => {
-    const duration = 3000; // Total progress duration (ms)
-    const interval = 30; // Update interval (ms)
-    const steps = duration / interval; // Total steps
-    const startDelay = 900; // Delay before progress starts (matches progress bar animation delay)
+    const duration = 3000;
+    const interval = 30;
+    const steps = duration / interval;
+    const startDelay = 900;
     let step = 0;
-    let started = false;
 
-    // Start the counter after the initial delay
     const startTimer = setTimeout(() => {
-      started = true;
       const counter = setInterval(() => {
         step++;
         const val = Math.min(Math.round((step / steps) * 100), 100);
         setProgress(val);
         if (val >= 100) {
           clearInterval(counter);
-          setBurst(true); // Trigger particle explosion
+          setBurst(true);
         }
       }, interval);
-      // Store interval reference for cleanup
       (window as any).__introCounter = counter;
     }, startDelay);
 
-    // Hide the intro screen after everything completes (4.2s total)
     const hideTimer = setTimeout(() => setShowIntro(false), 4200);
 
-    // Cleanup timers on unmount
     return () => {
       clearTimeout(startTimer);
       clearTimeout(hideTimer);
       if ((window as any).__introCounter) clearInterval((window as any).__introCounter);
     };
   }, []);
+
 
   // Choose name words based on theme
   const nameWords = isBatman ? ["The", "Dark", "Knight"] : ["Adil", "Rahman", "Akash"];
@@ -151,7 +153,8 @@ const Index = () => {
       <AnimatePresence>
         {showIntro && (
           <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-background overflow-hidden"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-background overflow-hidden cursor-pointer"
+            onClick={skipIntro}
             initial={{ opacity: 1 }}
             exit={{
               clipPath: "inset(50% 0% 50% 0%)", // Horizontal iris-out effect
@@ -259,6 +262,16 @@ const Index = () => {
                 transition={{ delay: 1.2, duration: 0.4 }}
               >
                 {isBatman ? "Initializing Batcomputer..." : "Loading experience..."}
+              </motion.p>
+
+              {/* Skip hint — fades in after a short delay */}
+              <motion.p
+                className="text-muted-foreground/50 font-mono text-[10px] mt-4 tracking-wider uppercase"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.8, duration: 0.5 }}
+              >
+                Click anywhere to skip
               </motion.p>
             </motion.div>
           </motion.div>

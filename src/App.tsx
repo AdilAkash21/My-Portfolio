@@ -2,15 +2,16 @@
 // Sets up all global providers, routing, and lazy-loaded pages
 
 import { lazy, Suspense } from "react";
-import { Toaster } from "@/components/ui/toaster"; // Radix-based toast notifications
-import { Toaster as Sonner } from "@/components/ui/sonner"; // Sonner toast notifications (alternative style)
-import { TooltipProvider } from "@/components/ui/tooltip"; // Global tooltip context
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query"; // Server state management
-import { BrowserRouter, Routes, Route } from "react-router-dom"; // Client-side routing
-import { AuthProvider } from "@/contexts/AuthContext"; // Authentication state provider
-import { ThemeProvider } from "@/contexts/ThemeContext"; // Theme (dark/batman) state provider
-import ThemeCrossfade from "@/components/ThemeCrossfade"; // Full-screen overlay for smooth theme transitions
-import Index from "./pages/Index"; // Main landing page (eagerly loaded for fast initial render)
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { ThemeProvider } from "@/contexts/ThemeContext";
+import ThemeCrossfade from "@/components/ThemeCrossfade";
+import PageTransition from "@/components/PageTransition";
+import Index from "./pages/Index";
 
 // Lazy-load secondary pages to reduce initial bundle size
 const Login = lazy(() => import("./pages/Login"));
@@ -20,35 +21,33 @@ const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 const Profile = lazy(() => import("./pages/Profile"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
-// Create a single QueryClient instance for React Query caching
 const queryClient = new QueryClient();
 
 const App = () => (
-  // QueryClientProvider — enables data fetching/caching throughout the app
   <QueryClientProvider client={queryClient}>
-    {/* ThemeProvider — manages dark/batman theme state and applies CSS class to <html> */}
     <ThemeProvider>
-    {/* ThemeCrossfade — renders a brief full-screen color overlay when theme changes */}
     <ThemeCrossfade />
     <TooltipProvider>
-      {/* Toast notification containers */}
       <Toaster />
       <Sonner />
-      {/* BrowserRouter — enables client-side URL routing */}
-      <BrowserRouter>
-        {/* AuthProvider — listens to auth state changes and provides user/session context */}
+      {/* BrowserRouter with v7 future flags to suppress deprecation warnings */}
+      <BrowserRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <AuthProvider>
-          {/* Suspense — shows nothing (fallback={null}) while lazy pages load */}
           <Suspense fallback={null}>
             <Routes>
               <Route path="/" element={<Index />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/reset-password" element={<ResetPassword />} />
+              <Route path="/login" element={<PageTransition><Login /></PageTransition>} />
+              <Route path="/signup" element={<PageTransition><Signup /></PageTransition>} />
+              <Route path="/forgot-password" element={<PageTransition><ForgotPassword /></PageTransition>} />
+              <Route path="/profile" element={<PageTransition><Profile /></PageTransition>} />
+              <Route path="/reset-password" element={<PageTransition><ResetPassword /></PageTransition>} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
+              <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
             </Routes>
           </Suspense>
         </AuthProvider>
