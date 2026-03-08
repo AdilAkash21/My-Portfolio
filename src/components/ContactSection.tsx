@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 import { Mail, Github, Phone, MapPin, Send, Shield, Loader2, ExternalLink } from "lucide-react";
 import { z } from "zod"; // Schema validation library
 import { useTheme } from "@/contexts/ThemeContext";
-import { supabase } from "@/integrations/supabase/client";
+
 
 // Zod schema for form validation
 const contactSchema = z.object({
