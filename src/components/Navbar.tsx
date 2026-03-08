@@ -22,6 +22,8 @@ const Navbar = () => {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [displayName, setDisplayName] = useState<string | null>(null);
   const { user } = useAuth();
+  const { theme } = useTheme();
+  const isBatman = theme === "batman";
 
   useEffect(() => {
     if (!user) { setAvatarUrl(null); setDisplayName(null); return; }
