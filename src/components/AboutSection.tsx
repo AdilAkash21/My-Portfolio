@@ -12,7 +12,7 @@ const AboutSection = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false }}
+          viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
           <h2 className="font-mono text-sm text-primary mb-2">01.</h2>
