@@ -8,6 +8,7 @@ import ParallaxBackground from "@/components/ParallaxBackground";
 import profileImg from "@/assets/profile-optimized.webp";
 import logoImg from "@/assets/logo-ara.png";
 import { useTheme } from "@/contexts/ThemeContext";
+import batLogoImg from "@/assets/bat-logo-gold.png";
 
 const AboutSection = lazy(() => import("@/components/AboutSection"));
 const SkillsSection = lazy(() => import("@/components/SkillsSection"));
