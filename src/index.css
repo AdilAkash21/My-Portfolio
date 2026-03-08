@@ -278,7 +278,7 @@
 
   .gradient-text {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--glow)));
+    background-image: linear-gradient(135deg, hsl(200 90% 60%), hsl(200 80% 75%));
   }
 
   /* Hover: lift card with enhanced shadow */

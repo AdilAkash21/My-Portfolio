@@ -1,6 +1,5 @@
 import { useRef, useMemo } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useTheme } from "@/contexts/ThemeContext";
 
 interface Particle {
   id: number;
@@ -13,7 +12,6 @@ interface Particle {
 }
 
 const ParallaxBackground = () => {
-  const { theme } = useTheme();
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll();
 
@@ -114,50 +112,6 @@ const ParallaxBackground = () => {
           backgroundSize: "80px 80px",
         }}
       />
-
-      {/* Bat Signal – Batman mode only */}
-      {theme === "batman" && (
-        <div className="absolute inset-0 flex items-start justify-center pointer-events-none" style={{ top: "8%" }}>
-          {/* Glow pulse */}
-          <motion.div
-            className="absolute w-[500px] h-[500px] rounded-full"
-            style={{
-              background: "radial-gradient(circle, hsl(45 100% 51% / 0.08) 0%, hsl(45 100% 51% / 0.03) 40%, transparent 70%)",
-            }}
-            animate={{
-              scale: [1, 1.15, 1],
-              opacity: [0.6, 1, 0.6],
-            }}
-            transition={{
-              duration: 4,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-          {/* Bat silhouette */}
-          <motion.svg
-            width="180"
-            height="180"
-            viewBox="0 0 24 24"
-            className="relative"
-            style={{ filter: "drop-shadow(0 0 40px hsl(45 100% 51% / 0.25)) drop-shadow(0 0 80px hsl(45 100% 51% / 0.1))" }}
-            animate={{
-              opacity: [0.06, 0.12, 0.06],
-              scale: [1, 1.03, 1],
-            }}
-            transition={{
-              duration: 5,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          >
-            <path
-              d="M12 2C12 2 7.5 8 4 9.5C2 10.4 0.5 11 0 12C1 12 3 12 4.5 13C3 14.5 2 16.5 1.5 19C3.5 17 5.5 16 7.5 15.5C8.5 17 10 19.5 12 22C14 19.5 15.5 17 16.5 15.5C18.5 16 20.5 17 22.5 19C22 16.5 21 14.5 19.5 13C21 12 23 12 24 12C23.5 11 22 10.4 20 9.5C16.5 8 12 2 12 2Z"
-              fill="hsl(45 100% 51% / 0.35)"
-            />
-          </motion.svg>
-        </div>
-      )}
     </div>
   );
 };
