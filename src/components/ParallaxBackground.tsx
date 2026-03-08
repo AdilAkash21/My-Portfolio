@@ -24,16 +24,16 @@ const ParallaxBackground = () => {
 
   const particles = useMemo<Particle[]>(() => {
     const seed = 42;
-    return Array.from({ length: 35 }, (_, i) => {
+    return Array.from({ length: 45 }, (_, i) => {
       const pseudoRand = (n: number) => ((Math.sin(seed + n * 9301 + 49297) % 1) + 1) % 1;
       return {
         id: i,
         x: `${pseudoRand(i * 3) * 100}%`,
         y: `${pseudoRand(i * 7 + 1) * 100}%`,
-        size: 1 + pseudoRand(i * 11 + 2) * 2.5,
-        delay: pseudoRand(i * 13 + 3) * 5,
-        duration: 3 + pseudoRand(i * 17 + 4) * 4,
-        opacity: 0.15 + pseudoRand(i * 19 + 5) * 0.45,
+        size: 2 + pseudoRand(i * 11 + 2) * 3,
+        delay: pseudoRand(i * 13 + 3) * 4,
+        duration: 2.5 + pseudoRand(i * 17 + 4) * 3.5,
+        opacity: 0.35 + pseudoRand(i * 19 + 5) * 0.55,
       };
     });
   }, []);
