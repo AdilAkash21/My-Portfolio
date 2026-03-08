@@ -82,8 +82,8 @@ const ParallaxBackground = () => {
         }}
       />
 
-      {/* Star / particle field */}
-      <motion.div className="absolute inset-0" style={{ y: y3 }}>
+      {/* Star / particle field – tall layer so particles stay visible at all scroll positions */}
+      <div className="absolute inset-x-0 top-0" style={{ height: "300vh" }}>
         {particles.map((p) => (
           <motion.div
             key={p.id}
@@ -101,7 +101,7 @@ const ParallaxBackground = () => {
             }}
           />
         ))}
-      </motion.div>
+      </div>
 
       {/* Subtle grid overlay */}
       <div
