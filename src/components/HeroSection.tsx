@@ -214,7 +214,7 @@ const HeroSection = () => {
                 <img
                   src={profileImg}
                   alt="Adil Rahman Akash"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="w-full h-full object-cover scale-125 transition-transform duration-700 group-hover:scale-[1.35]"
                   fetchPriority="high"
                   loading="eager"
                   width={288}
