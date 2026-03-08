@@ -138,7 +138,7 @@ const ProjectsSection = () => {
                       <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
                         <p.icon className="text-primary" size={18} />
                       </div>
-                      <span className="font-mono text-xs text-primary/60 uppercase tracking-wider">Classified</span>
+                      <span className="font-mono text-xs text-primary/80 uppercase tracking-wider">Classified</span>
                     </div>
                     {/* Project title */}
                     <h4 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
