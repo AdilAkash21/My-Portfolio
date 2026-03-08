@@ -4,7 +4,7 @@
 // 2. After the intro: the main content sections wrapped in ScrollReveal for fade-in animations
 // Sections: Navbar → Hero → About → Skills → Projects → Contact → Footer
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
