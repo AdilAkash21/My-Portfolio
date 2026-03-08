@@ -22,10 +22,12 @@ const socials = [
 const ContactSection = () => {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
   const { theme } = useTheme();
   const isBatman = theme === "batman";
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const result = contactSchema.safeParse(form);
     if (!result.success) {
@@ -37,7 +39,21 @@ const ContactSection = () => {
       return;
     }
     setErrors({});
-    alert(isBatman ? "Signal received. The Dark Knight will respond." : "Thanks for reaching out! I'll get back to you soon.");
+    setIsSubmitting(true);
+    setSubmitStatus("idle");
+
+    const { error } = await supabase.from("contact_messages").insert({
+      name: result.data.name,
+      email: result.data.email,
+      message: result.data.message,
+    });
+
+    setIsSubmitting(false);
+    if (error) {
+      setSubmitStatus("error");
+      return;
+    }
+    setSubmitStatus("success");
     setForm({ name: "", email: "", message: "" });
   };
 
