@@ -53,7 +53,7 @@ const Index = () => {
                 className="text-3xl sm:text-4xl font-bold"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4, duration: 0.5 }}
+                transition={{ delay: 0.6, duration: 0.5 }}
               >
                 Adil Rahman <span className="gradient-text">Akash</span>
               </motion.h1>
