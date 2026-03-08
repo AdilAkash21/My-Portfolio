@@ -263,6 +263,16 @@ const Index = () => {
               >
                 {isBatman ? "Initializing Batcomputer..." : "Loading experience..."}
               </motion.p>
+
+              {/* Skip hint — fades in after a short delay */}
+              <motion.p
+                className="text-muted-foreground/50 font-mono text-[10px] mt-4 tracking-wider uppercase"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.8, duration: 0.5 }}
+              >
+                Click anywhere to skip
+              </motion.p>
             </motion.div>
           </motion.div>
         )}
