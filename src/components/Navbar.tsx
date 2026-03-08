@@ -76,7 +76,6 @@ const Navbar = () => {
 
         {/* Mobile: avatar + theme toggle + hamburger menu button */}
         <div className="flex md:hidden items-center gap-3">
-          {user && <AvatarIcon />}
           <ThemeToggle />
           <button
             onClick={() => setOpen(!open)}
