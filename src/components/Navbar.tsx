@@ -5,10 +5,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useAuth } from "@/contexts/AuthContext";
-import { supabase } from "@/integrations/supabase/client";
-import { Link } from "react-router-dom";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import ThemeToggle from "@/components/ThemeToggle";
 import { useTheme } from "@/contexts/ThemeContext";
 import batLogoImg from "@/assets/bat-logo-gold.png"; // Gold bat logo for batman mode
@@ -23,60 +19,21 @@ const navLinks = [
 ];
 
 const Navbar = () => {
-  const [open, setOpen] = useState(false); // Mobile menu open/closed state
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null); // User's profile avatar URL
-  const [displayName, setDisplayName] = useState<string | null>(null); // User's display name
-  const { user } = useAuth();
+  const [open, setOpen] = useState(false);
   const { theme } = useTheme();
-  const [scrollProgress, setScrollProgress] = useState(0); // 0–1 representing scroll position
+  const [scrollProgress, setScrollProgress] = useState(0);
   const isBatman = theme === "batman";
 
-  // Calculate scroll progress as a percentage of total scrollable height
   const handleScroll = useCallback(() => {
     const scrollTop = window.scrollY;
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
     setScrollProgress(docHeight > 0 ? Math.min(scrollTop / docHeight, 1) : 0);
   }, []);
 
-  // Attach passive scroll listener for the progress bar
   useEffect(() => {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
-
-  // Fetch user profile data (avatar & display name) when user changes
-  useEffect(() => {
-    if (!user) { setAvatarUrl(null); setDisplayName(null); return; }
-    const fetch = async () => {
-      const { data } = await supabase
-        .from("profiles")
-        .select("avatar_url, display_name")
-        .eq("user_id", user.id)
-        .single();
-      if (data) {
-        setAvatarUrl(data.avatar_url);
-        setDisplayName(data.display_name);
-      }
-    };
-    fetch();
-  }, [user]);
-
-  // Generate initials for the avatar fallback (first 2 chars of name or email)
-  const initials = user
-    ? (displayName || user.email || "?").slice(0, 2).toUpperCase()
-    : "?";
-
-  // Reusable avatar component linking to the profile/settings page
-  const AvatarIcon = () => (
-    <Link to="/profile" aria-label="Settings">
-      <Avatar className="h-8 w-8 border border-primary/30 transition-transform hover:scale-105">
-        <AvatarImage src={avatarUrl ?? undefined} alt="Avatar" />
-        <AvatarFallback className="bg-secondary text-secondary-foreground text-xs">
-          {initials}
-        </AvatarFallback>
-      </Avatar>
-    </Link>
-  );
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/80 backdrop-blur-xl">
@@ -90,15 +47,7 @@ const Navbar = () => {
       />
 
       <div className="container mx-auto flex items-center justify-between px-6 py-4">
-        {/* Left side: avatar (desktop) + logo */}
         <div className="flex items-center gap-4">
-          {/* Avatar shown before logo on desktop only */}
-          {user && (
-            <span className="hidden md:inline-flex">
-              <AvatarIcon />
-            </span>
-          )}
-          {/* Logo: bat symbol in batman mode, text logo otherwise */}
           <a href="#home" className="font-mono text-lg font-semibold text-primary flex items-center gap-2">
             {isBatman ? (
               <img src={batLogoImg} alt="Bat Logo" className="h-10 w-auto drop-shadow-[0_0_8px_hsl(var(--primary)/0.5)]" />
@@ -122,19 +71,11 @@ const Navbar = () => {
               </li>
             ))}
           </ul>
-          {/* Settings link — navigates to profile page */}
-          <Link
-            to="/profile"
-            className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hover-underline pb-0.5"
-          >
-            Settings
-          </Link>
           <ThemeToggle />
         </div>
 
         {/* Mobile: avatar + theme toggle + hamburger menu button */}
         <div className="flex md:hidden items-center gap-3">
-          {user && <AvatarIcon />}
           <ThemeToggle />
           <button
             onClick={() => setOpen(!open)}
@@ -167,15 +108,6 @@ const Navbar = () => {
                   </a>
                 </li>
               ))}
-              <li>
-                <Link
-                  to="/profile"
-                  onClick={() => setOpen(false)}
-                  className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-                >
-                  Settings
-                </Link>
-              </li>
             </ul>
           </motion.div>
         )}
