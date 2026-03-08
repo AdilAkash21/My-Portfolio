@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowDown } from "lucide-react";
+import { ArrowDown, Shield } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 import profileImg from "@/assets/profile-optimized.webp";
 import batmanImg from "@/assets/batman-profile.png";
@@ -32,23 +32,47 @@ const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <p className="font-mono text-sm text-primary mb-4">Hi, my name is</p>
+            <p className="font-mono text-sm text-primary mb-4">
+              {isBatman ? "I am" : "Hi, my name is"}
+            </p>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-4">
-              Adil Rahman{" "}
-              <span className="gradient-text">Akash</span>
+              {isBatman ? (
+                <>
+                  The Dark{" "}
+                  <span className="gradient-text">Knight</span>
+                </>
+              ) : (
+                <>
+                  Adil Rahman{" "}
+                  <span className="gradient-text">Akash</span>
+                </>
+              )}
             </h1>
             <h2 className="text-xl sm:text-2xl font-medium text-muted-foreground mb-6">
-              Software Engineer & Web Designer
+              {isBatman
+                ? "Software Engineer by Day. Crime-Fighting Vigilante by Night."
+                : "Software Engineer & Web Developer"}
             </h2>
             <p className="text-muted-foreground max-w-lg mx-auto lg:mx-0 mb-8 leading-relaxed">
-              Building functional, beautiful digital experiences from Nanchong to the world.
+              {isBatman
+                ? "The night is darkest just before the dawn. And I promise you, the dawn is coming. Gotham's silent guardian, writing clean code and cleaning up the streets."
+                : "Building functional, beautiful digital experiences from Nanchong to the world."}
             </p>
             <a
-              href="#projects"
+              href={isBatman ? "#about" : "#projects"}
               className="inline-flex items-center gap-2 rounded-lg border border-primary bg-primary/10 px-6 py-3 text-sm font-medium text-primary btn-float-hover hover:bg-primary hover:text-primary-foreground hover:shadow-lg"
             >
-              View My Work
-              <ArrowDown size={16} />
+              {isBatman ? (
+                <>
+                  Enter the Batcave
+                  <Shield size={16} />
+                </>
+              ) : (
+                <>
+                  View My Work
+                  <ArrowDown size={16} />
+                </>
+              )}
             </a>
           </motion.div>
 
@@ -171,13 +195,25 @@ const HeroSection = () => {
                 />
               </div>
 
-              {/* Status badge */}
+              {/* Status badge — Available (green) / Unavailable (red) */}
               <div className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full bg-card px-3 py-1.5 shadow-lg ring-1 ring-border z-10">
                 <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                  <span
+                    className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75"
+                    style={{
+                      backgroundColor: isBatman ? "hsl(0 84% 60%)" : "hsl(142 71% 45%)",
+                    }}
+                  />
+                  <span
+                    className="relative inline-flex rounded-full h-2 w-2"
+                    style={{
+                      backgroundColor: isBatman ? "hsl(0 84% 50%)" : "hsl(142 76% 36%)",
+                    }}
+                  />
                 </span>
-                <span className="text-xs font-medium text-foreground">Available</span>
+                <span className="text-xs font-medium text-foreground">
+                  {isBatman ? "Unavailable" : "Available"}
+                </span>
               </div>
             </div>
           </motion.div>
