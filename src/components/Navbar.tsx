@@ -6,6 +6,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import ThemeToggle from "@/components/ThemeToggle";
+import { useTheme } from "@/contexts/ThemeContext";
+import batLogoImg from "@/assets/bat-logo-gold.png";
 
 const navLinks = [
   { label: "Home", href: "#home" },
@@ -20,6 +22,8 @@ const Navbar = () => {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [displayName, setDisplayName] = useState<string | null>(null);
   const { user } = useAuth();
+  const { theme } = useTheme();
+  const isBatman = theme === "batman";
 
   useEffect(() => {
     if (!user) { setAvatarUrl(null); setDisplayName(null); return; }
@@ -62,8 +66,12 @@ const Navbar = () => {
               <AvatarIcon />
             </span>
           )}
-          <a href="#home" className="font-mono text-lg font-semibold text-primary">
-            {"<ARA />"}
+          <a href="#home" className="font-mono text-lg font-semibold text-primary flex items-center gap-2">
+            {isBatman ? (
+              <img src={batLogoImg} alt="Bat Logo" className="h-6 drop-shadow-[0_0_8px_hsl(var(--primary)/0.5)]" />
+            ) : (
+              "< ARA />"
+            )}
           </a>
         </div>
 
