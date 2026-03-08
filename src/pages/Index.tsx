@@ -17,7 +17,7 @@ const Index = () => {
   const [showIntro, setShowIntro] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => setShowIntro(false), 800);
+    const timer = setTimeout(() => setShowIntro(false), 3000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -38,7 +38,7 @@ const Index = () => {
                 className="w-24 h-24 sm:w-28 sm:h-28 mx-auto mb-6 rounded-full overflow-hidden ring-2 ring-primary/30 shadow-lg shadow-primary/10"
                 initial={{ scale: 0, rotate: -180 }}
                 animate={{ scale: 1, rotate: 0 }}
-                transition={{ duration: 0.7, ease: [0.34, 1.56, 0.64, 1] }}
+                transition={{ duration: 0.8, ease: [0.34, 1.56, 0.64, 1] }}
               >
                 <img
                   src={profileImg}
@@ -53,7 +53,7 @@ const Index = () => {
                 className="text-3xl sm:text-4xl font-bold"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4, duration: 0.5 }}
+                transition={{ delay: 0.6, duration: 0.5 }}
               >
                 Adil Rahman <span className="gradient-text">Akash</span>
               </motion.h1>
@@ -62,20 +62,20 @@ const Index = () => {
                 className="w-40 sm:w-48 h-1 rounded-full bg-muted overflow-hidden mt-6 mb-3"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.5, duration: 0.3 }}
+                transition={{ delay: 0.8, duration: 0.3 }}
               >
                 <motion.div
                   className="h-full rounded-full bg-primary"
                   initial={{ width: "0%" }}
                   animate={{ width: "100%" }}
-                  transition={{ duration: 0.6, delay: 0.05, ease: "easeInOut" }}
+                  transition={{ duration: 2.0, delay: 0.9, ease: "easeInOut" }}
                 />
               </motion.div>
               <motion.p
                 className="text-muted-foreground font-mono text-sm"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.8, duration: 0.4 }}
+                transition={{ delay: 1.2, duration: 0.4 }}
               >
                 Loading experience...
               </motion.p>
