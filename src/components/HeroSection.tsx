@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowDown } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -14,10 +13,14 @@ preloadLink.href = profileImg;
 document.head.appendChild(preloadLink);
 
 const BAT_CLIP = "polygon(50% 0%, 42% 8%, 30% 2%, 20% 12%, 0% 10%, 5% 30%, 0% 50%, 8% 65%, 2% 80%, 15% 85%, 25% 100%, 40% 90%, 50% 100%, 60% 90%, 75% 100%, 85% 85%, 98% 80%, 92% 65%, 100% 50%, 95% 30%, 100% 10%, 80% 12%, 70% 2%, 58% 8%)";
+const CIRCLE_CLIP = "polygon(50% 0%, 62.9% 1.7%, 75% 6.7%, 85.4% 14.6%, 93.3% 25%, 98.3% 37.1%, 100% 50%, 98.3% 62.9%, 93.3% 75%, 85.4% 85.4%, 75% 93.3%, 62.9% 98.3%, 50% 100%, 37.1% 98.3%, 25% 93.3%, 14.6% 85.4%, 6.7% 75%, 1.7% 62.9%, 0% 50%, 1.7% 37.1%, 6.7% 25%, 14.6% 14.6%, 25% 6.7%, 37.1% 1.7%)";
+
+const SMOOTH = "clip-path 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
 
 const HeroSection = () => {
   const { theme } = useTheme();
   const isBatman = theme === "batman";
+  const activeClip = isBatman ? BAT_CLIP : CIRCLE_CLIP;
 
   return (
     <section id="home" className="relative min-h-screen flex items-center pt-32">
@@ -76,37 +79,50 @@ const HeroSection = () => {
                 </div>
               )}
 
+              {/* Batman pulsing golden aura */}
+              <div
+                className="absolute -inset-4 pointer-events-none"
+                style={{
+                  clipPath: activeClip,
+                  transition: SMOOTH,
+                  opacity: isBatman ? 1 : 0,
+                  animation: isBatman ? "bat-aura-pulse 3s ease-in-out infinite" : "none",
+                  background: "radial-gradient(circle, hsl(45 100% 55% / 0.15), hsl(45 100% 50% / 0.05) 60%, transparent 80%)",
+                  filter: "blur(12px)",
+                  transitionProperty: "clip-path, opacity",
+                  transitionDuration: "1.5s",
+                  transitionTimingFunction: "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                }}
+              />
+
               {/* Gradient glow behind */}
               <div
                 className="absolute -inset-1 opacity-50 blur-md group-hover:opacity-75"
                 style={{
-                  borderRadius: isBatman ? undefined : "9999px",
-                  clipPath: isBatman ? BAT_CLIP : undefined,
+                  clipPath: activeClip,
                   background: isBatman
                     ? "radial-gradient(circle, hsl(var(--primary) / 0.4), transparent 70%)"
                     : "linear-gradient(to bottom right, hsl(var(--primary)), hsl(var(--primary) / 0.3), transparent)",
-                  transition: "clip-path 1.5s cubic-bezier(0.4, 0, 0.2, 1), border-radius 1.5s cubic-bezier(0.4, 0, 0.2, 1), background 1.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease",
+                  transition: `${SMOOTH}, background 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.5s ease`,
                 }}
               />
 
-              {/* Main image container */}
+              {/* Main image container — always uses clip-path so shape morphs smoothly */}
               <div
                 className="relative w-56 h-56 sm:w-72 sm:h-72 overflow-hidden shadow-xl"
                 style={{
-                  borderRadius: isBatman ? undefined : "9999px",
-                  clipPath: isBatman ? BAT_CLIP : undefined,
+                  clipPath: activeClip,
                   boxShadow: isBatman
                     ? "0 0 40px hsl(var(--primary) / 0.3), 0 0 80px hsl(var(--primary) / 0.15)"
-                    : undefined,
-                  transition: "clip-path 1.5s cubic-bezier(0.4, 0, 0.2, 1), border-radius 1.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 1.5s cubic-bezier(0.4, 0, 0.2, 1)",
+                    : "0 10px 30px -10px hsl(var(--primary) / 0.2)",
+                  transition: `${SMOOTH}, box-shadow 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)`,
                 }}
               >
                 <div
                   className="absolute inset-0 ring-2 ring-primary/25 z-[1]"
                   style={{
-                    borderRadius: isBatman ? undefined : "9999px",
-                    clipPath: isBatman ? BAT_CLIP : undefined,
-                    transition: "clip-path 1.5s cubic-bezier(0.4, 0, 0.2, 1), border-radius 1.5s cubic-bezier(0.4, 0, 0.2, 1)",
+                    clipPath: activeClip,
+                    transition: SMOOTH,
                   }}
                 />
 
@@ -117,7 +133,7 @@ const HeroSection = () => {
                   className="absolute inset-0 w-full h-full object-cover"
                   style={{
                     opacity: isBatman ? 0 : 1,
-                    transition: "opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1)",
+                    transition: "opacity 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
                   }}
                   fetchPriority="high"
                   loading="eager"
@@ -131,11 +147,21 @@ const HeroSection = () => {
                   className="absolute inset-0 w-full h-full object-cover"
                   style={{
                     opacity: isBatman ? 1 : 0,
-                    transition: "opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1)",
+                    transition: "opacity 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
                   }}
                   loading="eager"
                   width={288}
                   height={288}
+                />
+
+                {/* Batman mode: subtle dark vignette overlay */}
+                <div
+                  className="absolute inset-0 pointer-events-none z-[2]"
+                  style={{
+                    background: "radial-gradient(circle, transparent 40%, hsl(240 10% 4% / 0.4) 100%)",
+                    opacity: isBatman ? 1 : 0,
+                    transition: "opacity 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                  }}
                 />
 
                 {/* Top eyelid */}
