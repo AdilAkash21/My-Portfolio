@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Mail, Github, Linkedin, Facebook, Instagram, Send } from "lucide-react";
+import { Mail, Github, Linkedin, Facebook, Instagram, Send, Shield } from "lucide-react";
 import { z } from "zod";
+import { useTheme } from "@/contexts/ThemeContext";
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100, "Name must be under 100 characters"),
@@ -20,6 +21,8 @@ const socials = [
 const ContactSection = () => {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const { theme } = useTheme();
+  const isBatman = theme === "batman";
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,8 +36,7 @@ const ContactSection = () => {
       return;
     }
     setErrors({});
-    // placeholder – integrate backend later
-    alert("Thanks for reaching out! I'll get back to you soon.");
+    alert(isBatman ? "Signal received. The Dark Knight will respond." : "Thanks for reaching out! I'll get back to you soon.");
     setForm({ name: "", email: "", message: "" });
   };
 
@@ -49,9 +51,13 @@ const ContactSection = () => {
           className="text-center mb-12"
         >
           <h2 className="font-mono text-sm text-primary mb-2">04.</h2>
-          <h3 className="text-3xl font-bold mb-4">Get In Touch</h3>
+          <h3 className="text-3xl font-bold mb-4">
+            {isBatman ? "Light the Signal" : "Get In Touch"}
+          </h3>
           <p className="text-muted-foreground max-w-md mx-auto">
-            Have a project in mind or just want to say hello? I'd love to hear from you.
+            {isBatman
+              ? "Gotham needs you? Send a signal into the night sky. The Dark Knight is listening."
+              : "Have a project in mind or just want to say hello? I'd love to hear from you."}
           </p>
         </motion.div>
 
@@ -66,7 +72,7 @@ const ContactSection = () => {
           <div>
             <input
               type="text"
-              placeholder="Your Name"
+              placeholder={isBatman ? "Your Alias" : "Your Name"}
               required
               maxLength={100}
               value={form.name}
@@ -78,7 +84,7 @@ const ContactSection = () => {
           <div>
             <input
               type="email"
-              placeholder="Your Email"
+              placeholder={isBatman ? "Secure Channel (Email)" : "Your Email"}
               required
               maxLength={255}
               value={form.email}
@@ -89,7 +95,7 @@ const ContactSection = () => {
           </div>
           <div>
             <textarea
-              placeholder="Your Message"
+              placeholder={isBatman ? "Your Intel Report" : "Your Message"}
               required
               rows={5}
               maxLength={1000}
@@ -103,8 +109,8 @@ const ContactSection = () => {
             type="submit"
             className="inline-flex items-center gap-2 rounded-lg border border-primary bg-primary/10 px-6 py-3 text-sm font-medium text-primary btn-float-hover hover:bg-primary hover:text-primary-foreground hover:shadow-lg"
           >
-            Send Message
-            <Send size={16} />
+            {isBatman ? "Send Signal" : "Send Message"}
+            {isBatman ? <Shield size={16} /> : <Send size={16} />}
           </button>
         </motion.form>
 
