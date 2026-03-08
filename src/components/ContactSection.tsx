@@ -15,8 +15,8 @@ const socials = [
   { icon: Mail, href: "mailto:adil@example.com", label: "Email" },
   { icon: Github, href: "https://github.com", label: "GitHub" },
   { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-  { icon: Facebook, href: "https://facebook.com", label: "Facebook" },
-  { icon: Instagram, href: "https://instagram.com", label: "Instagram" },
+  { icon: Facebook, href: "https://www.facebook.com/share/1CQp8ydvAt/", label: "Facebook" },
+  { icon: Instagram, href: "https://www.instagram.com/adilakash23", label: "Instagram" },
 ];
 
 const ContactSection = () => {
