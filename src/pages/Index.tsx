@@ -1,3 +1,9 @@
+// ─── Index (Main Landing Page) ───
+// The homepage that shows:
+// 1. A cinematic intro loading screen with progress bar and particle burst
+// 2. After the intro: the main content sections wrapped in ScrollReveal for fade-in animations
+// Sections: Navbar → Hero → About → Skills → Projects → Contact → Footer
+
 import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/Navbar";
@@ -6,36 +12,38 @@ import ScrollReveal from "@/components/ScrollReveal";
 import ScrollToTop from "@/components/ScrollToTop";
 import ParallaxBackground from "@/components/ParallaxBackground";
 import profileImg from "@/assets/profile-optimized.webp";
-import logoImg from "@/assets/logo-ara.png";
+import logoImg from "@/assets/logo-ara.png"; // ARA logo for intro screen
 import { useTheme } from "@/contexts/ThemeContext";
-import batLogoImg from "@/assets/bat-logo-gold.png";
+import batLogoImg from "@/assets/bat-logo-gold.png"; // Bat logo for batman mode intro
 
-// Preload bat logo for instant display
+// Preload bat logo so it's ready instantly when batman mode is active
 const preloadBatLogo = document.createElement("link");
 preloadBatLogo.rel = "preload";
 preloadBatLogo.as = "image";
 preloadBatLogo.href = batLogoImg;
 document.head.appendChild(preloadBatLogo);
+
 import AboutSection from "@/components/AboutSection";
 import SkillsSection from "@/components/SkillsSection";
 import ProjectsSection from "@/components/ProjectsSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 
-// ─── Particle burst component ───
+// ─── Particle Burst Component ───
+// Renders 24 small dots that explode outward in a circle when the progress bar hits 100%.
 const ParticleBurst = () => {
   const particles = useMemo(
     () =>
       Array.from({ length: 24 }, (_, i) => {
-        const angle = (i / 24) * 360;
+        const angle = (i / 24) * 360; // Evenly spaced around a circle
         const rad = (angle * Math.PI) / 180;
-        const dist = 60 + Math.random() * 50;
+        const dist = 60 + Math.random() * 50; // Random distance from center
         return {
           id: i,
-          x: Math.cos(rad) * dist,
-          y: Math.sin(rad) * dist,
-          size: 2 + Math.random() * 3,
-          delay: Math.random() * 0.15,
+          x: Math.cos(rad) * dist, // X destination
+          y: Math.sin(rad) * dist, // Y destination
+          size: 2 + Math.random() * 3, // Random dot size
+          delay: Math.random() * 0.15, // Slight stagger
         };
       }),
     []
@@ -48,8 +56,8 @@ const ParticleBurst = () => {
           key={p.id}
           className="absolute rounded-full bg-primary"
           style={{ width: p.size, height: p.size }}
-          initial={{ x: 0, y: 0, opacity: 1, scale: 1 }}
-          animate={{ x: p.x, y: p.y, opacity: 0, scale: 0 }}
+          initial={{ x: 0, y: 0, opacity: 1, scale: 1 }} // Start at center
+          animate={{ x: p.x, y: p.y, opacity: 0, scale: 0 }} // Fly outward and fade
           transition={{ duration: 0.7, delay: p.delay, ease: "easeOut" }}
         />
       ))}
@@ -57,7 +65,9 @@ const ParticleBurst = () => {
   );
 };
 
-// ─── Staggered word component ───
+// ─── Staggered Words Component ───
+// Renders each word with a staggered fade-in + slide-up animation.
+// Optionally applies gradient styling to the last word (e.g., "Akash" or "Knight").
 const StaggeredWords = ({
   words,
   highlightLast,
@@ -72,12 +82,12 @@ const StaggeredWords = ({
         className={
           highlightLast && i === words.length - 1 ? "gradient-text" : ""
         }
-        initial={{ opacity: 0, y: 24, filter: "blur(6px)" }}
-        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+        initial={{ opacity: 0, y: 24, filter: "blur(6px)" }} // Start blurred and below
+        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} // Slide up and focus
         transition={{
-          delay: 0.6 + i * 0.15,
+          delay: 0.6 + i * 0.15, // Each word appears 150ms after the previous
           duration: 0.5,
-          ease: [0.22, 1, 0.36, 1],
+          ease: [0.22, 1, 0.36, 1], // Custom easing for smooth deceleration
         }}
       >
         {word}
@@ -87,20 +97,22 @@ const StaggeredWords = ({
 );
 
 const Index = () => {
-  const [showIntro, setShowIntro] = useState(true);
-  const [progress, setProgress] = useState(0);
-  const [burst, setBurst] = useState(false);
+  const [showIntro, setShowIntro] = useState(true); // Controls intro screen visibility
+  const [progress, setProgress] = useState(0); // Loading progress percentage (0–100)
+  const [burst, setBurst] = useState(false); // Triggers particle burst at 100%
   const { theme } = useTheme();
   const isBatman = theme === "batman";
 
+  // Animate the progress counter from 0 to 100 over 3 seconds, then hide intro
   useEffect(() => {
-    const duration = 3000;
-    const interval = 30;
-    const steps = duration / interval;
-    const startDelay = 900; // matches progress bar delay
+    const duration = 3000; // Total progress duration (ms)
+    const interval = 30; // Update interval (ms)
+    const steps = duration / interval; // Total steps
+    const startDelay = 900; // Delay before progress starts (matches progress bar animation delay)
     let step = 0;
     let started = false;
 
+    // Start the counter after the initial delay
     const startTimer = setTimeout(() => {
       started = true;
       const counter = setInterval(() => {
@@ -109,14 +121,17 @@ const Index = () => {
         setProgress(val);
         if (val >= 100) {
           clearInterval(counter);
-          setBurst(true);
+          setBurst(true); // Trigger particle explosion
         }
       }, interval);
-      // cleanup ref
+      // Store interval reference for cleanup
       (window as any).__introCounter = counter;
     }, startDelay);
 
+    // Hide the intro screen after everything completes (4.2s total)
     const hideTimer = setTimeout(() => setShowIntro(false), 4200);
+
+    // Cleanup timers on unmount
     return () => {
       clearTimeout(startTimer);
       clearTimeout(hideTimer);
@@ -124,24 +139,28 @@ const Index = () => {
     };
   }, []);
 
+  // Choose name words based on theme
   const nameWords = isBatman ? ["The", "Dark", "Knight"] : ["Adil", "Rahman", "Akash"];
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      {/* Fixed parallax background with gradient orbs and particles */}
       <ParallaxBackground />
+
+      {/* ─── Intro Loading Screen ─── */}
       <AnimatePresence>
         {showIntro && (
           <motion.div
             className="fixed inset-0 z-50 flex items-center justify-center bg-background overflow-hidden"
             initial={{ opacity: 1 }}
             exit={{
-              clipPath: "inset(50% 0% 50% 0%)",
+              clipPath: "inset(50% 0% 50% 0%)", // Horizontal iris-out effect
               opacity: 0,
               scale: 1.08,
             }}
             transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
           >
-            {/* Cinematic curtain overlays on exit */}
+            {/* Cinematic curtain overlays — slide in from top/bottom on exit */}
             <motion.div
               className="absolute top-0 left-0 right-0 h-1/2 bg-background z-10 origin-top"
               initial={{ scaleY: 0 }}
@@ -156,7 +175,7 @@ const Index = () => {
             />
 
             <motion.div className="text-center flex flex-col items-center relative z-20">
-              {/* Logo / Bat Symbol — blur-to-sharp focus */}
+              {/* Logo — blur-to-sharp focus animation */}
               <motion.div
                 className="w-28 h-28 sm:w-36 sm:h-36 mx-auto mb-6 flex items-center justify-center"
                 initial={{ scale: 1.3, opacity: 0, filter: "blur(18px)" }}
@@ -189,7 +208,7 @@ const Index = () => {
                 <StaggeredWords words={nameWords} highlightLast />
               </h1>
 
-              {/* Progress bar with glow */}
+              {/* Progress bar with animated fill and shimmer effect */}
               <motion.div
                 className="relative w-40 sm:w-48 h-1.5 rounded-full bg-muted overflow-hidden mt-6 mb-3"
                 initial={{ opacity: 0 }}
@@ -202,9 +221,9 @@ const Index = () => {
                   animate={{ width: "100%" }}
                   transition={{ duration: 3, delay: 0.9, ease: "easeInOut" }}
                 >
-                  {/* Glow trail */}
+                  {/* Glow trail at the leading edge of the progress bar */}
                   <div className="absolute right-0 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-primary/50 blur-md" />
-                  {/* Shimmer sweep */}
+                  {/* Shimmer sweep across the progress bar */}
                   <motion.div
                     className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
                     initial={{ x: "-100%" }}
@@ -219,7 +238,7 @@ const Index = () => {
                 </motion.div>
               </motion.div>
 
-              {/* Percentage + particle burst */}
+              {/* Percentage counter + particle burst at 100% */}
               <div className="relative">
                 <motion.p
                   className="text-muted-foreground font-mono text-sm tabular-nums"
@@ -232,6 +251,7 @@ const Index = () => {
                 {burst && <ParticleBurst />}
               </div>
 
+              {/* Loading status text */}
               <motion.p
                 className="text-muted-foreground font-mono text-xs mt-1"
                 initial={{ opacity: 0 }}
@@ -245,6 +265,8 @@ const Index = () => {
         )}
       </AnimatePresence>
 
+      {/* ─── Main Content ─── */}
+      {/* Hidden while intro is visible, then fades in */}
       <motion.div
         style={{ visibility: showIntro ? "hidden" : "visible" }}
         initial={{ opacity: 0 }}
@@ -252,6 +274,7 @@ const Index = () => {
         transition={{ duration: 0.6, delay: 0.1 }}
       >
         <Navbar />
+        {/* Each section is wrapped in ScrollReveal for fade-in-on-scroll animation */}
         <ScrollReveal direction="up" delay={0}>
           <HeroSection />
         </ScrollReveal>
@@ -271,6 +294,7 @@ const Index = () => {
             <Footer />
           </ScrollReveal>
       </motion.div>
+      {/* Floating scroll-to-top button */}
       <ScrollToTop />
     </div>
   );

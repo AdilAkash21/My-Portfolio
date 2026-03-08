@@ -1,3 +1,8 @@
+// ─── Signup Page ───
+// A centered card with display name, email, and password fields.
+// After successful signup, shows a "check your email" verification message.
+// Includes a link back to the login page.
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -13,27 +18,30 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [loading, setLoading] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const [submitted, setSubmitted] = useState(false); // Tracks whether signup was successful
 
+  // Handle signup form submission
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    // Create a new account via the backend auth service
     const { error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        emailRedirectTo: window.location.origin,
-        data: { display_name: displayName },
+        emailRedirectTo: window.location.origin, // Where to redirect after email verification
+        data: { display_name: displayName }, // Store display name in user metadata
       },
     });
     setLoading(false);
     if (error) {
       toast({ title: "Signup failed", description: error.message, variant: "destructive" });
     } else {
-      setSubmitted(true);
+      setSubmitted(true); // Show email verification message
     }
   };
 
+  // After successful signup: show email verification prompt
   if (submitted) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background px-4">
@@ -54,6 +62,7 @@ const Signup = () => {
     <div className="min-h-screen flex items-center justify-center bg-background px-4">
       <Card className="w-full max-w-md border-border bg-card">
         <CardHeader className="text-center">
+          {/* Back button to homepage */}
           <Link to="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary mb-4 self-start">
             <ArrowLeft size={16} /> Back
           </Link>
@@ -62,6 +71,7 @@ const Signup = () => {
         </CardHeader>
         <form onSubmit={handleSignup}>
           <CardContent className="space-y-4">
+            {/* Display name field */}
             <div className="space-y-2">
               <Label htmlFor="name">Display Name</Label>
               <div className="relative">
@@ -69,6 +79,7 @@ const Signup = () => {
                 <Input id="name" placeholder="Your name" className="pl-10" value={displayName} onChange={(e) => setDisplayName(e.target.value)} required />
               </div>
             </div>
+            {/* Email field */}
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <div className="relative">
@@ -76,6 +87,7 @@ const Signup = () => {
                 <Input id="email" type="email" placeholder="you@example.com" className="pl-10" value={email} onChange={(e) => setEmail(e.target.value)} required />
               </div>
             </div>
+            {/* Password field (min 8 characters) */}
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
               <div className="relative">
@@ -88,6 +100,7 @@ const Signup = () => {
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? "Creating account..." : "Create Account"}
             </Button>
+            {/* Link to login page */}
             <p className="text-sm text-muted-foreground">
               Already have an account?{" "}
               <Link to="/login" className="text-primary hover:underline">Sign in</Link>

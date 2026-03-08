@@ -1,16 +1,23 @@
+// ─── Contact Section ───
+// Two-column layout: contact info cards (left) and a contact form (right).
+// Form validates with Zod and submits messages to the database.
+// In batman mode: shows redacted contact info and Gotham-themed text.
+
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, Github, Phone, MapPin, Send, Shield, Loader2, ExternalLink } from "lucide-react";
-import { z } from "zod";
+import { z } from "zod"; // Schema validation library
 import { useTheme } from "@/contexts/ThemeContext";
 import { supabase } from "@/integrations/supabase/client";
 
+// Zod schema for form validation
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100, "Name must be under 100 characters"),
   email: z.string().trim().email("Please enter a valid email").max(255, "Email must be under 255 characters"),
   message: z.string().trim().min(1, "Message is required").max(1000, "Message must be under 1000 characters"),
 });
 
+// Contact information data — each item has normal and batman mode variants
 const contactInfo = [
   {
     icon: MapPin,
@@ -18,14 +25,14 @@ const contactInfo = [
     value: "Nanchong, China",
     href: "https://maps.google.com/?q=Nanchong,China",
     batmanValue: "Gotham City",
-    batmanHref: undefined as string | undefined,
+    batmanHref: undefined as string | undefined, // No link in batman mode
   },
   {
     icon: Mail,
     label: "Email",
     value: "adilakash23@gmail.com",
     href: "mailto:adilakash23@gmail.com",
-    batmanValue: "████████@████.███",
+    batmanValue: "████████@████.███", // Redacted in batman mode
     batmanHref: undefined as string | undefined,
   },
   {
@@ -47,17 +54,22 @@ const contactInfo = [
 ];
 
 const ContactSection = () => {
+  // Form state
   const [form, setForm] = useState({ name: "", email: "", message: "" });
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<Record<string, string>>({}); // Field-level validation errors
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
   const { theme } = useTheme();
   const isBatman = theme === "batman";
 
+  // Handle form submission: validate → insert into database → show feedback
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Validate form data against Zod schema
     const result = contactSchema.safeParse(form);
     if (!result.success) {
+      // Map Zod errors to field-level error messages
       const fieldErrors: Record<string, string> = {};
       result.error.errors.forEach((err) => {
         if (err.path[0]) fieldErrors[err.path[0] as string] = err.message;
@@ -65,10 +77,12 @@ const ContactSection = () => {
       setErrors(fieldErrors);
       return;
     }
+
     setErrors({});
     setIsSubmitting(true);
     setSubmitStatus("idle");
 
+    // Insert the validated message into the contact_messages table
     const { error } = await supabase.from("contact_messages").insert({
       name: result.data.name,
       email: result.data.email,
@@ -81,12 +95,13 @@ const ContactSection = () => {
       return;
     }
     setSubmitStatus("success");
-    setForm({ name: "", email: "", message: "" });
+    setForm({ name: "", email: "", message: "" }); // Reset form on success
   };
 
   return (
     <section id="contact" className="py-24 bg-card/50">
       <div className="container mx-auto px-6">
+        {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -106,7 +121,7 @@ const ContactSection = () => {
         </motion.div>
 
         <div className="grid lg:grid-cols-5 gap-12 max-w-5xl mx-auto">
-          {/* Contact Info Cards */}
+          {/* ─── Left Column: Contact Info Cards ─── */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -118,6 +133,7 @@ const ContactSection = () => {
               {isBatman ? "Batcomputer Channels" : "Contact Info"}
             </h4>
             {contactInfo.map((item, i) => {
+              // Choose display value and link based on theme
               const displayValue = isBatman ? (item.batmanValue ?? item.value) : item.value;
               const displayHref = isBatman ? item.batmanHref : item.href;
 
@@ -127,9 +143,10 @@ const ContactSection = () => {
                 initial={{ opacity: 0, y: 12 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: 0.15 + i * 0.08 }}
+                transition={{ duration: 0.4, delay: 0.15 + i * 0.08 }} // Staggered entrance
               >
                 {displayHref ? (
+                  /* Clickable card with external link */
                   <a
                     href={displayHref}
                     target="_blank"
@@ -150,6 +167,7 @@ const ContactSection = () => {
                     </div>
                   </a>
                 ) : (
+                  /* Non-clickable card (redacted in batman mode) */
                   <div className={`flex items-start gap-4 p-4 rounded-xl border border-border bg-background ${isBatman ? 'opacity-75' : ''}`}>
                     <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
                       <item.icon size={18} className="text-primary" />
@@ -167,7 +185,7 @@ const ContactSection = () => {
             })}
           </motion.div>
 
-          {/* Contact Form */}
+          {/* ─── Right Column: Contact Form ─── */}
           <motion.form
             onSubmit={handleSubmit}
             initial={{ opacity: 0, x: 20 }}
@@ -179,6 +197,7 @@ const ContactSection = () => {
             <h4 className="text-lg font-semibold mb-6">
               {isBatman ? "Send a Signal" : "Send a Message"}
             </h4>
+            {/* Name and email inputs side by side */}
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
                 <label htmlFor="contact-name" className="sr-only">Name</label>
@@ -209,6 +228,7 @@ const ContactSection = () => {
                 {errors.email && <p className="text-destructive text-xs mt-1">{errors.email}</p>}
               </div>
             </div>
+            {/* Message textarea */}
             <div>
               <label htmlFor="contact-message" className="sr-only">Message</label>
               <textarea
@@ -223,6 +243,7 @@ const ContactSection = () => {
               />
               {errors.message && <p className="text-destructive text-xs mt-1">{errors.message}</p>}
             </div>
+            {/* Submit button with loading state */}
             <button
               type="submit"
               disabled={isSubmitting}
@@ -234,6 +255,7 @@ const ContactSection = () => {
                 <>{isBatman ? "Send Signal" : "Send Message"} {isBatman ? <Shield size={16} /> : <Send size={16} />}</>
               )}
             </button>
+            {/* Success / error feedback messages */}
             {submitStatus === "success" && (
               <p className="text-sm text-primary">{isBatman ? "Signal received. The Dark Knight will respond." : "Thanks for reaching out! I'll get back to you soon."}</p>
             )}

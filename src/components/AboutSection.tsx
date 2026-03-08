@@ -1,3 +1,9 @@
+// ─── About Section ───
+// Displays personal background info in a two-column layout.
+// Left column: descriptive paragraphs about the person.
+// Right column: education/experience cards with icons.
+// In batman mode: shows Gotham-themed content instead.
+
 import { motion } from "framer-motion";
 import { GraduationCap, MapPin, Shield, Skull } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -9,6 +15,7 @@ const AboutSection = () => {
   return (
     <section id="about" className="py-24">
       <div className="container mx-auto px-6">
+        {/* Section header with numbered label */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -21,7 +28,9 @@ const AboutSection = () => {
           </h3>
         </motion.div>
 
+        {/* Two-column grid: text paragraphs + info cards */}
         <div className="grid md:grid-cols-2 gap-12">
+          {/* Left column — descriptive text */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -58,6 +67,7 @@ const AboutSection = () => {
             )}
           </motion.div>
 
+          {/* Right column — education / role info cards */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -67,6 +77,7 @@ const AboutSection = () => {
           >
             {isBatman ? (
               <>
+                {/* Batman role card */}
                 <div className="flex items-start gap-4 p-4 rounded-lg bg-card border border-border">
                   <Shield className="text-primary mt-1 flex-shrink-0" size={22} />
                   <div>
@@ -77,6 +88,7 @@ const AboutSection = () => {
                     </p>
                   </div>
                 </div>
+                {/* Wayne Enterprises card */}
                 <div className="flex items-start gap-4 p-4 rounded-lg bg-card border border-border">
                   <Skull className="text-primary mt-1 flex-shrink-0" size={22} />
                   <div>
@@ -90,6 +102,7 @@ const AboutSection = () => {
               </>
             ) : (
               <>
+                {/* University education card */}
                 <div className="flex items-start gap-4 p-4 rounded-lg bg-card border border-border">
                   <GraduationCap className="text-primary mt-1 flex-shrink-0" size={22} />
                   <div>
@@ -100,6 +113,7 @@ const AboutSection = () => {
                     </p>
                   </div>
                 </div>
+                {/* High school education card */}
                 <div className="flex items-start gap-4 p-4 rounded-lg bg-card border border-border">
                   <GraduationCap className="text-primary mt-1 flex-shrink-0" size={22} />
                   <div>

@@ -1,3 +1,8 @@
+// ─── Reset Password Page ───
+// Allows users to set a new password after clicking the reset link in their email.
+// Detects the PASSWORD_RECOVERY event to confirm the link is valid.
+// Shows an "invalid link" message if the URL doesn't contain a recovery token.
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -12,14 +17,16 @@ const ResetPassword = () => {
   const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [isRecovery, setIsRecovery] = useState(false);
+  const [isRecovery, setIsRecovery] = useState(false); // Whether a valid recovery token is present
 
   useEffect(() => {
+    // Check if the URL hash contains a recovery token
     const hash = window.location.hash;
     if (hash && hash.includes("type=recovery")) {
       setIsRecovery(true);
     }
 
+    // Also listen for the PASSWORD_RECOVERY auth event (fires when token is processed)
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
       if (event === "PASSWORD_RECOVERY") {
         setIsRecovery(true);
@@ -29,9 +36,11 @@ const ResetPassword = () => {
     return () => subscription.unsubscribe();
   }, []);
 
+  // Handle new password submission
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    // Update the user's password via the backend auth service
     const { error } = await supabase.auth.updateUser({ password });
     setLoading(false);
     if (error) {
@@ -42,6 +51,7 @@ const ResetPassword = () => {
     }
   };
 
+  // If no valid recovery token found, show error message
   if (!isRecovery) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background px-4">
@@ -64,6 +74,7 @@ const ResetPassword = () => {
         </CardHeader>
         <form onSubmit={handleUpdate}>
           <CardContent className="space-y-4">
+            {/* New password input (min 8 characters) */}
             <div className="space-y-2">
               <Label htmlFor="password">New Password</Label>
               <div className="relative">

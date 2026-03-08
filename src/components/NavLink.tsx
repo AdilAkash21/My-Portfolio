@@ -1,11 +1,16 @@
+// ─── NavLink Component ───
+// A wrapper around React Router's NavLink that supports separate
+// className, activeClassName, and pendingClassName props.
+// Uses the cn() utility to merge class names based on active/pending state.
+
 import { NavLink as RouterNavLink, NavLinkProps } from "react-router-dom";
 import { forwardRef } from "react";
 import { cn } from "@/lib/utils";
 
 interface NavLinkCompatProps extends Omit<NavLinkProps, "className"> {
-  className?: string;
-  activeClassName?: string;
-  pendingClassName?: string;
+  className?: string; // Base class names (always applied)
+  activeClassName?: string; // Additional classes when the link's route is active
+  pendingClassName?: string; // Additional classes when the link's route is pending (during navigation)
 }
 
 const NavLink = forwardRef<HTMLAnchorElement, NavLinkCompatProps>(

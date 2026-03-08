@@ -1,3 +1,7 @@
+// ─── Footer ───
+// Simple centered footer with copyright text.
+// In batman mode: shows a Gotham-themed message instead.
+
 import { useTheme } from "@/contexts/ThemeContext";
 
 const Footer = () => {
