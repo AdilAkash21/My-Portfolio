@@ -75,7 +75,7 @@ const Index = () => {
                 className="text-muted-foreground font-mono text-sm"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.8, duration: 0.4 }}
+                transition={{ delay: 1.2, duration: 0.4 }}
               >
                 Loading experience...
               </motion.p>
