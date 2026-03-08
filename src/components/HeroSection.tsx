@@ -12,7 +12,7 @@ preloadLink.type = "image/webp";
 preloadLink.href = profileImg;
 document.head.appendChild(preloadLink);
 
-const BAT_CLIP = "polygon(50% 0%, 42% 8%, 30% 2%, 20% 12%, 0% 10%, 5% 30%, 0% 50%, 8% 65%, 2% 80%, 15% 85%, 25% 100%, 40% 90%, 50% 100%, 60% 90%, 75% 100%, 85% 85%, 98% 80%, 92% 65%, 100% 50%, 95% 30%, 100% 10%, 80% 12%, 70% 2%, 58% 8%)";
+const BAT_CLIP = "polygon(50% 0%, 40% 6%, 32% 1%, 22% 10%, 0% 8%, 4% 28%, 0% 48%, 6% 62%, 1% 78%, 14% 84%, 24% 100%, 38% 92%, 50% 100%, 62% 92%, 76% 100%, 86% 84%, 99% 78%, 94% 62%, 100% 48%, 96% 28%, 100% 8%, 78% 10%, 68% 1%, 60% 6%)";
 
 const HeroSection = () => {
   const { theme } = useTheme();
@@ -157,8 +157,7 @@ const HeroSection = () => {
                 <img
                   src={batmanImg}
                   alt="Batman"
-                  className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
-                  style={{ transform: "scale(0.8)" }}
+                  className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                   loading="eager"
                   width={288}
                   height={288}
