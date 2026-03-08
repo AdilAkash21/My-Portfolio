@@ -6,6 +6,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import ThemeToggle from "@/components/ThemeToggle";
+import { useTheme } from "@/contexts/ThemeContext";
+import batLogoImg from "@/assets/bat-logo-gold.png";
 
 const navLinks = [
   { label: "Home", href: "#home" },
