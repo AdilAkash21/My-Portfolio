@@ -14,6 +14,7 @@ preloadLink.href = profileImg;
 document.head.appendChild(preloadLink);
 
 const BAT_CLIP = "polygon(50% 0%, 42% 8%, 30% 2%, 20% 12%, 0% 10%, 5% 30%, 0% 50%, 8% 65%, 2% 80%, 15% 85%, 25% 100%, 40% 90%, 50% 100%, 60% 90%, 75% 100%, 85% 85%, 98% 80%, 92% 65%, 100% 50%, 95% 30%, 100% 10%, 80% 12%, 70% 2%, 58% 8%)";
+const CIRCLE_CLIP = "polygon(50% 0%, 63% 2%, 75% 7%, 85% 15%, 93% 25%, 98% 37%, 100% 50%, 98% 63%, 93% 75%, 85% 85%, 75% 93%, 63% 98%, 50% 100%, 37% 98%, 25% 93%, 15% 85%, 7% 75%, 2% 63%, 0% 50%, 2% 37%, 7% 25%, 15% 15%, 25% 7%, 37% 2%)";
 
 const HeroSection = () => {
   const { theme } = useTheme();
@@ -78,37 +79,34 @@ const HeroSection = () => {
               )}
 
               {/* Gradient glow behind */}
-              <div
+              <motion.div
                 className="absolute -inset-1 opacity-50 blur-md group-hover:opacity-75 transition-opacity duration-500"
+                animate={{
+                  clipPath: isBatman ? BAT_CLIP : CIRCLE_CLIP,
+                }}
+                transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
                 style={{
                   background: isBatman
                     ? "radial-gradient(circle, hsl(var(--primary) / 0.4), transparent 70%)"
-                    : undefined,
-                  clipPath: isBatman ? BAT_CLIP : undefined,
-                  borderRadius: isBatman ? undefined : "9999px",
-                  backgroundImage: isBatman
-                    ? undefined
                     : "linear-gradient(to bottom right, hsl(var(--primary)), hsl(var(--primary) / 0.3), transparent)",
                 }}
               />
 
               {/* Main image */}
-              <div
-                className="relative w-56 h-56 sm:w-72 sm:h-72 overflow-hidden shadow-xl transition-[clip-path,border-radius] duration-700"
-                style={{
-                  clipPath: isBatman ? BAT_CLIP : undefined,
-                  borderRadius: isBatman ? undefined : "9999px",
+              <motion.div
+                className="relative w-56 h-56 sm:w-72 sm:h-72 overflow-hidden shadow-xl"
+                animate={{
+                  clipPath: isBatman ? BAT_CLIP : CIRCLE_CLIP,
                   boxShadow: isBatman
                     ? "0 0 40px hsl(var(--primary) / 0.3), 0 0 80px hsl(var(--primary) / 0.15)"
-                    : undefined,
+                    : "0 0 0px transparent",
                 }}
+                transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
               >
-                <div
+                <motion.div
                   className="absolute inset-0 ring-2 ring-primary/25 z-[1]"
-                  style={{
-                    clipPath: isBatman ? BAT_CLIP : undefined,
-                    borderRadius: isBatman ? undefined : "9999px",
-                  }}
+                  animate={{ clipPath: isBatman ? BAT_CLIP : CIRCLE_CLIP }}
+                  transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
                 />
                 <img
                   src={currentImg}
@@ -134,7 +132,7 @@ const HeroSection = () => {
                   animate={{ scaleY: 0 }}
                   transition={{ duration: 1.4, delay: 2.2, ease: [0.22, 1, 0.36, 1] }}
                 />
-              </div>
+              </motion.div>
 
               {/* Status badge */}
               <div className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full bg-card px-3 py-1.5 shadow-lg ring-1 ring-border z-10">
