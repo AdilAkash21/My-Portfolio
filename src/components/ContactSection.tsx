@@ -46,7 +46,7 @@ const ContactSection = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false }}
+          viewport={{ once: true }}
           transition={{ duration: 0.5 }}
           className="text-center mb-12"
         >
@@ -65,12 +65,14 @@ const ContactSection = () => {
           onSubmit={handleSubmit}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false }}
+          viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.1 }}
           className="max-w-lg mx-auto space-y-5"
         >
           <div>
+            <label htmlFor="contact-name" className="sr-only">{isBatman ? "Your Alias" : "Your Name"}</label>
             <input
+              id="contact-name"
               type="text"
               placeholder={isBatman ? "Your Alias" : "Your Name"}
               required
@@ -82,7 +84,9 @@ const ContactSection = () => {
             {errors.name && <p className="text-destructive text-xs mt-1">{errors.name}</p>}
           </div>
           <div>
+            <label htmlFor="contact-email" className="sr-only">{isBatman ? "Secure Channel (Email)" : "Your Email"}</label>
             <input
+              id="contact-email"
               type="email"
               placeholder={isBatman ? "Secure Channel (Email)" : "Your Email"}
               required
@@ -94,7 +98,9 @@ const ContactSection = () => {
             {errors.email && <p className="text-destructive text-xs mt-1">{errors.email}</p>}
           </div>
           <div>
+            <label htmlFor="contact-message" className="sr-only">{isBatman ? "Your Intel Report" : "Your Message"}</label>
             <textarea
+              id="contact-message"
               placeholder={isBatman ? "Your Intel Report" : "Your Message"}
               required
               rows={5}
