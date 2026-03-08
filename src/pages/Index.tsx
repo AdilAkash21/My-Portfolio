@@ -68,7 +68,7 @@ const Index = () => {
                   className="h-full rounded-full bg-primary"
                   initial={{ width: "0%" }}
                   animate={{ width: "100%" }}
-                  transition={{ duration: 2.0, delay: 0.9, ease: "easeInOut" }}
+                  transition={{ duration: 3, delay: 0.9, ease: "easeInOut" }}
                 />
               </motion.div>
               <motion.p
