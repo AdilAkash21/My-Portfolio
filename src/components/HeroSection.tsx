@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { ArrowDown } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 import profileImg from "@/assets/profile-optimized.webp";
@@ -16,10 +16,39 @@ document.head.appendChild(preloadLink);
 const BAT_CLIP = "polygon(50% 0%, 42% 8%, 30% 2%, 20% 12%, 0% 10%, 5% 30%, 0% 50%, 8% 65%, 2% 80%, 15% 85%, 25% 100%, 40% 90%, 50% 100%, 60% 90%, 75% 100%, 85% 85%, 98% 80%, 92% 65%, 100% 50%, 95% 30%, 100% 10%, 80% 12%, 70% 2%, 58% 8%)";
 const CIRCLE_CLIP = "polygon(50% 0%, 63% 2%, 75% 7%, 85% 15%, 93% 25%, 98% 37%, 100% 50%, 98% 63%, 93% 75%, 85% 85%, 75% 93%, 63% 98%, 50% 100%, 37% 98%, 25% 93%, 15% 85%, 7% 75%, 2% 63%, 0% 50%, 2% 37%, 7% 25%, 15% 15%, 25% 7%, 37% 2%)";
 
+// Generate particles radiating outward from center
+const generateParticles = (count: number) =>
+  Array.from({ length: count }, (_, i) => {
+    const angle = (i / count) * 360 + (Math.random() - 0.5) * 30;
+    const rad = (angle * Math.PI) / 180;
+    const distance = 80 + Math.random() * 100;
+    return {
+      id: i,
+      x: Math.cos(rad) * distance,
+      y: Math.sin(rad) * distance,
+      size: 2 + Math.random() * 4,
+      delay: Math.random() * 0.3,
+      duration: 0.6 + Math.random() * 0.5,
+    };
+  });
+
+const PARTICLES = generateParticles(20);
+
 const HeroSection = () => {
   const { theme } = useTheme();
   const isBatman = theme === "batman";
   const currentImg = isBatman ? batmanImg : profileImg;
+  const prevThemeRef = useRef(theme);
+  const [showBurst, setShowBurst] = useState(false);
+
+  useEffect(() => {
+    if (prevThemeRef.current !== theme) {
+      if (theme === "batman") {
+        setShowBurst(true);
+      }
+      prevThemeRef.current = theme;
+    }
+  }, [theme]);
 
   return (
     <section id="home" className="relative min-h-screen flex items-center pt-32">
@@ -77,6 +106,46 @@ const HeroSection = () => {
                   <div className="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-primary/40" />
                 </div>
               )}
+
+              {/* Golden particle burst on Batman morph */}
+              <AnimatePresence>
+                {showBurst && (
+                  <div className="absolute inset-0 z-20 pointer-events-none flex items-center justify-center">
+                    {PARTICLES.map((p) => (
+                      <motion.div
+                        key={p.id}
+                        className="absolute rounded-full"
+                        style={{
+                          width: p.size,
+                          height: p.size,
+                          background: `radial-gradient(circle, hsl(45 100% 65%), hsl(45 100% 45%))`,
+                          boxShadow: `0 0 ${p.size * 2}px hsl(45 100% 55% / 0.6)`,
+                        }}
+                        initial={{ x: 0, y: 0, opacity: 1, scale: 1 }}
+                        animate={{ x: p.x, y: p.y, opacity: 0, scale: 0.2 }}
+                        transition={{
+                          duration: p.duration,
+                          delay: p.delay,
+                          ease: [0.16, 1, 0.3, 1],
+                        }}
+                        onAnimationComplete={() => {
+                          if (p.id === PARTICLES.length - 1) setShowBurst(false);
+                        }}
+                      />
+                    ))}
+                    {/* Central flash */}
+                    <motion.div
+                      className="absolute w-40 h-40 rounded-full pointer-events-none"
+                      style={{
+                        background: `radial-gradient(circle, hsl(45 100% 70% / 0.4), transparent 70%)`,
+                      }}
+                      initial={{ opacity: 1, scale: 0.5 }}
+                      animate={{ opacity: 0, scale: 2 }}
+                      transition={{ duration: 0.7, ease: "easeOut" }}
+                    />
+                  </div>
+                )}
+              </AnimatePresence>
 
               {/* Gradient glow behind */}
               <motion.div
