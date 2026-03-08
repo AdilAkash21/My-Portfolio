@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
@@ -23,7 +23,19 @@ const Navbar = () => {
   const [displayName, setDisplayName] = useState<string | null>(null);
   const { user } = useAuth();
   const { theme } = useTheme();
+  const [scrollProgress, setScrollProgress] = useState(0);
   const isBatman = theme === "batman";
+
+  const handleScroll = useCallback(() => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    setScrollProgress(docHeight > 0 ? Math.min(scrollTop / docHeight, 1) : 0);
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
 
   useEffect(() => {
     if (!user) { setAvatarUrl(null); setDisplayName(null); return; }
@@ -58,6 +70,11 @@ const Navbar = () => {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/80 backdrop-blur-xl">
+      {/* Scroll progress bar */}
+      <div
+        className="absolute bottom-0 left-0 h-[2px] bg-primary transition-none"
+        style={{ width: `${scrollProgress * 100}%` }}
+      />
       <div className="container mx-auto flex items-center justify-between px-6 py-4">
         <div className="flex items-center gap-4">
           {/* Avatar before logo on desktop */}
