@@ -17,24 +17,32 @@ const contactInfo = [
     label: "Location",
     value: "Nanchong, China",
     href: "https://maps.google.com/?q=Nanchong,China",
+    batmanValue: "Gotham City",
+    batmanHref: undefined as string | undefined,
   },
   {
     icon: Mail,
     label: "Email",
     value: "adilakash23@gmail.com",
     href: "mailto:adilakash23@gmail.com",
+    batmanValue: "████████@████.███",
+    batmanHref: undefined as string | undefined,
   },
   {
     icon: Github,
     label: "GitHub",
     value: "AdilAkash21",
     href: "https://github.com/AdilAkash21",
+    batmanValue: "██████████",
+    batmanHref: undefined as string | undefined,
   },
   {
     icon: Phone,
     label: "Mobile",
     value: "+86 17390219212",
     href: "tel:+8617390219212",
+    batmanValue: "███ ████████████",
+    batmanHref: undefined as string | undefined,
   },
 ];
 

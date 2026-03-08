@@ -9,6 +9,13 @@ import profileImg from "@/assets/profile-optimized.webp";
 import logoImg from "@/assets/logo-ara.png";
 import { useTheme } from "@/contexts/ThemeContext";
 import batLogoImg from "@/assets/bat-logo-gold.png";
+
+// Preload bat logo for instant display
+const preloadBatLogo = document.createElement("link");
+preloadBatLogo.rel = "preload";
+preloadBatLogo.as = "image";
+preloadBatLogo.href = batLogoImg;
+document.head.appendChild(preloadBatLogo);
 import AboutSection from "@/components/AboutSection";
 import SkillsSection from "@/components/SkillsSection";
 import ProjectsSection from "@/components/ProjectsSection";
