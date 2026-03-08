@@ -207,13 +207,13 @@
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
-    transition: background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1), color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  *:not([class*="motion"]):not([class*="animate"]):not([style*="transform"]) {
-    transition-property: background-color, color, border-color, box-shadow, fill, stroke;
-    transition-duration: 0.6s;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  nav, footer, section, .bg-card, .bg-background, .border-border, .bg-card\/50 {
+    transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   html {
