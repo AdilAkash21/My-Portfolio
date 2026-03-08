@@ -104,6 +104,7 @@ const Index = () => {
       </AnimatePresence>
 
       <motion.div
+        style={{ visibility: showIntro ? "hidden" : "visible" }}
         initial={{ opacity: 0 }}
         animate={{ opacity: showIntro ? 0 : 1 }}
         transition={{ duration: 0.6, delay: 0.1 }}
