@@ -30,10 +30,10 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/80 backdrop-blur-xl">
       {/* Scroll progress bar — glowing line at the bottom of the navbar */}
-      <div
-        className="absolute bottom-0 left-0 h-[2px] bg-primary transition-none"
+      <motion.div
+        className="absolute bottom-0 left-0 h-[2px] bg-primary"
         style={{
-          width: `${scrollProgress * 100}%`,
+          width: progressWidth,
           boxShadow: "0 0 8px hsl(var(--primary) / 0.6), 0 0 16px hsl(var(--primary) / 0.3)",
         }}
       />
