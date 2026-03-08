@@ -60,7 +60,6 @@ const ThemeToggle = () => {
           transition={{ duration: 0.25, ease: "easeInOut" }}
           className="relative block"
         >
-          {iconKey === "sun" && <Sun size={18} />}
           {iconKey === "moon" && <Moon size={18} />}
           {iconKey === "bat" && <BatIcon size={18} />}
         </motion.span>
