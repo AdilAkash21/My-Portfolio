@@ -35,7 +35,6 @@ const ParallaxBackground = () => {
         duration: 2.5 + pseudoRand(i * 17 + 4) * 3.5,
         opacity: 0.35 + pseudoRand(i * 19 + 5) * 0.55,
       };
-      };
     });
   }, []);
 
