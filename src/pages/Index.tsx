@@ -108,7 +108,15 @@ const Index = () => {
                 />
               </motion.div>
               <motion.p
-                className="text-muted-foreground font-mono text-sm"
+                className="text-muted-foreground font-mono text-sm tabular-nums"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.8, duration: 0.3 }}
+              >
+                {progress}%
+              </motion.p>
+              <motion.p
+                className="text-muted-foreground font-mono text-xs mt-1"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1.2, duration: 0.4 }}
