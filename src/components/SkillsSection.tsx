@@ -77,7 +77,7 @@ const SkillsSection = () => {
           className="flex flex-wrap gap-3 mb-16"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: false }}
+          viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
           {skills.map((s) => (
