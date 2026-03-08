@@ -66,8 +66,12 @@ const Navbar = () => {
               <AvatarIcon />
             </span>
           )}
-          <a href="#home" className="font-mono text-lg font-semibold text-primary">
-            {"<ARA />"}
+          <a href="#home" className="font-mono text-lg font-semibold text-primary flex items-center gap-2">
+            {isBatman ? (
+              <img src={batLogoImg} alt="Bat Logo" className="h-6 drop-shadow-[0_0_8px_hsl(var(--primary)/0.5)]" />
+            ) : (
+              "< ARA />"
+            )}
           </a>
         </div>
 
