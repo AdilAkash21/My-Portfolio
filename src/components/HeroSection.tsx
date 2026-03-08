@@ -106,7 +106,7 @@ const HeroSection = () => {
                   style={{
                     borderRadius: isBatman ? undefined : "9999px",
                     clipPath: isBatman ? BAT_CLIP : undefined,
-                    transition: "clip-path 1.2s ease, border-radius 1.2s ease",
+                    transition: "clip-path 1.5s cubic-bezier(0.4, 0, 0.2, 1), border-radius 1.5s cubic-bezier(0.4, 0, 0.2, 1)",
                   }}
                 />
 
