@@ -261,7 +261,7 @@ const Index = () => {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1.2, duration: 0.4 }}
               >
-                {isBatman ? "Initializing Batcomputer..." : "Loading experience..."}
+                {isBatman ? "Initializing Batcomputer..." : "Crafting pixels & writing code ✦"}
               </motion.p>
 
               {/* Skip hint — fades in after a short delay */}
