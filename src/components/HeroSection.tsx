@@ -13,6 +13,8 @@ preloadLink.type = "image/webp";
 preloadLink.href = profileImg;
 document.head.appendChild(preloadLink);
 
+const BAT_CLIP = "polygon(50% 0%, 42% 8%, 30% 2%, 20% 12%, 0% 10%, 5% 30%, 0% 50%, 8% 65%, 2% 80%, 15% 85%, 25% 100%, 40% 90%, 50% 100%, 60% 90%, 75% 100%, 85% 85%, 98% 80%, 92% 65%, 100% 50%, 95% 30%, 100% 10%, 80% 12%, 70% 2%, 58% 8%)";
+
 const HeroSection = () => {
   const { theme } = useTheme();
   const isBatman = theme === "batman";
@@ -20,44 +22,6 @@ const HeroSection = () => {
 
   return (
     <section id="home" className="relative min-h-screen flex items-center pt-32">
-      {/* SVG clipPath definition for bat shape */}
-      <svg width="0" height="0" className="absolute">
-        <defs>
-          <clipPath id="bat-clip" clipPathUnits="objectBoundingBox">
-            <path d="
-              M 0.5 0.05
-              C 0.5 0.05, 0.48 0.0, 0.46 0.08
-              C 0.44 0.16, 0.44 0.2, 0.42 0.18
-              C 0.40 0.16, 0.38 0.0, 0.36 0.08
-              C 0.34 0.16, 0.34 0.22, 0.30 0.22
-              C 0.26 0.22, 0.18 0.18, 0.12 0.24
-              C 0.06 0.30, 0.0 0.40, 0.0 0.48
-              C 0.0 0.52, 0.02 0.54, 0.06 0.54
-              C 0.10 0.54, 0.16 0.52, 0.22 0.56
-              C 0.18 0.62, 0.14 0.68, 0.14 0.72
-              C 0.14 0.76, 0.18 0.78, 0.24 0.76
-              C 0.28 0.74, 0.32 0.70, 0.36 0.74
-              C 0.38 0.78, 0.40 0.86, 0.44 0.82
-              C 0.46 0.80, 0.48 0.92, 0.50 1.0
-              C 0.52 0.92, 0.54 0.80, 0.56 0.82
-              C 0.60 0.86, 0.62 0.78, 0.64 0.74
-              C 0.68 0.70, 0.72 0.74, 0.76 0.76
-              C 0.82 0.78, 0.86 0.76, 0.86 0.72
-              C 0.86 0.68, 0.82 0.62, 0.78 0.56
-              C 0.84 0.52, 0.90 0.54, 0.94 0.54
-              C 0.98 0.54, 1.0 0.52, 1.0 0.48
-              C 1.0 0.40, 0.94 0.30, 0.88 0.24
-              C 0.82 0.18, 0.74 0.22, 0.70 0.22
-              C 0.66 0.22, 0.66 0.16, 0.64 0.08
-              C 0.62 0.0, 0.60 0.16, 0.58 0.18
-              C 0.56 0.2, 0.56 0.16, 0.54 0.08
-              C 0.52 0.0, 0.5 0.05, 0.5 0.05
-              Z
-            " />
-          </clipPath>
-        </defs>
-      </svg>
-
       {/* Subtle bg glow */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-primary/5 blur-[120px] pointer-events-none" />
 
@@ -120,7 +84,7 @@ const HeroSection = () => {
                   background: isBatman
                     ? "radial-gradient(circle, hsl(var(--primary) / 0.4), transparent 70%)"
                     : undefined,
-                  clipPath: isBatman ? "url(#bat-clip)" : undefined,
+                  clipPath: isBatman ? BAT_CLIP : undefined,
                   borderRadius: isBatman ? undefined : "9999px",
                   backgroundImage: isBatman
                     ? undefined
@@ -130,48 +94,32 @@ const HeroSection = () => {
 
               {/* Main image */}
               <div
-                className="relative overflow-hidden shadow-xl transition-all duration-700"
+                className="relative w-56 h-56 sm:w-72 sm:h-72 overflow-hidden shadow-xl transition-[clip-path,border-radius] duration-700"
                 style={{
-                  width: isBatman ? "320px" : undefined,
-                  height: isBatman ? "240px" : undefined,
-                  clipPath: isBatman ? "url(#bat-clip)" : undefined,
+                  clipPath: isBatman ? BAT_CLIP : undefined,
                   borderRadius: isBatman ? undefined : "9999px",
                   boxShadow: isBatman
                     ? "0 0 40px hsl(var(--primary) / 0.3), 0 0 80px hsl(var(--primary) / 0.15)"
                     : undefined,
                 }}
               >
-                {!isBatman && (
-                  <div className="w-56 h-56 sm:w-72 sm:h-72">
-                    <div
-                      className="absolute inset-0 ring-2 ring-primary/25 rounded-full z-[1]"
-                    />
-                    <img
-                      src={currentImg}
-                      alt="Adil Rahman Akash"
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                      fetchPriority="high"
-                      loading="eager"
-                      width={288}
-                      height={288}
-                      decoding="sync"
-                    />
-                  </div>
-                )}
-                {isBatman && (
-                  <>
-                    <img
-                      src={currentImg}
-                      alt="Batman"
-                      className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                      fetchPriority="high"
-                      loading="eager"
-                      width={320}
-                      height={240}
-                      decoding="sync"
-                    />
-                  </>
-                )}
+                <div
+                  className="absolute inset-0 ring-2 ring-primary/25 z-[1]"
+                  style={{
+                    clipPath: isBatman ? BAT_CLIP : undefined,
+                    borderRadius: isBatman ? undefined : "9999px",
+                  }}
+                />
+                <img
+                  src={currentImg}
+                  alt={isBatman ? "Batman" : "Adil Rahman Akash"}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  fetchPriority="high"
+                  loading="eager"
+                  width={288}
+                  height={288}
+                  decoding="sync"
+                />
                 {/* Top eyelid */}
                 <motion.div
                   className="absolute inset-x-0 top-0 h-1/2 bg-background z-10 origin-top"
