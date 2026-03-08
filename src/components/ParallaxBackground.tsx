@@ -13,6 +13,7 @@ interface Particle {
 }
 
 const ParallaxBackground = () => {
+  const { theme } = useTheme();
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll();
 
