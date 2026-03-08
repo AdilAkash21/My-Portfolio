@@ -12,7 +12,7 @@ const contactSchema = z.object({
 });
 
 const socials = [
-  { icon: Mail, href: "mailto:adil@example.com", label: "Email" },
+  { icon: Mail, href: "mailto:adilakash23@gmail.com", label: "Email" },
   { icon: Github, href: "https://github.com/AdilAkash21", label: "GitHub" },
   { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
   { icon: Facebook, href: "https://www.facebook.com/share/1CQp8ydvAt/", label: "Facebook" },
