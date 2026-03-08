@@ -33,8 +33,8 @@ const contactInfo = [
   {
     icon: Phone,
     label: "Mobile",
-    value: "+86 (available on request)",
-    href: null,
+    value: "+86 17390219212",
+    href: "tel:+8617390219212",
   },
 ];
 
