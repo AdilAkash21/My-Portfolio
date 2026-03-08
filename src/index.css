@@ -144,6 +144,55 @@
 
     --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
   }
+
+  .batman {
+    --background: 240 10% 6%;
+    --foreground: 45 100% 90%;
+    --card: 240 8% 10%;
+    --card-foreground: 45 100% 90%;
+    --popover: 240 8% 12%;
+    --popover-foreground: 45 100% 90%;
+    --primary: 45 100% 51%;
+    --primary-foreground: 240 10% 6%;
+    --secondary: 240 6% 18%;
+    --secondary-foreground: 45 80% 85%;
+    --muted: 240 5% 22%;
+    --muted-foreground: 45 30% 65%;
+    --accent: 240 8% 14%;
+    --accent-foreground: 45 100% 70%;
+    --destructive: 0 84% 50%;
+    --destructive-foreground: 0 85% 97%;
+    --border: 240 6% 20%;
+    --input: 240 6% 20%;
+    --ring: 45 100% 51%;
+    --sidebar-background: 240 10% 5%;
+    --sidebar-foreground: 45 100% 90%;
+    --sidebar-primary: 45 100% 51%;
+    --sidebar-primary-foreground: 240 10% 6%;
+    --sidebar-accent: 240 5% 22%;
+    --sidebar-accent-foreground: 45 80% 85%;
+    --sidebar-border: 240 6% 20%;
+    --sidebar-ring: 45 100% 51%;
+
+    --glow: 45 100% 55%;
+
+    --chart-1: 45 100% 60%;
+    --chart-2: 38 100% 50%;
+    --chart-3: 240 5% 40%;
+    --chart-4: 240 5% 30%;
+    --chart-5: 240 5% 20%;
+
+    --sidebar: 240 8% 10%;
+
+    --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.1);
+    --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.1);
+    --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.15), 0 1px 2px -1px hsl(0 0% 0% / 0.15);
+    --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.15), 0 1px 2px -1px hsl(0 0% 0% / 0.15);
+    --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.15), 0 2px 4px -1px hsl(0 0% 0% / 0.15);
+    --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.15), 0 4px 6px -1px hsl(0 0% 0% / 0.15);
+    --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.15), 0 8px 10px -1px hsl(0 0% 0% / 0.15);
+    --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.3);
+  }
 }
 
 @layer base {
