@@ -46,13 +46,14 @@ const Index = () => {
                 transition={{ duration: 0.8, ease: [0.34, 1.56, 0.64, 1] }}
               >
                 {isBatman ? (
-                  <svg
-                    viewBox="0 0 200 110"
-                    className="w-full h-auto drop-shadow-[0_0_25px_hsl(var(--primary)/0.6)]"
-                    fill="hsl(var(--primary))"
-                  >
-                    <path d="M100 10 C100 10 95 0 88 0 C81 0 76 6 74 12 C72 18 68 22 60 22 C52 22 46 16 42 10 C38 4 34 0 28 2 C22 4 16 12 10 22 C4 32 0 46 0 56 C6 52 16 48 28 48 C40 48 48 54 54 64 C58 70 62 78 68 86 C74 94 82 100 90 104 C94 106 98 108 100 110 C102 108 106 106 110 104 C118 100 126 94 132 86 C138 78 142 70 146 64 C152 54 160 48 172 48 C184 48 194 52 200 56 C200 46 196 32 190 22 C184 12 178 4 172 2 C166 0 162 4 158 10 C154 16 148 22 140 22 C132 22 128 18 126 12 C124 6 119 0 112 0 C105 0 100 10 100 10Z" />
-                  </svg>
+                  <img
+                    src={batLogoImg}
+                    alt="Bat Symbol"
+                    className="w-full h-full object-contain drop-shadow-[0_0_25px_hsl(var(--primary)/0.6)]"
+                    fetchPriority="high"
+                    loading="eager"
+                    decoding="sync"
+                  />
                 ) : (
                   <img
                     src={logoImg}
