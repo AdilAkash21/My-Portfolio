@@ -103,41 +103,43 @@ const Index = () => {
   const { theme } = useTheme();
   const isBatman = theme === "batman";
 
+  // Skip intro immediately on click/tap
+  const skipIntro = useCallback(() => {
+    setShowIntro(false);
+    // Clean up running timers
+    if ((window as any).__introCounter) clearInterval((window as any).__introCounter);
+  }, []);
+
   // Animate the progress counter from 0 to 100 over 3 seconds, then hide intro
   useEffect(() => {
-    const duration = 3000; // Total progress duration (ms)
-    const interval = 30; // Update interval (ms)
-    const steps = duration / interval; // Total steps
-    const startDelay = 900; // Delay before progress starts (matches progress bar animation delay)
+    const duration = 3000;
+    const interval = 30;
+    const steps = duration / interval;
+    const startDelay = 900;
     let step = 0;
-    let started = false;
 
-    // Start the counter after the initial delay
     const startTimer = setTimeout(() => {
-      started = true;
       const counter = setInterval(() => {
         step++;
         const val = Math.min(Math.round((step / steps) * 100), 100);
         setProgress(val);
         if (val >= 100) {
           clearInterval(counter);
-          setBurst(true); // Trigger particle explosion
+          setBurst(true);
         }
       }, interval);
-      // Store interval reference for cleanup
       (window as any).__introCounter = counter;
     }, startDelay);
 
-    // Hide the intro screen after everything completes (4.2s total)
     const hideTimer = setTimeout(() => setShowIntro(false), 4200);
 
-    // Cleanup timers on unmount
     return () => {
       clearTimeout(startTimer);
       clearTimeout(hideTimer);
       if ((window as any).__introCounter) clearInterval((window as any).__introCounter);
     };
   }, []);
+
 
   // Choose name words based on theme
   const nameWords = isBatman ? ["The", "Dark", "Knight"] : ["Adil", "Rahman", "Akash"];
