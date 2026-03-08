@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from "react";
 
 const THEME_BG: Record<string, string> = {
   dark: "hsl(222 47% 11%)",
-  light: "hsl(209 40% 96%)",
+  light: "hsl(220 20% 97%)",
   batman: "hsl(240 10% 6%)",
 };
 
