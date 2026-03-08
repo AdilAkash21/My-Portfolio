@@ -85,7 +85,7 @@ const HeroSection = () => {
                   background: isBatman
                     ? "radial-gradient(circle, hsl(var(--primary) / 0.4), transparent 70%)"
                     : "linear-gradient(to bottom right, hsl(var(--primary)), hsl(var(--primary) / 0.3), transparent)",
-                  transition: "clip-path 1.2s ease, border-radius 1.2s ease, background 1.2s ease, opacity 0.5s ease",
+                  transition: "clip-path 1.5s cubic-bezier(0.4, 0, 0.2, 1), border-radius 1.5s cubic-bezier(0.4, 0, 0.2, 1), background 1.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease",
                 }}
               />
 
@@ -98,7 +98,7 @@ const HeroSection = () => {
                   boxShadow: isBatman
                     ? "0 0 40px hsl(var(--primary) / 0.3), 0 0 80px hsl(var(--primary) / 0.15)"
                     : undefined,
-                  transition: "clip-path 1.2s ease, border-radius 1.2s ease, box-shadow 1.2s ease",
+                  transition: "clip-path 1.5s cubic-bezier(0.4, 0, 0.2, 1), border-radius 1.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 1.5s cubic-bezier(0.4, 0, 0.2, 1)",
                 }}
               >
                 <div
@@ -106,7 +106,7 @@ const HeroSection = () => {
                   style={{
                     borderRadius: isBatman ? undefined : "9999px",
                     clipPath: isBatman ? BAT_CLIP : undefined,
-                    transition: "clip-path 1.2s ease, border-radius 1.2s ease",
+                    transition: "clip-path 1.5s cubic-bezier(0.4, 0, 0.2, 1), border-radius 1.5s cubic-bezier(0.4, 0, 0.2, 1)",
                   }}
                 />
 
@@ -117,7 +117,7 @@ const HeroSection = () => {
                   className="absolute inset-0 w-full h-full object-cover"
                   style={{
                     opacity: isBatman ? 0 : 1,
-                    transition: "opacity 1.2s ease",
+                    transition: "opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1)",
                   }}
                   fetchPriority="high"
                   loading="eager"
@@ -131,7 +131,7 @@ const HeroSection = () => {
                   className="absolute inset-0 w-full h-full object-cover"
                   style={{
                     opacity: isBatman ? 1 : 0,
-                    transition: "opacity 1.2s ease",
+                    transition: "opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1)",
                   }}
                   loading="eager"
                   width={288}
