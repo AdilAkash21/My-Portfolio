@@ -2,12 +2,14 @@
 // The main landing section with: profile image, name, tagline, description, and CTA buttons.
 // In batman mode: shows bat-shaped profile, different text, and themed styling.
 // Profile image uses an "eyelid" opening animation on first load.
+// Background glow element moves with a subtle parallax effect on scroll.
 
+import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { ArrowDown, Shield, Download } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
-import profileImg from "@/assets/profile-optimized.webp"; // Optimized WebP profile photo
-import batmanImg from "@/assets/batman-profile.png"; // Batman profile image
+import profileImg from "@/assets/profile-optimized.webp";
+import batmanImg from "@/assets/batman-profile.png";
 
 // Preload the profile image as early as possible to avoid layout shift
 const preloadLink = document.createElement("link");
