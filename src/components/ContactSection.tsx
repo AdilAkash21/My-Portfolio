@@ -130,11 +130,21 @@ const ContactSection = () => {
           </div>
           <button
             type="submit"
-            className="inline-flex items-center gap-2 rounded-lg border border-primary bg-primary/10 px-6 py-3 text-sm font-medium text-primary btn-float-hover hover:bg-primary hover:text-primary-foreground hover:shadow-lg"
+            disabled={isSubmitting}
+            className="inline-flex items-center gap-2 rounded-lg border border-primary bg-primary/10 px-6 py-3 text-sm font-medium text-primary btn-float-hover hover:bg-primary hover:text-primary-foreground hover:shadow-lg disabled:opacity-50 disabled:pointer-events-none"
           >
-            {isBatman ? "Send Signal" : "Send Message"}
-            {isBatman ? <Shield size={16} /> : <Send size={16} />}
+            {isSubmitting ? (
+              <><Loader2 size={16} className="animate-spin" /> Sending...</>
+            ) : (
+              <>{isBatman ? "Send Signal" : "Send Message"} {isBatman ? <Shield size={16} /> : <Send size={16} />}</>
+            )}
           </button>
+          {submitStatus === "success" && (
+            <p className="text-sm text-primary">{isBatman ? "Signal received. The Dark Knight will respond." : "Thanks for reaching out! I'll get back to you soon."}</p>
+          )}
+          {submitStatus === "error" && (
+            <p className="text-sm text-destructive">Something went wrong. Please try again.</p>
+          )}
         </motion.form>
 
         {/* Socials */}
