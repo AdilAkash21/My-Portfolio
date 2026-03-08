@@ -142,7 +142,7 @@ const Index = () => {
 
 
   // Choose name words based on theme
-  const nameWords = isBatman ? ["The", "Dark", "Knight"] : ["Adil", "Rahman", "Akash"];
+  const nameWords = isBatman ? ["The", "Dark", "Knight"] : ["Welcome", "!"];
 
   return (
     <div className="min-h-screen bg-background text-foreground">
