@@ -27,12 +27,10 @@ const ThemeToggle = () => {
 
   const label =
     theme === "dark"
-      ? "Switch to light mode"
-      : theme === "light"
       ? "Switch to Batman mode"
       : "Switch to dark mode";
 
-  const iconKey = theme === "dark" ? "sun" : theme === "light" ? "bat" : "moon";
+  const iconKey = theme === "dark" ? "bat" : "moon";
 
   return (
     <button
