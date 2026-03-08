@@ -1,4 +1,4 @@
-import { Moon, Sun } from "lucide-react";
+import { Moon } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";

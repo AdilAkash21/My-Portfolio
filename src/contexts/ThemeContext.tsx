@@ -26,7 +26,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const root = document.documentElement;
-    root.classList.remove("light", "dark", "batman");
+    root.classList.remove("dark", "batman");
     root.classList.add(theme);
     localStorage.setItem("theme", theme);
   }, [theme]);
