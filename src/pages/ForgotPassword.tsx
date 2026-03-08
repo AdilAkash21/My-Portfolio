@@ -1,3 +1,7 @@
+// ─── Forgot Password Page ───
+// A centered card with an email input to request a password reset link.
+// After submission, shows a confirmation message.
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -11,22 +15,25 @@ import { Mail, ArrowLeft } from "lucide-react";
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const [submitted, setSubmitted] = useState(false); // Tracks whether the reset email was sent
 
+  // Handle form submission: send password reset email
   const handleReset = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    // Request a password reset email from the backend auth service
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`,
+      redirectTo: `${window.location.origin}/reset-password`, // Where user lands after clicking the email link
     });
     setLoading(false);
     if (error) {
       toast({ title: "Error", description: error.message, variant: "destructive" });
     } else {
-      setSubmitted(true);
+      setSubmitted(true); // Show confirmation message
     }
   };
 
+  // After submission: show "check your email" message
   if (submitted) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background px-4">
@@ -47,6 +54,7 @@ const ForgotPassword = () => {
     <div className="min-h-screen flex items-center justify-center bg-background px-4">
       <Card className="w-full max-w-md border-border bg-card">
         <CardHeader>
+          {/* Back to login link */}
           <Link to="/login" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary mb-4">
             <ArrowLeft size={16} /> Back to login
           </Link>
@@ -55,6 +63,7 @@ const ForgotPassword = () => {
         </CardHeader>
         <form onSubmit={handleReset}>
           <CardContent className="space-y-4">
+            {/* Email input */}
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <div className="relative">

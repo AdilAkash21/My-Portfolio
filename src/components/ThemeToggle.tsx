@@ -1,8 +1,14 @@
+// ─── Theme Toggle Button ───
+// A button that cycles between dark and batman themes.
+// Shows a bat icon (to switch to batman) or a moon icon (to switch back to dark).
+// Includes a ripple effect on click and a rotating icon transition via Framer Motion.
+
 import { Moon } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 
+// Custom bat SVG icon component (used to represent the batman theme option)
 const BatIcon = ({ size = 18 }: { size?: number }) => (
   <svg
     width={size}
@@ -17,19 +23,22 @@ const BatIcon = ({ size = 18 }: { size?: number }) => (
 
 const ThemeToggle = () => {
   const { theme, toggleTheme } = useTheme();
-  const [ripple, setRipple] = useState(false);
+  const [ripple, setRipple] = useState(false); // Controls the ripple animation visibility
 
+  // Handle click: trigger ripple + toggle theme
   const handleClick = () => {
     setRipple(true);
     toggleTheme();
-    setTimeout(() => setRipple(false), 500);
+    setTimeout(() => setRipple(false), 500); // Reset ripple after animation completes
   };
 
+  // Accessible label describing what the button will do
   const label =
     theme === "dark"
       ? "Switch to Batman mode"
       : "Switch to dark mode";
 
+  // Determine which icon to show (the icon represents the NEXT theme)
   const iconKey = theme === "dark" ? "bat" : "moon";
 
   return (
@@ -38,6 +47,7 @@ const ThemeToggle = () => {
       className="relative rounded-full p-2 text-muted-foreground transition-colors hover:text-primary hover:bg-accent/50 overflow-hidden"
       aria-label={label}
     >
+      {/* Ripple effect — expands and fades out on click */}
       <AnimatePresence>
         {ripple && (
           <motion.span
@@ -51,6 +61,7 @@ const ThemeToggle = () => {
         )}
       </AnimatePresence>
 
+      {/* Animated icon swap — rotates in/out when theme changes */}
       <AnimatePresence mode="wait" initial={false}>
         <motion.span
           key={iconKey}

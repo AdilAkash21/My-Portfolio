@@ -1,3 +1,11 @@
+// ─── Profile / Settings Page ───
+// Full profile management page with:
+// - Avatar upload with crop dialog
+// - Display name, gender, age, and bio fields
+// - Social links (GitHub, LinkedIn, Twitter, Website)
+// - Sign out and delete account buttons
+// Redirects to /login if user is not authenticated.
+
 import { useEffect, useState, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -26,8 +34,9 @@ import {
 const Profile = () => {
   const { user, loading: authLoading, signOut } = useAuth();
   const navigate = useNavigate();
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null); // Hidden file input for avatar upload
 
+  // Profile form state
   const [displayName, setDisplayName] = useState("");
   const [bio, setBio] = useState("");
   const [gender, setGender] = useState("");
@@ -37,19 +46,23 @@ const Profile = () => {
   const [twitterUrl, setTwitterUrl] = useState("");
   const [websiteUrl, setWebsiteUrl] = useState("");
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [uploading, setUploading] = useState(false);
-  const [deleting, setDeleting] = useState(false);
 
-  // Crop state
-  const [cropSrc, setCropSrc] = useState<string | null>(null);
-  const [pendingFile, setPendingFile] = useState<File | null>(null);
+  // Loading/action states
+  const [loading, setLoading] = useState(true); // Profile data loading
+  const [saving, setSaving] = useState(false); // Save button loading
+  const [uploading, setUploading] = useState(false); // Avatar upload loading
+  const [deleting, setDeleting] = useState(false); // Account deletion loading
 
+  // Image crop dialog state
+  const [cropSrc, setCropSrc] = useState<string | null>(null); // Blob URL of selected image
+  const [pendingFile, setPendingFile] = useState<File | null>(null); // Selected file before cropping
+
+  // Redirect to login if not authenticated
   useEffect(() => {
     if (!authLoading && !user) navigate("/login");
   }, [authLoading, user, navigate]);
 
+  // Fetch profile data from the database when user is available
   useEffect(() => {
     if (!user) return;
     const fetchProfile = async () => {
@@ -74,23 +87,26 @@ const Profile = () => {
     fetchProfile();
   }, [user]);
 
+  // Handle file selection for avatar — validates type and size, then opens crop dialog
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !user) return;
+    // Validate file type
     if (!file.type.startsWith("image/")) {
       toast({ title: "Invalid file", description: "Please upload an image file.", variant: "destructive" });
       return;
     }
+    // Validate file size (max 5 MB)
     if (file.size > 5 * 1024 * 1024) {
       toast({ title: "File too large", description: "Image must be under 5 MB.", variant: "destructive" });
       return;
     }
     setPendingFile(file);
-    setCropSrc(URL.createObjectURL(file));
-    // reset so same file can be re-selected
-    e.target.value = "";
+    setCropSrc(URL.createObjectURL(file)); // Create a temporary URL for the crop preview
+    e.target.value = ""; // Reset input so the same file can be re-selected
   };
 
+  // Handle crop completion: upload the cropped blob to storage and update profile
   const handleCropComplete = async (blob: Blob) => {
     setCropSrc(null);
     setPendingFile(null);
@@ -99,6 +115,7 @@ const Profile = () => {
     setUploading(true);
     const path = `${user.id}/avatar.jpg`;
 
+    // Upload cropped image to the avatars storage bucket
     const { error: uploadError } = await supabase.storage
       .from("avatars")
       .upload(path, blob, { upsert: true, contentType: "image/jpeg" });
@@ -109,9 +126,11 @@ const Profile = () => {
       return;
     }
 
+    // Get the public URL and add a cache-busting timestamp
     const { data: { publicUrl } } = supabase.storage.from("avatars").getPublicUrl(path);
     const newUrl = `${publicUrl}?t=${Date.now()}`;
 
+    // Update the profile record with the new avatar URL
     const { error: updateError } = await supabase
       .from("profiles")
       .update({ avatar_url: newUrl })
@@ -126,8 +145,9 @@ const Profile = () => {
     setUploading(false);
   };
 
+  // Validate a URL string — must start with http:// or https://
   const validateUrl = (url: string, label: string): boolean => {
-    if (!url) return true;
+    if (!url) return true; // Empty URLs are allowed
     try {
       const parsed = new URL(url);
       if (!["http:", "https:"].includes(parsed.protocol)) {
@@ -141,15 +161,18 @@ const Profile = () => {
     }
   };
 
+  // Handle save button: validate all fields and update the profile in the database
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) return;
 
+    // Trim all URL values
     const trimmedGithub = githubUrl.trim();
     const trimmedLinkedin = linkedinUrl.trim();
     const trimmedTwitter = twitterUrl.trim();
     const trimmedWebsite = websiteUrl.trim();
 
+    // Validate all URLs
     if (
       !validateUrl(trimmedGithub, "GitHub URL") ||
       !validateUrl(trimmedLinkedin, "LinkedIn URL") ||
@@ -157,6 +180,7 @@ const Profile = () => {
       !validateUrl(trimmedWebsite, "Website URL")
     ) return;
 
+    // Validate age (must be 1–150 or empty)
     const parsedAge = age.trim() ? parseInt(age.trim(), 10) : null;
     if (parsedAge !== null && (isNaN(parsedAge) || parsedAge < 1 || parsedAge > 150)) {
       toast({ title: "Invalid age", description: "Age must be between 1 and 150.", variant: "destructive" });
@@ -165,6 +189,7 @@ const Profile = () => {
 
     setSaving(true);
 
+    // Update the profile record
     const { error } = await supabase
       .from("profiles")
       .update({
@@ -187,6 +212,7 @@ const Profile = () => {
     }
   };
 
+  // Handle account deletion — calls the delete-account backend function
   const handleDeleteAccount = async () => {
     if (!user) return;
     setDeleting(true);
@@ -204,6 +230,7 @@ const Profile = () => {
     }
   };
 
+  // Show loading spinner while auth or profile data is loading
   if (authLoading || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
@@ -212,6 +239,7 @@ const Profile = () => {
     );
   }
 
+  // Generate avatar fallback initials from display name or email
   const initials = displayName
     ? displayName.slice(0, 2).toUpperCase()
     : user?.email?.slice(0, 2).toUpperCase() ?? "?";
@@ -220,6 +248,7 @@ const Profile = () => {
     <div className="min-h-screen flex items-center justify-center bg-background px-4 py-12">
       <Card className="w-full max-w-lg border-border bg-card">
         <CardHeader>
+          {/* Back button */}
           <Link
             to="/"
             className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary mb-4 self-start"
@@ -231,7 +260,7 @@ const Profile = () => {
 
         <form onSubmit={handleSave}>
           <CardContent className="space-y-6">
-            {/* Avatar */}
+            {/* ─── Avatar Upload ─── */}
             <div className="flex flex-col items-center gap-3">
               <div className="relative group cursor-pointer" onClick={() => fileInputRef.current?.click()}>
                 <Avatar className="h-24 w-24 border-2 border-primary/30">
@@ -240,6 +269,7 @@ const Profile = () => {
                     {initials}
                   </AvatarFallback>
                 </Avatar>
+                {/* Hover overlay with camera/loading icon */}
                 <div className="absolute inset-0 flex items-center justify-center rounded-full bg-background/60 opacity-0 group-hover:opacity-100 transition-opacity">
                   {uploading ? (
                     <Loader2 className="h-5 w-5 animate-spin text-primary" />
@@ -248,6 +278,7 @@ const Profile = () => {
                   )}
                 </div>
               </div>
+              {/* Hidden file input triggered by clicking the avatar */}
               <input
                 ref={fileInputRef}
                 type="file"
@@ -258,13 +289,13 @@ const Profile = () => {
               <p className="text-xs text-muted-foreground">Click to upload & crop (max 5 MB)</p>
             </div>
 
-            {/* Display Name */}
+            {/* ─── Display Name ─── */}
             <div className="space-y-2">
               <Label htmlFor="displayName">Display Name</Label>
               <Input id="displayName" placeholder="Your name" value={displayName} onChange={(e) => setDisplayName(e.target.value)} maxLength={100} />
             </div>
 
-            {/* Gender */}
+            {/* ─── Gender Select ─── */}
             <div className="space-y-2">
               <Label htmlFor="gender">Gender</Label>
               <select
@@ -281,20 +312,20 @@ const Profile = () => {
               </select>
             </div>
 
-            {/* Age */}
+            {/* ─── Age ─── */}
             <div className="space-y-2">
               <Label htmlFor="age">Age</Label>
               <Input id="age" type="number" placeholder="Your age" value={age} onChange={(e) => setAge(e.target.value)} min={1} max={150} />
             </div>
 
-            {/* Bio */}
+            {/* ─── Bio ─── */}
             <div className="space-y-2">
               <Label htmlFor="bio">Bio</Label>
               <Textarea id="bio" placeholder="Tell us about yourself…" value={bio} onChange={(e) => setBio(e.target.value)} maxLength={500} rows={4} />
               <p className="text-xs text-muted-foreground text-right">{bio.length}/500</p>
             </div>
 
-            {/* Social Links */}
+            {/* ─── Social Links ─── */}
             <div className="space-y-4 border-t border-border pt-6">
               <h3 className="text-sm font-semibold text-foreground">Social Links</h3>
               <div className="space-y-3">
@@ -317,12 +348,14 @@ const Profile = () => {
               </div>
             </div>
 
+            {/* Save button */}
             <Button type="submit" className="w-full" disabled={saving}>
               {saving ? "Saving…" : "Save Changes"}
             </Button>
 
-            {/* Account actions */}
+            {/* ─── Account Actions ─── */}
             <div className="border-t border-border pt-6 space-y-3">
+              {/* Sign out button */}
               <button
                 type="button"
                 onClick={signOut}
@@ -331,6 +364,7 @@ const Profile = () => {
                 <LogOut size={16} /> Sign Out
               </button>
 
+              {/* Delete account with confirmation dialog */}
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <button
@@ -364,7 +398,7 @@ const Profile = () => {
         </form>
       </Card>
 
-      {/* Crop dialog */}
+      {/* Image crop dialog — opens when user selects a file */}
       {cropSrc && (
         <ImageCropDialog
           open={!!cropSrc}

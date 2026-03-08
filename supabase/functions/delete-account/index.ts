@@ -1,5 +1,15 @@
+// ─── Delete Account Edge Function ───
+// A serverless backend function that permanently deletes a user's account.
+// Steps:
+// 1. Verify the calling user's identity via their auth token
+// 2. Delete their avatar files from storage
+// 3. Delete their profile record from the database
+// 4. Delete their auth user account (this is irreversible)
+// Requires admin (service role) privileges to delete auth users.
+
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
+// CORS headers to allow requests from any origin (required for browser fetch calls)
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
@@ -7,12 +17,13 @@ const corsHeaders = {
 };
 
 Deno.serve(async (req) => {
+  // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    // Verify the calling user
+    // Step 1: Extract and verify the user's auth token
     const authHeader = req.headers.get("Authorization");
     if (!authHeader) {
       return new Response(JSON.stringify({ error: "Missing authorization" }), {
@@ -21,15 +32,17 @@ Deno.serve(async (req) => {
       });
     }
 
+    // Get environment variables for database connection
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseAnonKey = Deno.env.get("SUPABASE_PUBLISHABLE_KEY")!;
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
-    // Create a client with the user's token to verify identity
+    // Create a client using the user's token to verify their identity
     const userClient = createClient(supabaseUrl, supabaseAnonKey, {
       global: { headers: { Authorization: authHeader } },
     });
 
+    // Verify the token and get the user object
     const {
       data: { user },
       error: userError,
@@ -42,10 +55,10 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Use admin client to delete the auth user (cascades to profile via FK)
+    // Step 2: Use admin client (service role) for privileged operations
     const adminClient = createClient(supabaseUrl, serviceRoleKey);
 
-    // Delete avatar files first
+    // Delete all avatar files from storage for this user
     const { data: files } = await adminClient.storage
       .from("avatars")
       .list(user.id);
@@ -54,10 +67,10 @@ Deno.serve(async (req) => {
       await adminClient.storage.from("avatars").remove(filePaths);
     }
 
-    // Delete profile
+    // Step 3: Delete the user's profile record
     await adminClient.from("profiles").delete().eq("user_id", user.id);
 
-    // Delete auth user
+    // Step 4: Delete the auth user account (irreversible)
     const { error: deleteError } = await adminClient.auth.admin.deleteUser(
       user.id
     );
@@ -69,11 +82,13 @@ Deno.serve(async (req) => {
       });
     }
 
+    // Success response
     return new Response(JSON.stringify({ success: true }), {
       status: 200,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (err) {
+    // Catch-all error handler
     return new Response(JSON.stringify({ error: "Internal server error" }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },

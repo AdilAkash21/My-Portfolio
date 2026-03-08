@@ -1,29 +1,40 @@
+// ─── Parallax Background ───
+// A fixed, full-screen background layer with:
+// - Multiple gradient orbs that move at different speeds as the user scrolls (parallax effect)
+// - A field of twinkling star/particle dots
+// - A subtle grid overlay
+// - A bat signal with pulsing glow (visible only in batman mode)
+// Purely decorative — no interactivity (pointer-events: none).
+
 import { useRef, useMemo } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useTheme } from "@/contexts/ThemeContext";
 
+// Shape of a single particle in the star field
 interface Particle {
   id: number;
-  x: string;
+  x: string; // CSS percentage position
   y: string;
-  size: number;
-  delay: number;
-  duration: number;
-  opacity: number;
+  size: number; // Pixel diameter
+  delay: number; // Animation delay
+  duration: number; // Animation cycle duration
+  opacity: number; // Peak opacity
 }
 
 const ParallaxBackground = () => {
   const { theme } = useTheme();
   const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll();
+  const { scrollYProgress } = useScroll(); // 0 at top, 1 at bottom
 
-  const y1 = useTransform(scrollYProgress, [0, 1], ["0%", "-30%"]);
-  const y2 = useTransform(scrollYProgress, [0, 1], ["0%", "-50%"]);
-  const y3 = useTransform(scrollYProgress, [0, 1], ["0%", "-20%"]);
-  const rotate1 = useTransform(scrollYProgress, [0, 1], [0, 45]);
-  const rotate2 = useTransform(scrollYProgress, [0, 1], [0, -30]);
-  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.6, 0.4, 0.3, 0.15]);
+  // Transform scroll progress into different parallax speeds for each layer
+  const y1 = useTransform(scrollYProgress, [0, 1], ["0%", "-30%"]); // Slow layer
+  const y2 = useTransform(scrollYProgress, [0, 1], ["0%", "-50%"]); // Fast layer
+  const y3 = useTransform(scrollYProgress, [0, 1], ["0%", "-20%"]); // Slowest layer
+  const rotate1 = useTransform(scrollYProgress, [0, 1], [0, 45]); // Rotation for orb 1
+  const rotate2 = useTransform(scrollYProgress, [0, 1], [0, -30]); // Counter-rotation for orb 2
+  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.6, 0.4, 0.3, 0.15]); // Fade as user scrolls
 
+  // Generate 45 particles with deterministic pseudo-random positions (seeded for consistency)
   const particles = useMemo<Particle[]>(() => {
     const seed = 42;
     return Array.from({ length: 45 }, (_, i) => {
@@ -42,7 +53,7 @@ const ParallaxBackground = () => {
 
   return (
     <div ref={ref} className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
-      {/* Gradient orb – top left */}
+      {/* Gradient orb — top left: moves slowly and rotates */}
       <motion.div
         className="absolute -top-32 -left-32 w-[500px] h-[500px] rounded-full"
         style={{
@@ -51,7 +62,7 @@ const ParallaxBackground = () => {
         }}
       />
 
-      {/* Gradient orb – top right */}
+      {/* Gradient orb — top right: moves faster with counter-rotation */}
       <motion.div
         className="absolute -top-20 -right-40 w-[600px] h-[600px] rounded-full"
         style={{
@@ -60,13 +71,13 @@ const ParallaxBackground = () => {
         }}
       />
 
-      {/* Floating ring – mid left */}
+      {/* Floating ring — middle left: subtle border-only circle */}
       <motion.div
         className="absolute top-[40%] -left-20 w-72 h-72 rounded-full border border-primary/[0.07]"
         style={{ y: y3, opacity }}
       />
 
-      {/* Gradient orb – bottom center */}
+      {/* Gradient orb — bottom center: large ambient glow */}
       <motion.div
         className="absolute bottom-[-10%] left-1/2 -translate-x-1/2 w-[700px] h-[700px] rounded-full"
         style={{
@@ -75,7 +86,7 @@ const ParallaxBackground = () => {
         }}
       />
 
-      {/* Small accent dot – right side */}
+      {/* Small accent dot — right side */}
       <motion.div
         className="absolute top-[60%] right-[10%] w-40 h-40 rounded-full"
         style={{
@@ -84,7 +95,7 @@ const ParallaxBackground = () => {
         }}
       />
 
-      {/* Star / particle field – tall layer so particles stay visible at all scroll positions */}
+      {/* Star / particle field — 300vh tall so particles remain visible at all scroll positions */}
       <div className="absolute inset-x-0 top-0" style={{ height: "300vh" }}>
         {particles.map((p) => (
           <motion.div
@@ -92,8 +103,8 @@ const ParallaxBackground = () => {
             className="absolute rounded-full bg-primary"
             style={{ left: p.x, top: p.y, width: p.size, height: p.size }}
             animate={{
-              opacity: [0, p.opacity, 0],
-              scale: [0.5, 1, 0.5],
+              opacity: [0, p.opacity, 0], // Twinkle: fade in → hold → fade out
+              scale: [0.5, 1, 0.5], // Pulse: small → full → small
             }}
             transition={{
               duration: p.duration,
@@ -105,7 +116,7 @@ const ParallaxBackground = () => {
         ))}
       </div>
 
-      {/* Subtle grid overlay */}
+      {/* Subtle grid overlay — thin lines for texture */}
       <div
         className="absolute inset-0 opacity-[0.03]"
         style={{
@@ -115,10 +126,10 @@ const ParallaxBackground = () => {
         }}
       />
 
-      {/* Bat Signal – Batman mode only */}
+      {/* Bat Signal — visible only in batman mode */}
       {theme === "batman" && (
         <div className="absolute inset-0 flex items-start justify-center pointer-events-none" style={{ top: "8%" }}>
-          {/* Glow pulse */}
+          {/* Pulsing golden glow behind the bat silhouette */}
           <motion.div
             className="absolute w-[500px] h-[500px] rounded-full"
             style={{
@@ -134,7 +145,7 @@ const ParallaxBackground = () => {
               ease: "easeInOut",
             }}
           />
-          {/* Bat silhouette */}
+          {/* Bat silhouette SVG — subtle, slowly pulsing */}
           <motion.svg
             width="180"
             height="180"

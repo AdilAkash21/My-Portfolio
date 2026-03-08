@@ -1,8 +1,14 @@
+// ─── Projects Section ───
+// Showcases featured projects in a 2-column card grid.
+// Each card has a 3D tilt effect on mouse hover (±8° rotation).
+// In batman mode: shows classified Gotham operations instead of real projects.
+
 import { motion } from "framer-motion";
 import { ExternalLink, Github, Shield, AlertTriangle, Lock, Crosshair } from "lucide-react";
 import { useRef, useCallback } from "react";
 import { useTheme } from "@/contexts/ThemeContext";
 
+// Normal mode projects data
 const normalProjects = [
   {
     title: "Portfolio Website",
@@ -30,6 +36,7 @@ const normalProjects = [
   },
 ];
 
+// Batman mode projects data (classified operations)
 const batmanProjects = [
   {
     title: "Batcomputer v7.0",
@@ -57,18 +64,23 @@ const batmanProjects = [
   },
 ];
 
+// ─── TiltCard Component ───
+// Wraps children in a container that tilts toward the mouse cursor on hover.
+// Uses CSS perspective transform for a 3D card effect.
 const TiltCard = ({ children, className }: { children: React.ReactNode; className?: string }) => {
   const ref = useRef<HTMLDivElement>(null);
 
+  // Calculate tilt angle based on mouse position relative to card center
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const el = ref.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    const x = (e.clientX - rect.left) / rect.width - 0.5; // -0.5 to 0.5
+    const y = (e.clientY - rect.top) / rect.height - 0.5; // -0.5 to 0.5
     el.style.transform = `perspective(600px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg) translateY(-4px)`;
   }, []);
 
+  // Reset tilt when mouse leaves the card
   const handleMouseLeave = useCallback(() => {
     const el = ref.current;
     if (!el) return;
@@ -95,6 +107,7 @@ const ProjectsSection = () => {
   return (
     <section id="projects" className="py-24">
       <div className="container mx-auto px-6">
+        {/* Section header with numbered label */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -107,9 +120,11 @@ const ProjectsSection = () => {
           </h3>
         </motion.div>
 
+        {/* Project cards grid — 2 columns on tablet+ */}
         <div className="grid sm:grid-cols-2 gap-6">
           {isBatman
-            ? batmanProjects.map((p, i) => (
+            ? /* Batman mode: classified operation cards */
+              batmanProjects.map((p, i) => (
                 <motion.div
                   key={p.title}
                   initial={{ opacity: 0, y: 20 }}
@@ -118,18 +133,22 @@ const ProjectsSection = () => {
                   transition={{ duration: 0.4, delay: 0.1 * i }}
                 >
                   <TiltCard className="group relative rounded-xl border border-border bg-card p-6 hover:border-primary/40 hover:border-glow flex flex-col h-full">
+                    {/* Card header: icon + "Classified" label */}
                     <div className="flex items-center justify-between mb-4">
                       <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
                         <p.icon className="text-primary" size={18} />
                       </div>
                       <span className="font-mono text-xs text-primary/60 uppercase tracking-wider">Classified</span>
                     </div>
+                    {/* Project title */}
                     <h4 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
                       {p.title}
                     </h4>
+                    {/* Project description */}
                     <p className="text-sm text-muted-foreground leading-relaxed mb-4 flex-1">
                       {p.description}
                     </p>
+                    {/* Tech tags */}
                     <div className="flex flex-wrap gap-2">
                       {p.tags.map((t) => (
                         <span key={t} className="font-mono text-xs text-muted-foreground">
@@ -140,7 +159,8 @@ const ProjectsSection = () => {
                   </TiltCard>
                 </motion.div>
               ))
-            : normalProjects.map((p, i) => (
+            : /* Normal mode: real project cards with GitHub links */
+              normalProjects.map((p, i) => (
                 <motion.div
                   key={p.title}
                   initial={{ opacity: 0, y: 20 }}
@@ -149,6 +169,7 @@ const ProjectsSection = () => {
                   transition={{ duration: 0.4, delay: 0.1 * i }}
                 >
                   <TiltCard className="group relative rounded-xl border border-border bg-card p-6 hover:border-primary/40 hover:border-glow flex flex-col h-full">
+                    {/* Card header: external link icon + GitHub link */}
                     <div className="flex items-center justify-between mb-4">
                       <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
                         <ExternalLink className="text-primary" size={18} />
@@ -163,12 +184,15 @@ const ProjectsSection = () => {
                         <Github size={20} />
                       </a>
                     </div>
+                    {/* Project title */}
                     <h4 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
                       {p.title}
                     </h4>
+                    {/* Project description */}
                     <p className="text-sm text-muted-foreground leading-relaxed mb-4 flex-1">
                       {p.description}
                     </p>
+                    {/* Tech tags */}
                     <div className="flex flex-wrap gap-2">
                       {p.tags.map((t) => (
                         <span key={t} className="font-mono text-xs text-muted-foreground">
