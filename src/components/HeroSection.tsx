@@ -26,10 +26,31 @@ const HeroSection = () => {
   const { theme } = useTheme();
   const isBatman = theme === "batman";
 
+  // Track scroll position for parallax offset on the background glow
+  const [scrollY, setScrollY] = useState(0);
+  const handleScroll = useCallback(() => setScrollY(window.scrollY), []);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
+
+  // Parallax multiplier — glow moves at 30% of scroll speed
+  const parallaxOffset = scrollY * 0.3;
+
   return (
-    <section id="home" className="relative min-h-screen flex items-center pt-32">
-      {/* Subtle background glow — centered radial gradient */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-primary/5 blur-[120px] pointer-events-none" />
+    <section id="home" className="relative min-h-screen flex items-center pt-32 overflow-hidden">
+      {/* Subtle background glow — parallax-scrolled radial gradient */}
+      <div
+        className="absolute left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-primary/5 blur-[120px] pointer-events-none will-change-transform"
+        style={{ top: `calc(25% - ${parallaxOffset}px)` }}
+      />
+
+      {/* Secondary glow orb — moves at a slower parallax rate for depth */}
+      <div
+        className="absolute right-[10%] w-[300px] h-[300px] rounded-full bg-primary/[0.03] blur-[100px] pointer-events-none will-change-transform"
+        style={{ top: `calc(60% - ${parallaxOffset * 0.5}px)` }}
+      />
 
       <div className="container mx-auto px-6">
         {/* Flex layout: text on left, image on right (reversed on mobile for image-first) */}
