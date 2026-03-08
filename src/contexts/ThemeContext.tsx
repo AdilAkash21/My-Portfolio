@@ -14,7 +14,7 @@ const ThemeContext = createContext<ThemeContextType>({
 
 export const useTheme = () => useContext(ThemeContext);
 
-const THEME_ORDER: Theme[] = ["dark", "light", "batman"];
+const THEME_ORDER: Theme[] = ["dark", "batman"];
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setTheme] = useState<Theme>(() => {
