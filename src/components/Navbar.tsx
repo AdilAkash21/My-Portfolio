@@ -2,9 +2,9 @@
 // Fixed top navbar with: logo, nav links, theme toggle, user avatar, and mobile hamburger menu.
 // Includes a scroll-linked progress bar at the bottom that fills as the user scrolls down.
 
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
 import { Menu, X } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import ThemeToggle from "@/components/ThemeToggle";
 import { useTheme } from "@/contexts/ThemeContext";
 import batLogoImg from "@/assets/bat-logo-gold.png"; // Gold bat logo for batman mode
@@ -21,19 +21,11 @@ const navLinks = [
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const { theme } = useTheme();
-  const [scrollProgress, setScrollProgress] = useState(0);
   const isBatman = theme === "batman";
 
-  const handleScroll = useCallback(() => {
-    const scrollTop = window.scrollY;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    setScrollProgress(docHeight > 0 ? Math.min(scrollTop / docHeight, 1) : 0);
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [handleScroll]);
+  // Use Framer Motion's optimized scroll tracking to avoid forced reflows
+  const { scrollYProgress } = useScroll();
+  const progressWidth = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/80 backdrop-blur-xl">
