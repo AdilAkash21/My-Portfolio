@@ -71,13 +71,6 @@ const Navbar = () => {
               </li>
             ))}
           </ul>
-          {/* Settings link — navigates to profile page */}
-          <Link
-            to="/profile"
-            className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hover-underline pb-0.5"
-          >
-            Settings
-          </Link>
           <ThemeToggle />
         </div>
 
