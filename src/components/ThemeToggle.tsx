@@ -1,4 +1,4 @@
-import { Moon, Sun } from "lucide-react";
+import { Moon } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
@@ -27,12 +27,10 @@ const ThemeToggle = () => {
 
   const label =
     theme === "dark"
-      ? "Switch to light mode"
-      : theme === "light"
       ? "Switch to Batman mode"
       : "Switch to dark mode";
 
-  const iconKey = theme === "dark" ? "sun" : theme === "light" ? "bat" : "moon";
+  const iconKey = theme === "dark" ? "bat" : "moon";
 
   return (
     <button
@@ -62,7 +60,6 @@ const ThemeToggle = () => {
           transition={{ duration: 0.25, ease: "easeInOut" }}
           className="relative block"
         >
-          {iconKey === "sun" && <Sun size={18} />}
           {iconKey === "moon" && <Moon size={18} />}
           {iconKey === "bat" && <BatIcon size={18} />}
         </motion.span>

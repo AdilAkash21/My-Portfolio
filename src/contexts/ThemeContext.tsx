@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 
-type Theme = "dark" | "light" | "batman";
+type Theme = "dark" | "batman";
 
 interface ThemeContextType {
   theme: Theme;
@@ -14,7 +14,7 @@ const ThemeContext = createContext<ThemeContextType>({
 
 export const useTheme = () => useContext(ThemeContext);
 
-const THEME_ORDER: Theme[] = ["dark", "light", "batman"];
+const THEME_ORDER: Theme[] = ["dark", "batman"];
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setTheme] = useState<Theme>(() => {
@@ -26,7 +26,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const root = document.documentElement;
-    root.classList.remove("light", "dark", "batman");
+    root.classList.remove("dark", "batman");
     root.classList.add(theme);
     localStorage.setItem("theme", theme);
   }, [theme]);
