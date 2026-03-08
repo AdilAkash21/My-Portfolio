@@ -7,6 +7,7 @@ import ScrollToTop from "@/components/ScrollToTop";
 import ParallaxBackground from "@/components/ParallaxBackground";
 import profileImg from "@/assets/profile-optimized.webp";
 import logoImg from "@/assets/logo-ara.png";
+import { useTheme } from "@/contexts/ThemeContext";
 
 const AboutSection = lazy(() => import("@/components/AboutSection"));
 const SkillsSection = lazy(() => import("@/components/SkillsSection"));
