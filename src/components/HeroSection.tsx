@@ -89,7 +89,7 @@ const HeroSection = () => {
           >
             {/* Greeting line */}
             <p className="font-mono text-sm text-primary mb-4">
-              {isBatman ? "I am" : "Hey there 👋"}
+              {isBatman ? "I am" : "Hi, my name is"}
             </p>
             {/* Main heading with gradient-highlighted last name */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-4">
@@ -100,7 +100,8 @@ const HeroSection = () => {
                 </>
               ) : (
                 <>
-                  <span className="gradient-text">Welcome !</span>
+                  Adil Rahman{" "}
+                  <span className="gradient-text">Akash</span>
                 </>
               )}
             </h1>
