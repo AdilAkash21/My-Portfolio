@@ -73,7 +73,10 @@ const Navbar = () => {
       {/* Scroll progress bar */}
       <div
         className="absolute bottom-0 left-0 h-[2px] bg-primary transition-none"
-        style={{ width: `${scrollProgress * 100}%` }}
+        style={{
+          width: `${scrollProgress * 100}%`,
+          boxShadow: "0 0 8px hsl(var(--primary) / 0.6), 0 0 16px hsl(var(--primary) / 0.3)",
+        }}
       />
       <div className="container mx-auto flex items-center justify-between px-6 py-4">
         <div className="flex items-center gap-4">
