@@ -23,7 +23,19 @@ const Navbar = () => {
   const [displayName, setDisplayName] = useState<string | null>(null);
   const { user } = useAuth();
   const { theme } = useTheme();
+  const [scrollProgress, setScrollProgress] = useState(0);
   const isBatman = theme === "batman";
+
+  const handleScroll = useCallback(() => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    setScrollProgress(docHeight > 0 ? Math.min(scrollTop / docHeight, 1) : 0);
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
 
   useEffect(() => {
     if (!user) { setAvatarUrl(null); setDisplayName(null); return; }
