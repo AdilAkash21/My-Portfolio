@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowDown, Shield } from "lucide-react";
+import { ArrowDown, Shield, Download } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 import profileImg from "@/assets/profile-optimized.webp";
 import batmanImg from "@/assets/batman-profile.png";
