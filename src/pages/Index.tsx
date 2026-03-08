@@ -198,6 +198,8 @@ const Index = () => {
                   <img
                     src={logoImg}
                     alt="ARA Logo"
+                    width={144}
+                    height={144}
                     className="w-full h-full object-contain drop-shadow-[0_0_15px_hsl(var(--primary)/0.4)]"
                     fetchPriority="high"
                     loading="eager"
