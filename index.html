@@ -30,10 +30,22 @@
     </script>
     <style>
       /* ── Skeleton shell ── */
-      #root-skeleton{background:#111521;color:#d4d9e3;min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono','Space Mono',monospace;transition:background .3s}
-      html.batman #root-skeleton{background:#0d0d0f}
-      #root-skeleton .sk-wrap{text-align:center;padding:2rem}
+      #root-skeleton{position:relative;background:#111521;color:#d4d9e3;min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono','Space Mono',monospace;transition:background .3s;overflow:hidden}
+      html.batman #root-skeleton{background:#0a0a0c}
+      #root-skeleton .sk-wrap{position:relative;z-index:2;text-align:center;padding:2rem}
       #root:not(:empty)+#root-skeleton{display:none}
+
+      /* ── Bat-Signal spotlight ── */
+      .sk-signal{position:absolute;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+      /* Beam: a cone of light from bottom-center sweeping left↔right */
+      .sk-beam{position:absolute;bottom:-5%;left:50%;width:0;height:0;animation:sk-sweep 5s ease-in-out infinite alternate}
+      .sk-beam::before{content:'';position:absolute;bottom:0;left:-220px;width:440px;height:85vh;background:linear-gradient(to top,rgba(212,160,23,.13) 0%,rgba(212,160,23,.05) 45%,transparent 100%);clip-path:polygon(50% 100%,5% 0%,95% 0%);transform-origin:50% 100%}
+      /* Secondary softer halo beam */
+      .sk-beam::after{content:'';position:absolute;bottom:0;left:-300px;width:600px;height:90vh;background:linear-gradient(to top,rgba(212,160,23,.05) 0%,rgba(212,160,23,.02) 50%,transparent 100%);clip-path:polygon(50% 100%,15% 0%,85% 0%);transform-origin:50% 100%}
+      /* Ground-level source glow */
+      .sk-signal-src{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:60px;height:8px;border-radius:50%;background:rgba(212,160,23,.35);filter:blur(8px);animation:sk-src-pulse 5s ease-in-out infinite alternate}
+      @keyframes sk-sweep{from{transform:rotate(-28deg)}to{transform:rotate(28deg)}}
+      @keyframes sk-src-pulse{from{transform:translateX(-50%) rotate(-28deg);opacity:.5}to{transform:translateX(-50%) rotate(28deg);opacity:1}}
 
       /* ── Show/hide variants based on theme ── */
       .sk-dark{display:block}
@@ -103,6 +115,11 @@
 
       <!-- ── Batman mode variant ── -->
       <div class="sk-batman">
+        <!-- Spotlight sweep lives behind all content -->
+        <div class="sk-signal">
+          <div class="sk-beam"></div>
+          <div class="sk-signal-src"></div>
+        </div>
         <svg class="sk-bat-icon sk-bat-pulse" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path d="M12 0C12 0 9 5 6.5 7C4.5 8.5 1 9.5 0 10C1.5 10.5 3.5 11.5 5 13C3.5 14 2 16 1 19C3 17 5.5 15.5 8 15C9 17.5 10.5 20 12 24C13.5 20 15 17.5 16 15C18.5 15.5 21 17 23 19C22 16 20.5 14 19 13C20.5 11.5 22.5 10.5 24 10C23 9.5 19.5 8.5 17.5 7C15 5 12 0 12 0Z"/>
         </svg>
