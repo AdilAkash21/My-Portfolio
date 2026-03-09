@@ -32,26 +32,35 @@
       /* ── Skeleton shell ── */
       #root-skeleton{position:relative;background:#111521;color:#d4d9e3;min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono','Space Mono',monospace;transition:background .3s;overflow:hidden}
       html.batman #root-skeleton{background:#07070a}
-      #root-skeleton .sk-wrap{position:relative;z-index:10;text-align:center;padding:2rem}
+      /* sk-wrap is above the cinema layer */
+      .sk-wrap{position:relative;z-index:10;text-align:center;padding:2rem}
       #root:not(:empty)+#root-skeleton{display:none}
-
-      /* ── Bat-Signal spotlight ── */
-      .sk-signal{position:absolute;inset:0;pointer-events:none;z-index:2;overflow:hidden}
-      /* Beam: a cone of light from bottom-center sweeping left↔right */
-      .sk-beam{position:absolute;bottom:-5%;left:50%;width:0;height:0;animation:sk-sweep 6s ease-in-out infinite alternate}
-      .sk-beam::before{content:'';position:absolute;bottom:0;left:-220px;width:440px;height:85vh;background:linear-gradient(to top,rgba(212,160,23,.12) 0%,rgba(212,160,23,.04) 45%,transparent 100%);clip-path:polygon(50% 100%,5% 0%,95% 0%);transform-origin:50% 100%}
-      /* Secondary softer halo beam */
-      .sk-beam::after{content:'';position:absolute;bottom:0;left:-300px;width:600px;height:90vh;background:linear-gradient(to top,rgba(212,160,23,.04) 0%,rgba(212,160,23,.015) 50%,transparent 100%);clip-path:polygon(50% 100%,15% 0%,85% 0%);transform-origin:50% 100%}
-      /* Ground-level source glow */
-      .sk-signal-src{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:60px;height:8px;border-radius:50%;background:rgba(212,160,23,.3);filter:blur(10px);animation:sk-src-pulse 6s ease-in-out infinite alternate}
-      @keyframes sk-sweep{from{transform:rotate(-26deg)}to{transform:rotate(26deg)}}
-      @keyframes sk-src-pulse{from{transform:translateX(-50%) rotate(-26deg);opacity:.45}to{transform:translateX(-50%) rotate(26deg);opacity:.9}}
 
       /* ── Show/hide variants based on theme ── */
       .sk-dark{display:block}
       .sk-batman{display:none}
       html.batman .sk-dark{display:none}
       html.batman .sk-batman{display:block}
+
+      /* ── Cinematic layer (Batman only) — absolute, below sk-wrap ── */
+      /* Wraps all cinematic effects; clips the overflowing grain */
+      .sk-cinema{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+      /* Bat-Signal spotlight */
+      .sk-signal{position:absolute;inset:0;z-index:1}
+      .sk-beam{position:absolute;bottom:-5%;left:50%;width:0;height:0;animation:sk-sweep 6s ease-in-out infinite alternate}
+      .sk-beam::before{content:'';position:absolute;bottom:0;left:-220px;width:440px;height:85vh;background:linear-gradient(to top,rgba(212,160,23,.12) 0%,rgba(212,160,23,.04) 45%,transparent 100%);clip-path:polygon(50% 100%,5% 0%,95% 0%);transform-origin:50% 100%}
+      .sk-beam::after{content:'';position:absolute;bottom:0;left:-300px;width:600px;height:90vh;background:linear-gradient(to top,rgba(212,160,23,.04) 0%,rgba(212,160,23,.015) 50%,transparent 100%);clip-path:polygon(50% 100%,15% 0%,85% 0%);transform-origin:50% 100%}
+      .sk-signal-src{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:60px;height:8px;border-radius:50%;background:rgba(212,160,23,.3);filter:blur(10px);animation:sk-src-pulse 6s ease-in-out infinite alternate}
+      @keyframes sk-sweep{from{transform:rotate(-26deg)}to{transform:rotate(26deg)}}
+      @keyframes sk-src-pulse{from{transform:translateX(-50%) rotate(-26deg);opacity:.45}to{transform:translateX(-50%) rotate(26deg);opacity:.9}}
+      /* Vignette — above signal beam, below content */
+      .sk-vignette{position:absolute;inset:0;z-index:2;background:radial-gradient(ellipse 80% 75% at 50% 50%,transparent 25%,rgba(0,0,0,.52) 58%,rgba(0,0,0,.84) 77%,rgba(0,0,0,.97) 100%)}
+      /* Subtle scanlines */
+      .sk-scanlines{position:absolute;inset:0;z-index:3;background:repeating-linear-gradient(to bottom,transparent 0px,transparent 3px,rgba(0,0,0,.07) 3px,rgba(0,0,0,.07) 4px)}
+      /* Film grain — extends beyond bounds (clipped by .sk-cinema overflow:hidden) */
+      .sk-grain{position:absolute;top:-25%;left:-25%;width:150%;height:150%;z-index:4;opacity:.05;animation:sk-grain-shift .2s steps(1) infinite}
+      .sk-grain-inner{width:100%;height:100%;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)'/%3E%3C/svg%3E");background-size:200px 200px}
+      @keyframes sk-grain-shift{0%{transform:translate(0,0)}14%{transform:translate(-2%,-3%)}28%{transform:translate(-4%,2%)}42%{transform:translate(3%,-1%)}57%{transform:translate(-1%,4%)}71%{transform:translate(3%,1%)}85%{transform:translate(-2%,3%)}100%{transform:translate(1%,-2%)}}
 
       /* ── Dark variant quote ── */
       .sk-quote{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;margin-bottom:1.5rem}
@@ -71,12 +80,11 @@
       .sk-loader span:nth-child(2){animation-delay:.15s}
       .sk-loader span:nth-child(3){animation-delay:.3s}
 
-      /* ── Batman variant ── */
+      /* ── Batman variant content ── */
       .sk-bat-icon{width:72px;height:72px;margin:0 auto 1.4rem;opacity:0;animation:sk-pop .7s .1s ease-out forwards;filter:drop-shadow(0 0 14px rgba(212,160,23,.5))}
       .sk-bat-icon path{fill:#d4a017}
       .sk-bat-pulse{animation:sk-bat-glow 2.5s 1.2s ease-in-out infinite alternate}
       @keyframes sk-bat-glow{0%{filter:drop-shadow(0 0 8px rgba(212,160,23,.35))}100%{filter:drop-shadow(0 0 28px rgba(212,160,23,.85))}}
-
       .sk-bq{display:flex;flex-direction:column;align-items:center;gap:.3rem;margin-bottom:1.5rem}
       .sk-bword{font-size:1.4rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:0;animation:sk-pop .5s ease-out forwards}
       .sk-bword:nth-child(1){animation-delay:.3s;color:#d4a017}
@@ -89,13 +97,6 @@
       .sk-bloader span:nth-child(2){animation-delay:.2s}
       .sk-bloader span:nth-child(3){animation-delay:.4s}
 
-      /* ── Cinematic overlays (Batman only) — full-screen, above beam, below content ── */
-      .sk-vignette{position:fixed;inset:0;pointer-events:none;z-index:5;background:radial-gradient(ellipse 80% 75% at 50% 50%,transparent 25%,rgba(0,0,0,.5) 55%,rgba(0,0,0,.82) 75%,rgba(0,0,0,.96) 100%)}
-      .sk-scanlines{position:fixed;inset:0;pointer-events:none;z-index:6;background:repeating-linear-gradient(to bottom,transparent 0px,transparent 3px,rgba(0,0,0,.08) 3px,rgba(0,0,0,.08) 4px);opacity:1}
-      .sk-grain{position:fixed;inset:-25%;width:150%;height:150%;pointer-events:none;z-index:7;opacity:.055;animation:sk-grain-shift .18s steps(1) infinite;will-change:transform}
-      .sk-grain-inner{width:100%;height:100%;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)'/%3E%3C/svg%3E");background-size:200px 200px}
-      @keyframes sk-grain-shift{0%{transform:translate(0,0)}12%{transform:translate(-2%,-3%)}25%{transform:translate(-5%,2%)}37%{transform:translate(3%,-1%)}50%{transform:translate(-1%,5%)}62%{transform:translate(4%,0%)}75%{transform:translate(-3%,3%)}87%{transform:translate(2%,-4%)}100%{transform:translate(-2%,1%)}}
-
       /* ── Shared keyframes ── */
       @keyframes sk-pop{0%{opacity:0;transform:scale(.7) translateY(8px)}100%{opacity:1;transform:scale(1) translateY(0)}}
       @keyframes sk-fade{0%{opacity:0;transform:translateY(6px)}100%{opacity:1;transform:translateY(0)}}
@@ -105,49 +106,52 @@
 
   <body>
     <div id="root"></div>
-    <div id="root-skeleton"><div class="sk-wrap">
+    <div id="root-skeleton">
 
-      <!-- ── Dark mode variant ── -->
-      <div class="sk-dark">
-        <div class="sk-quote">
-          <span class="sk-word">Eat</span><span class="sk-dot">·</span>
-          <span class="sk-word">Sleep</span><span class="sk-dot">·</span>
-          <span class="sk-word">Code</span><span class="sk-dot">·</span>
-          <span class="sk-word">Repeat</span>
-        </div>
-        <div class="sk-line"></div>
-        <p class="sk-sub">Loading experience</p>
-        <div class="sk-loader"><span></span><span></span><span></span></div>
-      </div>
-
-      <!-- ── Batman mode variant ── -->
-      <div class="sk-batman">
-        <!-- Spotlight sweep lives behind all content -->
+      <!-- ── Batman cinematic layer — absolute, sits BELOW .sk-wrap (z-index:10) ── -->
+      <div class="sk-batman sk-cinema">
         <div class="sk-signal">
           <div class="sk-beam"></div>
           <div class="sk-signal-src"></div>
         </div>
-        <svg class="sk-bat-icon sk-bat-pulse" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 0C12 0 9 5 6.5 7C4.5 8.5 1 9.5 0 10C1.5 10.5 3.5 11.5 5 13C3.5 14 2 16 1 19C3 17 5.5 15.5 8 15C9 17.5 10.5 20 12 24C13.5 20 15 17.5 16 15C18.5 15.5 21 17 23 19C22 16 20.5 14 19 13C20.5 11.5 22.5 10.5 24 10C23 9.5 19.5 8.5 17.5 7C15 5 12 0 12 0Z"/>
-        </svg>
-        <div class="sk-bq">
-          <span class="sk-bword">I Am Vengeance.</span>
-          <span class="sk-bword">I Am The Night.</span>
-          <span class="sk-bword">I Am Batman.</span>
-        </div>
-        <div class="sk-bline"></div>
-        <p class="sk-bsub">Initializing Batcomputer</p>
-        <div class="sk-bloader"><span></span><span></span><span></span></div>
-      </div>
-
-      <!-- ── Cinematic overlays (Batman mode only) ── -->
-      <div class="sk-batman">
         <div class="sk-vignette"></div>
         <div class="sk-scanlines"></div>
         <div class="sk-grain"><div class="sk-grain-inner"></div></div>
       </div>
 
-    </div></div>
+      <!-- ── Content wrap — above the cinema layer ── -->
+      <div class="sk-wrap">
+
+        <!-- Dark mode variant -->
+        <div class="sk-dark">
+          <div class="sk-quote">
+            <span class="sk-word">Eat</span><span class="sk-dot">·</span>
+            <span class="sk-word">Sleep</span><span class="sk-dot">·</span>
+            <span class="sk-word">Code</span><span class="sk-dot">·</span>
+            <span class="sk-word">Repeat</span>
+          </div>
+          <div class="sk-line"></div>
+          <p class="sk-sub">Loading experience</p>
+          <div class="sk-loader"><span></span><span></span><span></span></div>
+        </div>
+
+        <!-- Batman mode variant -->
+        <div class="sk-batman">
+          <svg class="sk-bat-icon sk-bat-pulse" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 0C12 0 9 5 6.5 7C4.5 8.5 1 9.5 0 10C1.5 10.5 3.5 11.5 5 13C3.5 14 2 16 1 19C3 17 5.5 15.5 8 15C9 17.5 10.5 20 12 24C13.5 20 15 17.5 16 15C18.5 15.5 21 17 23 19C22 16 20.5 14 19 13C20.5 11.5 22.5 10.5 24 10C23 9.5 19.5 8.5 17.5 7C15 5 12 0 12 0Z"/>
+          </svg>
+          <div class="sk-bq">
+            <span class="sk-bword">I Am Vengeance.</span>
+            <span class="sk-bword">I Am The Night.</span>
+            <span class="sk-bword">I Am Batman.</span>
+          </div>
+          <div class="sk-bline"></div>
+          <p class="sk-bsub">Initializing Batcomputer</p>
+          <div class="sk-bloader"><span></span><span></span><span></span></div>
+        </div>
+
+      </div><!-- /.sk-wrap -->
+    </div><!-- /#root-skeleton -->
     <!-- Preload LCP image so browser discovers it before JS executes -->
     <img src="/src/assets/logo-ara.png" alt="" fetchpriority="high" decoding="async" style="position:absolute;width:0;height:0;overflow:hidden;opacity:0;pointer-events:none" />
     <script type="module" src="/src/main.tsx"></script>
