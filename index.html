@@ -31,21 +31,21 @@
     <style>
       /* ── Skeleton shell ── */
       #root-skeleton{position:relative;background:#111521;color:#d4d9e3;min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono','Space Mono',monospace;transition:background .3s;overflow:hidden}
-      html.batman #root-skeleton{background:#0a0a0c}
-      #root-skeleton .sk-wrap{position:relative;z-index:2;text-align:center;padding:2rem}
+      html.batman #root-skeleton{background:#07070a}
+      #root-skeleton .sk-wrap{position:relative;z-index:10;text-align:center;padding:2rem}
       #root:not(:empty)+#root-skeleton{display:none}
 
       /* ── Bat-Signal spotlight ── */
-      .sk-signal{position:absolute;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+      .sk-signal{position:absolute;inset:0;pointer-events:none;z-index:2;overflow:hidden}
       /* Beam: a cone of light from bottom-center sweeping left↔right */
-      .sk-beam{position:absolute;bottom:-5%;left:50%;width:0;height:0;animation:sk-sweep 5s ease-in-out infinite alternate}
-      .sk-beam::before{content:'';position:absolute;bottom:0;left:-220px;width:440px;height:85vh;background:linear-gradient(to top,rgba(212,160,23,.13) 0%,rgba(212,160,23,.05) 45%,transparent 100%);clip-path:polygon(50% 100%,5% 0%,95% 0%);transform-origin:50% 100%}
+      .sk-beam{position:absolute;bottom:-5%;left:50%;width:0;height:0;animation:sk-sweep 6s ease-in-out infinite alternate}
+      .sk-beam::before{content:'';position:absolute;bottom:0;left:-220px;width:440px;height:85vh;background:linear-gradient(to top,rgba(212,160,23,.12) 0%,rgba(212,160,23,.04) 45%,transparent 100%);clip-path:polygon(50% 100%,5% 0%,95% 0%);transform-origin:50% 100%}
       /* Secondary softer halo beam */
-      .sk-beam::after{content:'';position:absolute;bottom:0;left:-300px;width:600px;height:90vh;background:linear-gradient(to top,rgba(212,160,23,.05) 0%,rgba(212,160,23,.02) 50%,transparent 100%);clip-path:polygon(50% 100%,15% 0%,85% 0%);transform-origin:50% 100%}
+      .sk-beam::after{content:'';position:absolute;bottom:0;left:-300px;width:600px;height:90vh;background:linear-gradient(to top,rgba(212,160,23,.04) 0%,rgba(212,160,23,.015) 50%,transparent 100%);clip-path:polygon(50% 100%,15% 0%,85% 0%);transform-origin:50% 100%}
       /* Ground-level source glow */
-      .sk-signal-src{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:60px;height:8px;border-radius:50%;background:rgba(212,160,23,.35);filter:blur(8px);animation:sk-src-pulse 5s ease-in-out infinite alternate}
-      @keyframes sk-sweep{from{transform:rotate(-28deg)}to{transform:rotate(28deg)}}
-      @keyframes sk-src-pulse{from{transform:translateX(-50%) rotate(-28deg);opacity:.5}to{transform:translateX(-50%) rotate(28deg);opacity:1}}
+      .sk-signal-src{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:60px;height:8px;border-radius:50%;background:rgba(212,160,23,.3);filter:blur(10px);animation:sk-src-pulse 6s ease-in-out infinite alternate}
+      @keyframes sk-sweep{from{transform:rotate(-26deg)}to{transform:rotate(26deg)}}
+      @keyframes sk-src-pulse{from{transform:translateX(-50%) rotate(-26deg);opacity:.45}to{transform:translateX(-50%) rotate(26deg);opacity:.9}}
 
       /* ── Show/hide variants based on theme ── */
       .sk-dark{display:block}
@@ -74,8 +74,8 @@
       /* ── Batman variant ── */
       .sk-bat-icon{width:72px;height:72px;margin:0 auto 1.4rem;opacity:0;animation:sk-pop .7s .1s ease-out forwards;filter:drop-shadow(0 0 14px rgba(212,160,23,.5))}
       .sk-bat-icon path{fill:#d4a017}
-      .sk-bat-pulse{animation:sk-bat-glow 2s 1.2s ease-in-out infinite alternate}
-      @keyframes sk-bat-glow{0%{filter:drop-shadow(0 0 8px rgba(212,160,23,.4))}100%{filter:drop-shadow(0 0 24px rgba(212,160,23,.9))}}
+      .sk-bat-pulse{animation:sk-bat-glow 2.5s 1.2s ease-in-out infinite alternate}
+      @keyframes sk-bat-glow{0%{filter:drop-shadow(0 0 8px rgba(212,160,23,.35))}100%{filter:drop-shadow(0 0 28px rgba(212,160,23,.85))}}
 
       .sk-bq{display:flex;flex-direction:column;align-items:center;gap:.3rem;margin-bottom:1.5rem}
       .sk-bword{font-size:1.4rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:0;animation:sk-pop .5s ease-out forwards}
@@ -89,16 +89,12 @@
       .sk-bloader span:nth-child(2){animation-delay:.2s}
       .sk-bloader span:nth-child(3){animation-delay:.4s}
 
-      /* ── Vignette ── */
-      .sk-vignette{position:absolute;inset:0;pointer-events:none;z-index:2;background:radial-gradient(ellipse at center,transparent 30%,rgba(0,0,0,.55) 65%,rgba(0,0,0,.88) 100%)}
-
-      /* ── Scanlines ── */
-      .sk-scanlines{position:absolute;inset:0;pointer-events:none;z-index:3;background:repeating-linear-gradient(to bottom,transparent 0px,transparent 3px,rgba(0,0,0,.18) 3px,rgba(0,0,0,.18) 4px);opacity:.45}
-
-      /* ── Film grain ── */
-      .sk-grain{position:absolute;inset:-30%;width:160%;height:160%;pointer-events:none;z-index:4;opacity:.07;animation:sk-grain-shift .12s steps(1) infinite}
-      .sk-grain-inner{width:100%;height:100%;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)'/%3E%3C/svg%3E");background-size:200px 200px}
-      @keyframes sk-grain-shift{0%{transform:translate(0,0)}10%{transform:translate(-3%,-4%)}20%{transform:translate(-6%,3%)}30%{transform:translate(4%,-2%)}40%{transform:translate(-2%,6%)}50%{transform:translate(5%,1%)}60%{transform:translate(-4%,4%)}70%{transform:translate(3%,-5%)}80%{transform:translate(-1%,3%)}90%{transform:translate(4%,-1%)}100%{transform:translate(-3%,2%)}}
+      /* ── Cinematic overlays (Batman only) — full-screen, above beam, below content ── */
+      .sk-vignette{position:fixed;inset:0;pointer-events:none;z-index:5;background:radial-gradient(ellipse 80% 75% at 50% 50%,transparent 25%,rgba(0,0,0,.5) 55%,rgba(0,0,0,.82) 75%,rgba(0,0,0,.96) 100%)}
+      .sk-scanlines{position:fixed;inset:0;pointer-events:none;z-index:6;background:repeating-linear-gradient(to bottom,transparent 0px,transparent 3px,rgba(0,0,0,.08) 3px,rgba(0,0,0,.08) 4px);opacity:1}
+      .sk-grain{position:fixed;inset:-25%;width:150%;height:150%;pointer-events:none;z-index:7;opacity:.055;animation:sk-grain-shift .18s steps(1) infinite;will-change:transform}
+      .sk-grain-inner{width:100%;height:100%;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)'/%3E%3C/svg%3E");background-size:200px 200px}
+      @keyframes sk-grain-shift{0%{transform:translate(0,0)}12%{transform:translate(-2%,-3%)}25%{transform:translate(-5%,2%)}37%{transform:translate(3%,-1%)}50%{transform:translate(-1%,5%)}62%{transform:translate(4%,0%)}75%{transform:translate(-3%,3%)}87%{transform:translate(2%,-4%)}100%{transform:translate(-2%,1%)}}
 
       /* ── Shared keyframes ── */
       @keyframes sk-pop{0%{opacity:0;transform:scale(.7) translateY(8px)}100%{opacity:1;transform:scale(1) translateY(0)}}
