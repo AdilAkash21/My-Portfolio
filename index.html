@@ -89,6 +89,14 @@
       .sk-bloader span:nth-child(2){animation-delay:.2s}
       .sk-bloader span:nth-child(3){animation-delay:.4s}
 
+      /* ── Scanlines ── */
+      .sk-scanlines{position:absolute;inset:0;pointer-events:none;z-index:3;background:repeating-linear-gradient(to bottom,transparent 0px,transparent 3px,rgba(0,0,0,.18) 3px,rgba(0,0,0,.18) 4px);opacity:.45}
+
+      /* ── Film grain ── */
+      .sk-grain{position:absolute;inset:-30%;width:160%;height:160%;pointer-events:none;z-index:4;opacity:.07;animation:sk-grain-shift .12s steps(1) infinite}
+      .sk-grain-inner{width:100%;height:100%;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)'/%3E%3C/svg%3E");background-size:200px 200px}
+      @keyframes sk-grain-shift{0%{transform:translate(0,0)}10%{transform:translate(-3%,-4%)}20%{transform:translate(-6%,3%)}30%{transform:translate(4%,-2%)}40%{transform:translate(-2%,6%)}50%{transform:translate(5%,1%)}60%{transform:translate(-4%,4%)}70%{transform:translate(3%,-5%)}80%{transform:translate(-1%,3%)}90%{transform:translate(4%,-1%)}100%{transform:translate(-3%,2%)}}
+
       /* ── Shared keyframes ── */
       @keyframes sk-pop{0%{opacity:0;transform:scale(.7) translateY(8px)}100%{opacity:1;transform:scale(1) translateY(0)}}
       @keyframes sk-fade{0%{opacity:0;transform:translateY(6px)}100%{opacity:1;transform:translateY(0)}}
