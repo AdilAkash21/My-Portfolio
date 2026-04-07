@@ -23,11 +23,12 @@ preloadBatLogo.as = "image";
 preloadBatLogo.href = batLogoImg;
 document.head.appendChild(preloadBatLogo);
 
-import AboutSection from "@/components/AboutSection";
-import SkillsSection from "@/components/SkillsSection";
-import ProjectsSection from "@/components/ProjectsSection";
-import ContactSection from "@/components/ContactSection";
-import Footer from "@/components/Footer";
+import { lazy, Suspense } from "react";
+const AboutSection = lazy(() => import("@/components/AboutSection"));
+const SkillsSection = lazy(() => import("@/components/SkillsSection"));
+const ProjectsSection = lazy(() => import("@/components/ProjectsSection"));
+const ContactSection = lazy(() => import("@/components/ContactSection"));
+const Footer = lazy(() => import("@/components/Footer"));
 
 // ─── Particle Burst Component ───
 // Renders 24 small dots that explode outward in a circle when the progress bar hits 100%.
@@ -293,6 +294,7 @@ const Index = () => {
         <ScrollReveal direction="up" delay={0}>
           <HeroSection />
         </ScrollReveal>
+        <Suspense fallback={null}>
           <ScrollReveal direction="up" delay={0}>
             <AboutSection />
           </ScrollReveal>
@@ -308,6 +310,7 @@ const Index = () => {
           <ScrollReveal direction="up" delay={0} duration={0.4}>
             <Footer />
           </ScrollReveal>
+        </Suspense>
       </motion.div>
       {/* Floating scroll-to-top button */}
       <ScrollToTop />
