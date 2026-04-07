@@ -269,7 +269,7 @@ const Index = () => {
 
               {/* Skip hint — fades in after a short delay */}
               <motion.p
-                className="text-muted-foreground/70 font-mono text-[10px] mt-4 tracking-wider uppercase"
+                className="text-muted-foreground font-mono text-[10px] mt-4 tracking-wider uppercase"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1.8, duration: 0.5 }}
