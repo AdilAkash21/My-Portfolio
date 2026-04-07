@@ -31,6 +31,18 @@ const HeroSection = () => {
   const sectionRef = useCallback((node: HTMLElement | null) => {
     if (!node) return;
   }, []);
+  const handleScroll = useCallback(() => setScrollY(window.scrollY), []);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
+
+  // Parallax multiplier — glow moves at 30% of scroll speed
+  const parallaxOffset = scrollY * 0.3;
+
+  return (
+    <section ref={sectionRef} id="home" className="relative min-h-screen flex items-center pt-32 overflow-hidden">
       {/* Subtle background glow — parallax-scrolled radial gradient */}
       <div
         className="absolute left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-primary/5 blur-[120px] pointer-events-none will-change-transform"
