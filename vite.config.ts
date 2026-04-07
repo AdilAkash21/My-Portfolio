@@ -3,6 +3,7 @@
 // - Uses SWC-based React plugin for fast JSX transformation
 // - Sets up path alias "@" → "./src" for clean imports
 // - Disables HMR overlay to prevent error popups during development
+// - Manual chunk splitting for optimal loading performance
 
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc"; // SWC-based React plugin (faster than Babel)
@@ -24,6 +25,17 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"), // "@/components/..." → "./src/components/..."
+    },
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+          'vendor-motion': ['framer-motion'],
+          'vendor-ui': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-tooltip', '@radix-ui/react-toast', '@radix-ui/react-tabs', '@radix-ui/react-popover'],
+        },
+      },
     },
   },
 }));
