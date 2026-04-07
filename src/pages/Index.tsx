@@ -12,7 +12,7 @@ import ScrollReveal from "@/components/ScrollReveal";
 import ScrollToTop from "@/components/ScrollToTop";
 import ParallaxBackground from "@/components/ParallaxBackground";
 import profileImg from "@/assets/profile-optimized.webp";
-import logoImg from "@/assets/logo-ara.png"; // ARA logo for intro screen
+const logoImg = "/logo-ara.png"; // ARA logo — served from public/ for fast LCP
 import { useTheme } from "@/contexts/ThemeContext";
 import batLogoImg from "@/assets/bat-logo-gold.png"; // Bat logo for batman mode intro
 
