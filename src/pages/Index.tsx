@@ -302,10 +302,19 @@ const Index = () => {
             <AboutSection />
           </ScrollReveal>
           <ScrollReveal direction="left" delay={0.05}>
-            <SkillsSection />
+            <ExperienceSection />
           </ScrollReveal>
           <ScrollReveal direction="right" delay={0.05}>
+            <SkillsSection />
+          </ScrollReveal>
+          <ScrollReveal direction="left" delay={0.05}>
             <ProjectsSection />
+          </ScrollReveal>
+          <ScrollReveal direction="right" delay={0.05}>
+            <BlogSection />
+          </ScrollReveal>
+          <ScrollReveal direction="up" delay={0.05}>
+            <TestimonialsSection />
           </ScrollReveal>
           <ScrollReveal direction="up" delay={0.05}>
             <ContactSection />
