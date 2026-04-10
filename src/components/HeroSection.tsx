@@ -4,6 +4,7 @@
 // Profile image uses an "eyelid" opening animation on first load.
 // Background glow element moves with a subtle parallax effect on scroll.
 
+import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { ArrowDown, Shield, Download } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -25,8 +26,56 @@ const HeroSection = () => {
   const { theme } = useTheme();
   const isBatman = theme === "batman";
 
+  // Track scroll position for parallax offset on the background glow
+  const [scrollY, setScrollY] = useState(0);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const sectionRef = useCallback((node: HTMLElement | null) => {
+    if (!node) return;
+    const handleMove = (e: MouseEvent) => {
+      const rect = node.getBoundingClientRect();
+      setMousePos({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+      });
+    };
+    node.addEventListener("mousemove", handleMove, { passive: true });
+    return () => node.removeEventListener("mousemove", handleMove);
+  }, []);
+  const handleScroll = useCallback(() => setScrollY(window.scrollY), []);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
+
+  // Parallax multiplier — glow moves at 30% of scroll speed
+  const parallaxOffset = scrollY * 0.3;
+
   return (
-    <section id="home" className="relative min-h-screen flex items-center pt-32 overflow-hidden">
+    <section ref={sectionRef} id="home" className="relative min-h-screen flex items-center pt-32 overflow-hidden">
+      {/* Mouse-follow glow */}
+      <div
+        className="absolute w-[400px] h-[400px] rounded-full pointer-events-none will-change-transform transition-[left,top] duration-300 ease-out"
+        style={{
+          left: mousePos.x - 200,
+          top: mousePos.y - 200,
+          background: "radial-gradient(circle, hsl(var(--primary) / 0.07) 0%, transparent 70%)",
+          filter: "blur(60px)",
+          opacity: mousePos.x === 0 && mousePos.y === 0 ? 0 : 1,
+        }}
+      />
+
+      {/* Subtle background glow — parallax-scrolled radial gradient */}
+      <div
+        className="absolute left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-primary/5 blur-[120px] pointer-events-none will-change-transform"
+        style={{ top: `calc(25% - ${parallaxOffset}px)` }}
+      />
+
+      {/* Secondary glow orb — moves at a slower parallax rate for depth */}
+      <div
+        className="absolute right-[10%] w-[300px] h-[300px] rounded-full bg-primary/[0.03] blur-[100px] pointer-events-none will-change-transform"
+        style={{ top: `calc(60% - ${parallaxOffset * 0.5}px)` }}
+      />
 
       <div className="container mx-auto px-6">
         {/* Flex layout: text on left, image on right (reversed on mobile for image-first) */}
