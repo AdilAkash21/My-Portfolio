@@ -25,8 +25,11 @@ document.head.appendChild(preloadBatLogo);
 
 import { lazy, Suspense } from "react";
 const AboutSection = lazy(() => import("@/components/AboutSection"));
+const ExperienceSection = lazy(() => import("@/components/ExperienceSection"));
 const SkillsSection = lazy(() => import("@/components/SkillsSection"));
 const ProjectsSection = lazy(() => import("@/components/ProjectsSection"));
+const BlogSection = lazy(() => import("@/components/BlogSection"));
+const TestimonialsSection = lazy(() => import("@/components/TestimonialsSection"));
 const ContactSection = lazy(() => import("@/components/ContactSection"));
 const Footer = lazy(() => import("@/components/Footer"));
 
@@ -299,10 +302,19 @@ const Index = () => {
             <AboutSection />
           </ScrollReveal>
           <ScrollReveal direction="left" delay={0.05}>
-            <SkillsSection />
+            <ExperienceSection />
           </ScrollReveal>
           <ScrollReveal direction="right" delay={0.05}>
+            <SkillsSection />
+          </ScrollReveal>
+          <ScrollReveal direction="left" delay={0.05}>
             <ProjectsSection />
+          </ScrollReveal>
+          <ScrollReveal direction="right" delay={0.05}>
+            <BlogSection />
+          </ScrollReveal>
+          <ScrollReveal direction="up" delay={0.05}>
+            <TestimonialsSection />
           </ScrollReveal>
           <ScrollReveal direction="up" delay={0.05}>
             <ContactSection />

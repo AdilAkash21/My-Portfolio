@@ -113,18 +113,16 @@ const HeroSection = () => {
                   </>
                 )}
               </a>
-              {/* Secondary CTA: Download CV (hidden in batman mode) */}
-              {!isBatman && (
-                <a
-                  href="/resume.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-lg border border-border px-6 py-3 text-sm font-medium text-muted-foreground btn-float-hover hover:border-primary hover:text-primary hover:shadow-lg transition-colors"
-                >
-                  Download CV
-                  <Download size={16} />
-                </a>
-              )}
+              {/* Secondary CTA: Download CV / Download Dossier */}
+              <a
+                href="/resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-lg border border-border px-6 py-3 text-sm font-medium text-muted-foreground btn-float-hover hover:border-primary hover:text-primary hover:shadow-lg transition-colors"
+              >
+                {isBatman ? "Download Dossier" : "Download CV"}
+                <Download size={16} />
+              </a>
             </div>
           </motion.div>
 
