@@ -28,19 +28,7 @@ const HeroSection = () => {
 
   // Track scroll position for parallax offset on the background glow
   const [scrollY, setScrollY] = useState(0);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const sectionRef = useCallback((node: HTMLElement | null) => {
-    if (!node) return;
-    const handleMove = (e: MouseEvent) => {
-      const rect = node.getBoundingClientRect();
-      setMousePos({
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
-      });
-    };
-    node.addEventListener("mousemove", handleMove, { passive: true });
-    return () => node.removeEventListener("mousemove", handleMove);
-  }, []);
+  const sectionRef = useCallback((_node: HTMLElement | null) => {}, []);
   const handleScroll = useCallback(() => setScrollY(window.scrollY), []);
 
   useEffect(() => {
@@ -53,17 +41,6 @@ const HeroSection = () => {
 
   return (
     <section ref={sectionRef} id="home" className="relative min-h-screen flex items-center pt-32 overflow-hidden">
-      {/* Mouse-follow glow */}
-      <div
-        className="absolute w-[400px] h-[400px] rounded-full pointer-events-none will-change-transform transition-[left,top] duration-300 ease-out"
-        style={{
-          left: mousePos.x - 200,
-          top: mousePos.y - 200,
-          background: "radial-gradient(circle, hsl(var(--primary) / 0.07) 0%, transparent 70%)",
-          filter: "blur(60px)",
-          opacity: mousePos.x === 0 && mousePos.y === 0 ? 0 : 1,
-        }}
-      />
 
       {/* Subtle background glow — parallax-scrolled radial gradient */}
       <div
