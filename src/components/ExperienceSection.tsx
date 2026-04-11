@@ -17,7 +17,7 @@ interface TimelineItem {
 
 const normalTimeline: TimelineItem[] = [
   {
-    year: "2023 – Present",
+    year: "2024 – Present",
     title: "Software Engineering (BSc)",
     organization: "China West Normal University",
     description: "Pursuing a Bachelor's degree in Software Engineering, focusing on full-stack development, algorithms, and system design.",
