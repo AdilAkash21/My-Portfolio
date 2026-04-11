@@ -70,7 +70,7 @@ const SkillsSection = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="font-mono text-sm text-primary mb-2">02.</h2>
+          <h2 className="font-mono text-sm text-primary mb-2">03.</h2>
           <h3 className="text-3xl font-bold mb-4">
             {isBatman ? "Arsenal & Abilities" : "Skills & Services"}
           </h3>
