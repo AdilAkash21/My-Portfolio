@@ -114,7 +114,7 @@ const ProjectsSection = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="font-mono text-sm text-primary mb-2">03.</h2>
+          <h2 className="font-mono text-sm text-primary mb-2">04.</h2>
           <h3 className="text-3xl font-bold mb-12">
             {isBatman ? "Classified Operations" : "Featured Projects"}
           </h3>
