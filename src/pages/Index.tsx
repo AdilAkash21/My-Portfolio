@@ -31,6 +31,7 @@ const ProjectsSection = lazy(() => import("@/components/ProjectsSection"));
 const BlogSection = lazy(() => import("@/components/BlogSection"));
 const TestimonialsSection = lazy(() => import("@/components/TestimonialsSection"));
 const ContactSection = lazy(() => import("@/components/ContactSection"));
+const StatsCounter = lazy(() => import("@/components/StatsCounter"));
 const Footer = lazy(() => import("@/components/Footer"));
 
 // ─── Particle Burst Component ───
@@ -315,6 +316,9 @@ const Index = () => {
           </ScrollReveal>
           <ScrollReveal direction="up" delay={0.05}>
             <TestimonialsSection />
+          </ScrollReveal>
+          <ScrollReveal direction="up" delay={0.05}>
+            <StatsCounter />
           </ScrollReveal>
           <ScrollReveal direction="up" delay={0.05}>
             <ContactSection />
