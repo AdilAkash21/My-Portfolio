@@ -42,13 +42,66 @@ const HeroSection = () => {
   return (
     <section ref={sectionRef} id="home" className="relative min-h-screen flex items-center pt-32 overflow-hidden">
 
+      {/* ─── Geometric Background ─── */}
+      {/* Floating hexagon outlines */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {/* Large hexagon — top right */}
+        <motion.div
+          className="absolute -top-16 -right-16 w-80 h-80 border border-primary/[0.06] rounded-[2rem] rotate-45"
+          animate={{ rotate: [45, 90, 45], y: [0, -20, 0] }}
+          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+        />
+        {/* Medium hexagon — bottom left */}
+        <motion.div
+          className="absolute bottom-[10%] -left-12 w-52 h-52 border border-primary/[0.08] rounded-[1.5rem] -rotate-12"
+          animate={{ rotate: [-12, 15, -12], y: [0, 15, 0] }}
+          transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+        />
+        {/* Small diamond — center left */}
+        <motion.div
+          className="absolute top-[35%] left-[8%] w-24 h-24 border border-primary/[0.07] rotate-45"
+          animate={{ rotate: [45, 135, 45], scale: [1, 1.1, 1] }}
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+        />
+        {/* Triangle outline — top left */}
+        <motion.svg
+          className="absolute top-[15%] left-[15%] w-20 h-20 text-primary/[0.06]"
+          viewBox="0 0 100 100"
+          animate={{ rotate: [0, 60, 0], y: [0, -10, 0] }}
+          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <polygon points="50,5 95,95 5,95" fill="none" stroke="currentColor" strokeWidth="1" />
+        </motion.svg>
+        {/* Circle outline — bottom right */}
+        <motion.div
+          className="absolute bottom-[20%] right-[12%] w-32 h-32 rounded-full border border-primary/[0.05]"
+          animate={{ scale: [1, 1.15, 1], opacity: [0.5, 1, 0.5] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        />
+        {/* Dotted line — horizontal accent */}
+        <motion.div
+          className="absolute top-[55%] right-[5%] w-40 h-px"
+          style={{ backgroundImage: "repeating-linear-gradient(90deg, hsl(var(--primary) / 0.1) 0px, hsl(var(--primary) / 0.1) 4px, transparent 4px, transparent 12px)" }}
+          animate={{ opacity: [0.3, 0.7, 0.3], x: [0, 20, 0] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        />
+        {/* Small cross — accent */}
+        <motion.div
+          className="absolute top-[25%] right-[25%] text-primary/[0.08] text-2xl font-light"
+          animate={{ rotate: [0, 90, 0], opacity: [0.4, 1, 0.4] }}
+          transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+        >
+          +
+        </motion.div>
+      </div>
+
       {/* Subtle background glow — parallax-scrolled radial gradient */}
       <div
         className="absolute left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-primary/5 blur-[120px] pointer-events-none will-change-transform"
         style={{ top: `calc(25% - ${parallaxOffset}px)` }}
       />
 
-      {/* Secondary glow orb — moves at a slower parallax rate for depth */}
+      {/* Secondary glow orb */}
       <div
         className="absolute right-[10%] w-[300px] h-[300px] rounded-full bg-primary/[0.03] blur-[100px] pointer-events-none will-change-transform"
         style={{ top: `calc(60% - ${parallaxOffset * 0.5}px)` }}
