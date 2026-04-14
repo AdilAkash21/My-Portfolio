@@ -81,26 +81,34 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile dropdown menu — animated open/close */}
+      {/* Mobile dropdown menu — staggered slide-in animation */}
       <AnimatePresence>
         {open && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="md:hidden overflow-hidden border-b border-border bg-background"
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="md:hidden overflow-hidden border-b border-border bg-background/95 backdrop-blur-lg"
           >
-            <ul className="flex flex-col gap-4 px-6 py-6">
-              {navLinks.map((l) => (
-                <li key={l.href}>
+            <ul className="flex flex-col gap-1 px-6 py-4">
+              {navLinks.map((l, i) => (
+                <motion.li
+                  key={l.href}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.25, delay: i * 0.05 }}
+                >
                   <a
                     href={l.href}
-                    onClick={() => setOpen(false)} // Close menu after clicking a link
-                    className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+                    onClick={() => setOpen(false)}
+                    className="block py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary hover:pl-2"
                   >
+                    <span className="font-mono text-primary/50 text-xs mr-2">0{i + 1}.</span>
                     {l.label}
                   </a>
-                </li>
+                </motion.li>
               ))}
             </ul>
           </motion.div>
