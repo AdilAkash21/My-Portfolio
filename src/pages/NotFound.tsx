@@ -9,9 +9,11 @@ import { useEffect } from "react";
 const NotFound = () => {
   const location = useLocation();
 
-  // Log the invalid route attempt for debugging purposes
+  // ✅ SECURITY: Only log in development mode, don't expose paths in production
   useEffect(() => {
-    console.error("404 Error: User attempted to access non-existent route:", location.pathname);
+    if (import.meta.env.DEV) {
+      console.warn("404 Error: Page not found at path:", location.pathname);
+    }
   }, [location.pathname]);
 
   return (
