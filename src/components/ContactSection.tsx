@@ -101,7 +101,7 @@ const ContactSection = () => {
           transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
-          <h2 className="font-mono text-sm text-primary mb-2">04.</h2>
+          <h2 className="font-mono text-sm text-primary mb-2">07.</h2>
           <h3 className="text-3xl font-bold mb-4">
             {isBatman ? "Light the Signal" : "Get In Touch"}
           </h3>

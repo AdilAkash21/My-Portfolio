@@ -254,3 +254,5 @@
     box-shadow: 0 4px 12px -4px hsl(var(--primary) / 0.2);
   }
 }
+
+/* Theme transition — no CSS transition on html to avoid fighting the overlay */
