@@ -68,6 +68,10 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
   return (
     <style
       dangerouslySetInnerHTML={{
+        // SECURITY: Safe because:
+        // - Source is controlled config object (not user input)
+        // - Only CSS variable values are interpolated
+        // - No JavaScript execution possible from CSS
         __html: Object.entries(THEMES)
           .map(
             ([theme, prefix]) => `
