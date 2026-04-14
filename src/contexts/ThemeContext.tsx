@@ -1,6 +1,5 @@
 // ─── Theme Context ─── 
-// Manages dark ↔ batman theme. Uses View Transitions API when available
-// for buttery-smooth theme switches. Falls back to instant swap.
+// Manages dark ↔ batman theme with smooth transitions.
 
 import { createContext, useContext, useEffect, useState, useCallback, ReactNode } from "react";
 
@@ -22,6 +21,12 @@ export const useTheme = () => useContext(ThemeContext);
 
 const THEME_ORDER: Theme[] = ["dark", "batman"];
 
+// Pre-computed background colors matching CSS variables
+const THEME_BG: Record<Theme, string> = {
+  dark: "hsl(222, 47%, 11%)",
+  batman: "hsl(240, 10%, 6%)",
+};
+
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setTheme] = useState<Theme>(() => {
     if (typeof window !== "undefined") {
@@ -31,7 +36,6 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   });
   const [isTransitioning, setIsTransitioning] = useState(false);
 
-  // Apply theme class + persist
   const applyTheme = useCallback((t: Theme) => {
     const root = document.documentElement;
     root.classList.remove("dark", "batman");
@@ -39,28 +43,50 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem("theme", t);
   }, []);
 
-  // On mount, ensure class matches state
   useEffect(() => {
     applyTheme(theme);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const toggleTheme = useCallback(() => {
-    const nextTheme = THEME_ORDER[(THEME_ORDER.indexOf(theme) + 1) % THEME_ORDER.length];
+    const currentTheme = theme;
+    const nextTheme = THEME_ORDER[(THEME_ORDER.indexOf(currentTheme) + 1) % THEME_ORDER.length];
+    
     setIsTransitioning(true);
 
-    // Use View Transitions API if available for native smooth transition
-    if (typeof document !== "undefined" && "startViewTransition" in document) {
-      const transition = (document as any).startViewTransition(() => {
-        applyTheme(nextTheme);
-        setTheme(nextTheme);
+    // Create a snapshot overlay with the CURRENT theme's bg color
+    // This covers the screen BEFORE we swap CSS variables
+    const overlay = document.createElement("div");
+    overlay.style.cssText = `
+      position: fixed; inset: 0; z-index: 99999;
+      background: ${THEME_BG[currentTheme]};
+      opacity: 1;
+      pointer-events: none;
+      transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: opacity;
+    `;
+    document.body.appendChild(overlay);
+
+    // Force a paint so the overlay is visible before we swap
+    overlay.getBoundingClientRect();
+
+    // Now swap the theme (CSS variables change instantly, but hidden by overlay)
+    applyTheme(nextTheme);
+    setTheme(nextTheme);
+
+    // Next frame: start fading the overlay to reveal the new theme
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        overlay.style.opacity = "0";
+        
+        const onEnd = () => {
+          overlay.remove();
+          setIsTransitioning(false);
+        };
+        overlay.addEventListener("transitionend", onEnd, { once: true });
+        // Safety timeout
+        setTimeout(onEnd, 600);
       });
-      transition.finished.then(() => setIsTransitioning(false));
-    } else {
-      // Fallback: just swap instantly, overlay handles the visual
-      applyTheme(nextTheme);
-      setTheme(nextTheme);
-      setTimeout(() => setIsTransitioning(false), 600);
-    }
+    });
   }, [theme, applyTheme]);
 
   return (
