@@ -52,7 +52,7 @@ const listVariants = {
 
 const itemVariants = {
   hidden: { opacity: 0, x: -16, filter: "blur(4px)" },
-  visible: { opacity: 1, x: 0, filter: "blur(0px)", transition: { duration: 0.3, ease: [0.4, 0, 0.2, 1] } },
+  visible: { opacity: 1, x: 0, filter: "blur(0px)", transition: { duration: 0.3, ease: [0.4, 0, 0.2, 1] as const } },
   exit: { opacity: 0, x: -16, filter: "blur(4px)", transition: { duration: 0.2 } },
 };
 
