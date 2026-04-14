@@ -1,57 +1,70 @@
 // ─── Theme Context ─── 
-// Manages the application's theme state (dark ↔ batman).
-// Stores the selected theme in localStorage for persistence across sessions.
-// Applies the theme as a CSS class on <html> so CSS variables in index.css take effect.
+// Manages dark ↔ batman theme. Uses View Transitions API when available
+// for buttery-smooth theme switches. Falls back to instant swap.
 
-import { createContext, useContext, useEffect, useState, ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, useCallback, ReactNode } from "react";
 
-// Only two themes are supported: dark mode and batman mode
 type Theme = "dark" | "batman";
 
-// Shape of the context value
 interface ThemeContextType {
-  theme: Theme; // Current active theme
-  toggleTheme: () => void; // Cycles to the next theme in the order
+  theme: Theme;
+  toggleTheme: () => void;
+  isTransitioning: boolean;
 }
 
-// Default context (used if no provider is found — shouldn't happen in practice)
 const ThemeContext = createContext<ThemeContextType>({
   theme: "dark",
   toggleTheme: () => {},
+  isTransitioning: false,
 });
 
-// Custom hook for consuming the theme context
 export const useTheme = () => useContext(ThemeContext);
 
-// The order in which themes cycle when the toggle button is clicked
 const THEME_ORDER: Theme[] = ["dark", "batman"];
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  // Initialize theme from localStorage, defaulting to "dark"
   const [theme, setTheme] = useState<Theme>(() => {
     if (typeof window !== "undefined") {
       return (localStorage.getItem("theme") as Theme) || "dark";
     }
     return "dark";
   });
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
-  // When theme changes: update the <html> class and persist to localStorage
-  useEffect(() => {
+  // Apply theme class + persist
+  const applyTheme = useCallback((t: Theme) => {
     const root = document.documentElement;
-    root.classList.remove("dark", "batman"); // Remove all theme classes
-    root.classList.add(theme); // Apply the new theme class
-    localStorage.setItem("theme", theme); // Persist for next visit
-  }, [theme]);
+    root.classList.remove("dark", "batman");
+    root.classList.add(t);
+    localStorage.setItem("theme", t);
+  }, []);
 
-  // Toggle to the next theme in the cycle
-  const toggleTheme = () =>
-    setTheme((t) => {
-      const idx = THEME_ORDER.indexOf(t);
-      return THEME_ORDER[(idx + 1) % THEME_ORDER.length];
-    });
+  // On mount, ensure class matches state
+  useEffect(() => {
+    applyTheme(theme);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const toggleTheme = useCallback(() => {
+    const nextTheme = THEME_ORDER[(THEME_ORDER.indexOf(theme) + 1) % THEME_ORDER.length];
+    setIsTransitioning(true);
+
+    // Use View Transitions API if available for native smooth transition
+    if (typeof document !== "undefined" && "startViewTransition" in document) {
+      const transition = (document as any).startViewTransition(() => {
+        applyTheme(nextTheme);
+        setTheme(nextTheme);
+      });
+      transition.finished.then(() => setIsTransitioning(false));
+    } else {
+      // Fallback: just swap instantly, overlay handles the visual
+      applyTheme(nextTheme);
+      setTheme(nextTheme);
+      setTimeout(() => setIsTransitioning(false), 600);
+    }
+  }, [theme, applyTheme]);
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, toggleTheme, isTransitioning }}>
       {children}
     </ThemeContext.Provider>
   );
