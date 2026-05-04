@@ -1,6 +1,6 @@
 # Security Audit Summary - Quick Reference
 
-**Project:** nanchong-nexus-works  
+**Project:** Adil Rahman Akash Portfolio  
 **Date:** April 15, 2026  
 **Status:** 🔴 CRITICAL ISSUES PRESENT
 

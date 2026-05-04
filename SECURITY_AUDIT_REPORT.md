@@ -1,5 +1,5 @@
 # Security & Code Quality Audit Report
-**Portfolio: nanchong-nexus-works**  
+**Portfolio: Adil Rahman Akash Portfolio**  
 **Generated: April 15, 2026**  
 **Status: ⚠️ CRITICAL ISSUES FOUND**
 
@@ -436,7 +436,6 @@ This comprehensive security audit identified **3 CRITICAL**, **8 HIGH**, **10 ME
   User-agent: *
   Allow: /
   Disallow: /admin/
-  Sitemap: https://nanchong-nexus-works.lovable.app/sitemap.xml
   ```
 
 ### 23. **Missing 404 Page Error Handling**
@@ -590,5 +589,5 @@ After remediation, this will be a secure, production-ready portfolio.
 
 **Audit Conducted By:** GitHub Copilot  
 **Report Generated:** April 15, 2026  
-**Repository:** nanchong-nexus-works  
+**Repository:** Adil Rahman Akash Portfolio  
 **Severity Assessment:** 🔴 CRITICAL ISSUES PRESENT
