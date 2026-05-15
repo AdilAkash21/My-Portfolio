@@ -4,6 +4,7 @@ import { ArrowDown, Shield, Download } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 import profileImg from "@/assets/profile-optimized.webp";
 import batmanImg from "@/assets/batman-profile.png";
+import ShaderBackground from "@/components/ShaderBackground";
 const preloadLink = document.createElement("link");
 preloadLink.rel = "preload";
 preloadLink.as = "image";
@@ -24,6 +25,13 @@ const HeroSection = () => {
   }, [handleScroll]);
   const parallaxOffset = scrollY * 0.3;
   return <section ref={sectionRef} id="home" className="relative min-h-screen flex items-center pt-32 overflow-hidden">
+
+      {
+    /* ─── WebGL Shader Background (flowing aurora, theme-aware) ─── */
+  }
+      <div className="absolute inset-0 pointer-events-none opacity-70 mix-blend-screen">
+        <ShaderBackground intensity={isBatman ? 0.45 : 0.6} />
+      </div>
 
       {
     /* ─── Geometric Background ─── */
