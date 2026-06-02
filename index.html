@@ -61,7 +61,10 @@
       html.batman #root-skeleton{background:#07070a}
       /* sk-wrap is above the cinema layer */
       .sk-wrap{position:relative;z-index:10;text-align:center;padding:2rem}
-      #root:not(:empty)+#root-skeleton{display:none}
+      /* Hide skeleton only once the intro quote has had time to play. */
+      #root-skeleton{position:fixed;inset:0;z-index:60;opacity:1;transition:opacity .5s ease-out}
+      body.sk-ready #root-skeleton{opacity:0;pointer-events:none}
+      body.sk-ready #root-skeleton.sk-gone{display:none}
 
       /* ── Show/hide variants based on theme ── */
       .sk-dark{display:block}
