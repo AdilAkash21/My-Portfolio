@@ -61,7 +61,10 @@
       html.batman #root-skeleton{background:#07070a}
       /* sk-wrap is above the cinema layer */
       .sk-wrap{position:relative;z-index:10;text-align:center;padding:2rem}
-      #root:not(:empty)+#root-skeleton{display:none}
+      /* Hide skeleton only once the intro quote has had time to play. */
+      #root-skeleton{position:fixed;inset:0;z-index:60;opacity:1;transition:opacity .5s ease-out}
+      body.sk-ready #root-skeleton{opacity:0;pointer-events:none}
+      body.sk-ready #root-skeleton.sk-gone{display:none}
 
       /* ── Show/hide variants based on theme ── */
       .sk-dark{display:block}
@@ -186,5 +189,24 @@
     </div><!-- /#root-skeleton -->
     
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      // Keep the skeleton "Eat·Sleep·Code·Repeat" / Batman quote on screen
+      // long enough to fully play before fading out to the React intro.
+      (function () {
+        var MIN_MS = 2200; // matches the quote+subtitle animation timeline
+        var start = performance.now();
+        function dismiss() {
+          var elapsed = performance.now() - start;
+          var wait = Math.max(0, MIN_MS - elapsed);
+          setTimeout(function () {
+            document.body.classList.add('sk-ready');
+            var sk = document.getElementById('root-skeleton');
+            if (sk) setTimeout(function(){ sk.classList.add('sk-gone'); }, 550);
+          }, wait);
+        }
+        if (document.readyState === 'complete') dismiss();
+        else window.addEventListener('load', dismiss);
+      })();
+    </script>
   </body>
 </html>
