@@ -190,22 +190,45 @@
     
     <script type="module" src="/src/main.jsx"></script>
     <script>
-      // Keep the skeleton "Eat·Sleep·Code·Repeat" / Batman quote on screen
-      // long enough to fully play before fading out to the React intro.
+      // Dismiss the skeleton only when the intro quote animation actually
+      // finishes (per-theme), not on a fixed timer. We listen for the
+      // `animationend` event on the LAST animated element of the active
+      // variant — the loader dots, which are the final delayed animation
+      // in both the dark and Batman timelines. A generous safety timeout
+      // guarantees we never get stuck if animations are skipped (e.g.
+      // prefers-reduced-motion or background tab throttling).
       (function () {
-        var MIN_MS = 2200; // matches the quote+subtitle animation timeline
-        var start = performance.now();
+        var SAFETY_MS = 8000;
+        var dismissed = false;
         function dismiss() {
-          var elapsed = performance.now() - start;
-          var wait = Math.max(0, MIN_MS - elapsed);
-          setTimeout(function () {
-            document.body.classList.add('sk-ready');
-            var sk = document.getElementById('root-skeleton');
-            if (sk) setTimeout(function(){ sk.classList.add('sk-gone'); }, 550);
-          }, wait);
+          if (dismissed) return;
+          dismissed = true;
+          document.body.classList.add('sk-ready');
+          var sk = document.getElementById('root-skeleton');
+          if (sk) setTimeout(function () { sk.classList.add('sk-gone'); }, 550);
         }
-        if (document.readyState === 'complete') dismiss();
-        else window.addEventListener('load', dismiss);
+        function arm() {
+          var isBat = document.documentElement.classList.contains('batman');
+          // Last animated element in each variant timeline:
+          //   dark   → .sk-dark .sk-loader   (fades in at 1.3s, 0.4s dur)
+          //   batman → .sk-batman .sk-bloader (fades in at 4.0s, 0.4s dur)
+          var sel = isBat ? '.sk-batman .sk-bloader' : '.sk-dark .sk-loader';
+          var target = document.querySelector(sel);
+          if (target) {
+            target.addEventListener('animationend', function handler(e) {
+              // The loader's own fade-in is the gate (not the infinite
+              // bouncing children). Match by animation-name or just take
+              // the first animationend on the wrapper itself.
+              if (e.target === target) {
+                target.removeEventListener('animationend', handler);
+                dismiss();
+              }
+            });
+          }
+          setTimeout(dismiss, SAFETY_MS);
+        }
+        if (document.readyState === 'complete') arm();
+        else window.addEventListener('load', arm);
       })();
     </script>
   </body>
