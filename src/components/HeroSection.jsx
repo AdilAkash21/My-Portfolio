@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { ArrowDown, Shield, Download } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
+import Magnetic from "@/components/ui/Magnetic";
 import profileImg from "@/assets/profile-optimized.webp";
 import batmanImg from "@/assets/batman-profile.png";
 import ShaderBackground from "@/components/ShaderBackground";
@@ -167,35 +168,40 @@ const HeroSection = () => {
             {
     /* CTA buttons — centered on mobile, left-aligned on desktop */
   }
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4">
-              {
-    /* Primary CTA: View Work / Enter Batcave */
-  }
-              <a
-    href={isBatman ? "#about" : "#projects"}
-    className="inline-flex items-center gap-2 rounded-lg border border-primary bg-primary/10 px-6 py-3 text-sm font-medium text-primary btn-float-hover hover:bg-primary hover:text-primary-foreground hover:shadow-lg"
-  >
-                {isBatman ? <>
-                    Enter the Batcave
-                    <Shield size={16} />
-                  </> : <>
-                    View My Work
-                    <ArrowDown size={16} />
-                  </>}
-              </a>
-              {
-    /* Secondary CTA: Download CV / Download Dossier */
-  }
-              <a
-    href="/resume.pdf"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="inline-flex items-center gap-2 rounded-lg border border-border px-6 py-3 text-sm font-medium text-muted-foreground btn-float-hover hover:border-primary hover:text-primary hover:shadow-lg transition-colors"
-  >
-                {isBatman ? "Download Dossier" : "Download CV"}
-                <Download size={16} />
-              </a>
-            </div>
+             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4">
+               {
+     /* Primary CTA: View Work / Enter Batcave */
+   }
+               <Magnetic>
+                 <a
+     href={isBatman ? "#about" : "#projects"}
+     className="inline-flex items-center gap-2 rounded-lg border border-primary bg-primary/10 px-6 py-3 text-sm font-medium text-primary btn-float-hover hover:bg-primary hover:text-primary-foreground hover:shadow-lg"
+   >
+                     {isBatman ? <>
+                         Enter the Batcave
+                         <Shield size={16} />
+                       </> : <>
+                         View My Work
+                         <ArrowDown size={16} />
+                       </>}
+                 </a>
+               </Magnetic>
+               {
+     /* Secondary CTA: Download CV / Download Dossier */
+   }
+               <Magnetic>
+                 <a
+     href="/resume.pdf"
+     target="_blank"
+     rel="noopener noreferrer"
+     className="inline-flex items-center gap-2 rounded-lg border border-border px-6 py-3 text-sm font-medium text-muted-foreground btn-float-hover hover:border-primary hover:text-primary hover:shadow-lg transition-colors"
+   >
+                     {isBatman ? "Download Dossier" : "Download CV"}
+                     <Download size={16} />
+                 </a>
+               </Magnetic>
+             </div>
+
           </motion.div>
 
           {

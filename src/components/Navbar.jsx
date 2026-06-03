@@ -77,10 +77,12 @@ const Navbar = () => {
                 <a
     href={l.href}
     className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hover-underline pb-0.5"
+    aria-label={`Navigate to ${l.label}`}
   >
-                  {l.label}
+                    {l.label}
                 </a>
               </li>)}
+
           </ul>
           <ThemeToggle />
         </div>

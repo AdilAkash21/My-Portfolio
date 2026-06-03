@@ -2,100 +2,70 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ExternalLink, Github, Shield, AlertTriangle, Lock, Crosshair } from "lucide-react";
 import { useRef, useCallback, useState } from "react";
 import { useTheme } from "@/contexts/ThemeContext";
-const normalProjects = [
-  {
-    title: "Portfolio Website",
-    description: "A sleek, responsive personal portfolio built with React and Tailwind CSS to showcase projects and skills.",
-    tags: ["React", "Tailwind CSS", "TypeScript"],
-    category: "Web",
-    github: "https://github.com"
-  },
-  {
-    title: "E-Commerce UI",
-    description: "A modern e-commerce front-end with product grids, cart functionality, and clean responsive design.",
-    tags: ["HTML", "CSS", "JavaScript"],
-    category: "Web",
-    github: "https://github.com"
-  },
-  {
-    title: "Task Manager App",
-    description: "A productivity app with CRUD operations, filtering, and local storage persistence.",
-    tags: ["Java", "CSS", "JavaScript"],
-    category: "App",
-    github: "https://github.com"
-  },
-  {
-    title: "Landing Page Template",
-    description: "A conversion-optimized landing page template with smooth animations and CTA sections.",
-    tags: ["Tailwind CSS", "JavaScript"],
-    category: "Design",
-    github: "https://github.com"
-  }
-];
-const batmanProjects = [
-  {
-    title: "Batcomputer v7.0",
-    description: "AI-powered crime analysis and prediction system. Processes real-time Gotham surveillance data.",
-    tags: ["Neural Networks", "Surveillance", "Predictive AI"],
-    category: "Intel",
-    icon: Crosshair
-  },
-  {
-    title: "Arkham Firewall",
-    description: "Military-grade cybersecurity framework protecting Wayne Enterprises and the Batcave network.",
-    tags: ["Encryption", "Zero-Trust", "Intrusion Detection"],
-    category: "Defense",
-    icon: Lock
-  },
-  {
-    title: "Gotham Threat Tracker",
-    description: "Real-time villain tracking and threat-level classification system across Gotham's underworld.",
-    tags: ["Forensics", "GIS Mapping", "Data Mining"],
-    category: "Intel",
-    icon: AlertTriangle
-  },
-  {
-    title: "Wayne Tech Gadget Suite",
-    description: "R&D platform for designing and deploying next-gen crime-fighting gadgets.",
-    tags: ["Hardware Design", "3D Printing", "Ballistics"],
-    category: "Gear",
-    icon: Shield
-  }
-];
+import { useProjects } from "@/hooks/useSupabaseData";
+
+const ICON_MAP = {
+  Shield,
+  AlertTriangle,
+  Lock,
+  Crosshair,
+};
+
 const normalCategories = ["All", "Web", "App", "Design"];
 const batmanCategories = ["All", "Intel", "Defense", "Gear"];
+
 const TiltCard = ({ children, className }) => {
   const ref = useRef(null);
+  const [rotate, setRotate] = useState({ x: 0, y: 0 });
+  const [glare, setGlare] = useState({ x: 0, y: 0 });
+
   const handleMouseMove = useCallback((e) => {
     const el = ref.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
-    el.style.transform = `perspective(600px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg) translateY(-4px)`;
+    
+    setRotate({ x: -y * 12, y: x * 12 });
+    setGlare({ x: (e.clientX - rect.left), y: (e.clientY - rect.top) });
   }, []);
   const handleMouseLeave = useCallback(() => {
-    const el = ref.current;
-    if (!el) return;
-    el.style.transform = "perspective(600px) rotateY(0deg) rotateX(0deg) translateY(0px)";
+    setRotate({ x: 0, y: 0 });
+    setGlare({ x: 0, y: 0 });
   }, []);
   return <div
     ref={ref}
     className={className}
     onMouseMove={handleMouseMove}
     onMouseLeave={handleMouseLeave}
-    style={{ transition: "transform 0.2s ease-out", willChange: "transform" }}
+    style={{ 
+      transition: "transform 0.1s ease-out", 
+      willChange: "transform",
+      transform: `perspective(1000px) rotateX(${rotate.x}deg) rotateY(${rotate.y}deg)`
+    }}
   >
       {children}
+      <div 
+        className="absolute inset-0 pointer-events-none rounded-xl overflow-hidden z-0"
+        style={{
+          background: `radial-gradient(circle at ${glare.x}px ${glare.y}px, rgba(255,255,255,0.15) 0%, transparent 80%)`
+        }}
+      />
     </div>;
 };
+
 const ProjectsSection = () => {
   const { theme } = useTheme();
   const isBatman = theme === "batman";
   const [activeFilter, setActiveFilter] = useState("All");
-  const projects = isBatman ? batmanProjects : normalProjects;
+
+  const { data: projects = [], isLoading } = useProjects(theme);
+
   const categories = isBatman ? batmanCategories : normalCategories;
   const filtered = activeFilter === "All" ? projects : projects.filter((p) => p.category === activeFilter);
+
+  if (isLoading) return <div className="py-24 text-center font-mono text-primary">Loading Classified Intel...</div>;
+
   return <section id="projects" className="py-24">
       <div className="container mx-auto px-6">
         <motion.div
@@ -110,9 +80,6 @@ const ProjectsSection = () => {
           </h3>
         </motion.div>
 
-        {
-    /* Filter tabs */
-  }
         <motion.div
     className="flex flex-wrap gap-2 mb-8"
     initial={{ opacity: 0, y: 10 }}
@@ -125,17 +92,14 @@ const ProjectsSection = () => {
     onClick={() => setActiveFilter(cat)}
     className={`rounded-full px-4 py-1.5 font-mono text-xs transition-all duration-300 border ${activeFilter === cat ? "border-primary bg-primary/10 text-primary shadow-[0_0_8px_hsl(var(--primary)/0.3)]" : "border-border text-muted-foreground hover:border-primary/40 hover:text-primary"}`}
   >
-              {cat}
+               {cat}
             </button>)}
         </motion.div>
 
-        {
-    /* Project cards grid with AnimatePresence for filter transitions */
-  }
         <div className="grid sm:grid-cols-2 gap-6">
           <AnimatePresence mode="popLayout">
             {filtered.map((p, i) => <motion.div
-    key={p.title}
+    key={p.id || p.title}
     layout
     initial={{ opacity: 0, scale: 0.9 }}
     animate={{ opacity: 1, scale: 1 }}
@@ -145,9 +109,9 @@ const ProjectsSection = () => {
                 <TiltCard className="group relative rounded-xl border border-border bg-card p-6 hover:border-primary/40 hover:border-glow flex flex-col h-full">
                   <div className="flex items-center justify-between mb-4">
                     <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                      {isBatman && "icon" in p ? <p.icon className="text-primary" size={18} /> : <ExternalLink className="text-primary" size={18} />}
+                      {isBatman && p.icon_type ? <div className="text-primary">{React.createElement(ICON_MAP[p.icon_type] || ExternalLink, { size: 18 })}</div> : <ExternalLink className="text-primary" size={18} />}
                     </div>
-                    {isBatman ? <span className="font-mono text-xs text-primary/80 uppercase tracking-wider">Classified</span> : "github" in p ? <a
+                    {isBatman ? <span className="font-mono text-xs text-primary/80 uppercase tracking-wider">Classified</span> : p.github ? <a
     href={p.github}
     target="_blank"
     rel="noopener noreferrer"
@@ -164,7 +128,7 @@ const ProjectsSection = () => {
                     {p.description}
                   </p>
                   <div className="flex flex-wrap gap-2">
-                    {p.tags.map((t) => <span key={t} className="font-mono text-xs text-muted-foreground">{t}</span>)}
+                    {p.tags?.map((t) => <span key={t} className="font-mono text-xs text-muted-foreground">{t}</span>)}
                   </div>
                 </TiltCard>
               </motion.div>)}
@@ -177,3 +141,4 @@ var stdin_default = ProjectsSection;
 export {
   stdin_default as default
 };
+

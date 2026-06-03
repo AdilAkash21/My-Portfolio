@@ -1,19 +1,17 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
+import { Helmet } from "react-helmet-async";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import ScrollReveal from "@/components/ScrollReveal";
 import ScrollToTop from "@/components/ScrollToTop";
 import ParallaxBackground from "@/components/ParallaxBackground";
-const logoImg = "/logo-ara.webp";
+import SmartImage from "@/components/ui/SmartImage";
 import { useTheme } from "@/contexts/ThemeContext";
 import batLogoImg from "@/assets/bat-logo-gold.png";
-const preloadBatLogo = document.createElement("link");
-preloadBatLogo.rel = "preload";
-preloadBatLogo.as = "image";
-preloadBatLogo.href = batLogoImg;
-document.head.appendChild(preloadBatLogo);
 import { lazy, Suspense } from "react";
+const logoImg = "/logo-ara.webp";
+
 const AboutSection = lazy(() => import("@/components/AboutSection"));
 const ExperienceSection = lazy(() => import("@/components/ExperienceSection"));
 const SkillsSection = lazy(() => import("@/components/SkillsSection"));
@@ -111,10 +109,33 @@ const Index = () => {
   }, []);
   const nameWords = isBatman ? ["The", "Dark", "Knight"] : ["Welcome", "!"];
   return <div className="min-h-screen bg-background text-foreground">
-      {
-    /* Fixed parallax background with gradient orbs and particles */
-  }
-      <ParallaxBackground />
+        <Helmet>
+          <title>ARA | Professional Portfolio</title>
+          <meta name="description" content="High-performance professional portfolio showcasing a blend of creative coding and software engineering." />
+          <meta property="og:title" content="ARA | Professional Portfolio" />
+          <meta property="og:description" content="Exploring the intersection of design and engineering." />
+          <meta property="og:image" content={logoImg} />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <script type="application/ld+json">
+            {JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              "name": "ARA",
+              "jobTitle": "Software Engineer",
+              "url": window.location.href,
+              "image": logoImg,
+              "sameAs": [
+                "https://github.com/your-github",
+                "https://linkedin.com/in/your-linkedin"
+              ]
+            })}
+          </script>
+        </Helmet>
+        {
+      /* Fixed parallax background with gradient orbs and particles */
+    }
+        <ParallaxBackground />
+
 
       {
     /* ─── Intro Loading Screen ─── */
@@ -158,22 +179,18 @@ const Index = () => {
     animate={{ scale: 1, opacity: 1, filter: "blur(0px)" }}
     transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
   >
-                {isBatman ? <img
+                {isBatman ? <SmartImage
     src={batLogoImg}
     alt="Bat Symbol"
     className="w-full h-full object-contain drop-shadow-[0_0_25px_hsl(var(--primary)/0.6)]"
-    fetchPriority="high"
-    loading="eager"
-    decoding="sync"
-  /> : <img
+    priority
+  /> : <SmartImage
     src={logoImg}
     alt="ARA Logo"
     width={144}
     height={144}
     className="w-full h-full object-contain drop-shadow-[0_0_15px_hsl(var(--primary)/0.4)]"
-    fetchPriority="high"
-    loading="eager"
-    decoding="sync"
+    priority
   />}
               </motion.div>
 
