@@ -3,14 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' *.supabase.co; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' *.supabase.co https:; frame-ancestors 'none';" />
+    <meta
+      http-equiv="Content-Security-Policy"
+       content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' *.supabase.co; style-src 'self' 'unsafe-inline' fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' data: fonts.gstatic.com; connect-src 'self' *.supabase.co https:; frame-ancestors 'none';"
+    />
     <title>Adil Rahman Akash - Software Engineer & Web Developer</title>
-    <meta name="description" content="Portfolio of Adil Rahman Akash - Software Engineer specializing in React, JavaScript, Tailwind CSS, and full-stack web development. View projects, skills, and experience." />
+    <meta
+      name="description"
+      content="Portfolio of Adil Rahman Akash - Software Engineer specializing in React, JavaScript, Tailwind CSS, and full-stack web development. View projects, skills, and experience."
+    />
     <meta name="author" content="Adil Rahman Akash" />
 
     <!-- Open Graph -->
-    <meta property="og:title" content="Adil Rahman Akash - Software Engineer & Web Developer" />
-    <meta property="og:description" content="Portfolio of Adil Rahman Akash - Software Engineer specializing in React, JavaScript, Tailwind CSS, and full-stack web development." />
+    <meta
+      property="og:title"
+      content="Adil Rahman Akash - Software Engineer & Web Developer"
+    />
+    <meta
+      property="og:description"
+      content="Portfolio of Adil Rahman Akash - Software Engineer specializing in React, JavaScript, Tailwind CSS, and full-stack web development."
+    />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="/og-image.png" />
     <meta property="og:image:width" content="1200" />
@@ -21,128 +33,559 @@
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@adilrahmanakash" />
-    <meta name="twitter:title" content="Adil Rahman Akash - Software Engineer & Web Developer" />
-    <meta name="twitter:description" content="Portfolio of Adil Rahman Akash - Software Engineer specializing in React, JavaScript, Tailwind CSS, and full-stack web development." />
+    <meta
+      name="twitter:title"
+      content="Adil Rahman Akash - Software Engineer & Web Developer"
+    />
+    <meta
+      name="twitter:description"
+      content="Portfolio of Adil Rahman Akash - Software Engineer specializing in React, JavaScript, Tailwind CSS, and full-stack web development."
+    />
     <meta name="twitter:image" content="/og-image.png" />
 
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Adil Rahman Akash",
-      "jobTitle": "Software Engineer",
-      "description": "Software Engineer specializing in React, JavaScript, Tailwind CSS, and full-stack web development.",
-      "knowsAbout": ["React", "JavaScript", "Tailwind CSS", "Full-Stack Development", "Web Development"],
-      "alumniOf": {
-        "@type": "CollegeOrUniversity",
-        "name": "China West Normal University"
-      },
-      "sameAs": []
-    }
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Adil Rahman Akash",
+        "jobTitle": "Software Engineer",
+        "description": "Software Engineer specializing in React, JavaScript, Tailwind CSS, and full-stack web development.",
+        "knowsAbout": [
+          "React",
+          "JavaScript",
+          "Tailwind CSS",
+          "Full-Stack Development",
+          "Web Development"
+        ],
+        "alumniOf": {
+          "@type": "CollegeOrUniversity",
+          "name": "China West Normal University"
+        },
+        "sameAs": []
+      }
     </script>
 
-    <link rel="preload" as="image" href="/logo-ara.webp" type="image/webp"/>
+    <link rel="preload" as="image" href="/logo-ara.webp" type="image/webp" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Mono:wght@400;700&display=swap" />
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Mono:wght@400;700&display=swap" media="print" onload="this.media='all'" />
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Mono:wght@400;700&display=swap" /></noscript>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" media="print" onload="this.media='all'" />
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" /></noscript>
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Mono:wght@400;700&display=swap"
+    />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Mono:wght@400;700&display=swap"
+      media="print"
+      onload="this.media = 'all'"
+    />
+    <noscript
+      ><link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Mono:wght@400;700&display=swap"
+    /></noscript>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      media="print"
+      onload="this.media = 'all'"
+    />
+    <noscript
+      ><link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    /></noscript>
     <script>
       // Sync theme class before first paint — defaults to "dark" for new visitors
-      (function(){var t=localStorage.getItem('theme');if(!t||!['dark','batman'].includes(t)){t='dark';localStorage.setItem('theme','dark')}document.documentElement.className=t})();
+      (function () {
+        var t = localStorage.getItem("theme");
+        if (!t || !["dark", "batman"].includes(t)) {
+          t = "dark";
+          localStorage.setItem("theme", "dark");
+        }
+        document.documentElement.className = t;
+      })();
     </script>
     <style>
       /* ── Skeleton shell ── */
-      #root-skeleton{position:relative;background:#111521;color:#d4d9e3;min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono','Space Mono',monospace;transition:background .3s;overflow:hidden}
-      html.batman #root-skeleton{background:#07070a}
+      #root-skeleton {
+        position: relative;
+        background: #111521;
+        color: #d4d9e3;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "JetBrains Mono", "Space Mono", monospace;
+        transition: background 0.3s;
+        overflow: hidden;
+      }
+      html.batman #root-skeleton {
+        background: #07070a;
+      }
       /* sk-wrap is above the cinema layer */
-      .sk-wrap{position:relative;z-index:10;text-align:center;padding:2rem}
+      .sk-wrap {
+        position: relative;
+        z-index: 10;
+        text-align: center;
+        padding: 2rem;
+      }
       /* Hide skeleton only once the intro quote has had time to play. */
-      #root-skeleton{position:fixed;inset:0;z-index:60;opacity:1;transition:opacity .5s ease-out}
-      body.sk-ready #root-skeleton{opacity:0;pointer-events:none}
-      body.sk-ready #root-skeleton.sk-gone{display:none}
+      #root-skeleton {
+        position: fixed;
+        inset: 0;
+        z-index: 60;
+        opacity: 1;
+        transition: opacity 0.5s ease-out;
+      }
+      body.sk-ready #root-skeleton {
+        opacity: 0;
+        pointer-events: none;
+      }
+      body.sk-ready #root-skeleton.sk-gone {
+        display: none;
+      }
 
       /* ── Show/hide variants based on theme ── */
-      .sk-dark{display:block}
-      .sk-batman{display:none}
-      html.batman .sk-dark{display:none}
-      html.batman .sk-batman{display:block}
+      .sk-dark {
+        display: block;
+      }
+      .sk-batman {
+        display: none;
+      }
+      html.batman .sk-dark {
+        display: none;
+      }
+      html.batman .sk-batman {
+        display: block;
+      }
 
       /* ── Cinematic layer (Batman only) — absolute, below sk-wrap ── */
       /* Wraps all cinematic effects; clips the overflowing grain */
-      .sk-cinema{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+      .sk-cinema {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+      }
       /* Bat-Signal spotlight */
-      .sk-signal{position:absolute;inset:0;z-index:1}
-      .sk-beam{position:absolute;bottom:-5%;left:50%;width:0;height:0;animation:sk-sweep 6s ease-in-out infinite alternate}
-      .sk-beam::before{content:'';position:absolute;bottom:0;left:-220px;width:440px;height:85vh;background:linear-gradient(to top,rgba(212,160,23,.12) 0%,rgba(212,160,23,.04) 45%,transparent 100%);clip-path:polygon(50% 100%,5% 0%,95% 0%);transform-origin:50% 100%}
-      .sk-beam::after{content:'';position:absolute;bottom:0;left:-300px;width:600px;height:90vh;background:linear-gradient(to top,rgba(212,160,23,.04) 0%,rgba(212,160,23,.015) 50%,transparent 100%);clip-path:polygon(50% 100%,15% 0%,85% 0%);transform-origin:50% 100%}
-      .sk-signal-src{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:60px;height:8px;border-radius:50%;background:rgba(212,160,23,.3);filter:blur(10px);animation:sk-src-pulse 6s ease-in-out infinite alternate}
-      @keyframes sk-sweep{from{transform:rotate(-26deg)}to{transform:rotate(26deg)}}
-      @keyframes sk-src-pulse{from{transform:translateX(-50%) rotate(-26deg);opacity:.45}to{transform:translateX(-50%) rotate(26deg);opacity:.9}}
+      .sk-signal {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+      }
+      .sk-beam {
+        position: absolute;
+        bottom: -5%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        animation: sk-sweep 6s ease-in-out infinite alternate;
+      }
+      .sk-beam::before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: -220px;
+        width: 440px;
+        height: 85vh;
+        background: linear-gradient(
+          to top,
+          rgba(212, 160, 23, 0.12) 0%,
+          rgba(212, 160, 23, 0.04) 45%,
+          transparent 100%
+        );
+        clip-path: polygon(50% 100%, 5% 0%, 95% 0%);
+        transform-origin: 50% 100%;
+      }
+      .sk-beam::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: -300px;
+        width: 600px;
+        height: 90vh;
+        background: linear-gradient(
+          to top,
+          rgba(212, 160, 23, 0.04) 0%,
+          rgba(212, 160, 23, 0.015) 50%,
+          transparent 100%
+        );
+        clip-path: polygon(50% 100%, 15% 0%, 85% 0%);
+        transform-origin: 50% 100%;
+      }
+      .sk-signal-src {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(212, 160, 23, 0.3);
+        filter: blur(10px);
+        animation: sk-src-pulse 6s ease-in-out infinite alternate;
+      }
+      @keyframes sk-sweep {
+        from {
+          transform: rotate(-26deg);
+        }
+        to {
+          transform: rotate(26deg);
+        }
+      }
+      @keyframes sk-src-pulse {
+        from {
+          transform: translateX(-50%) rotate(-26deg);
+          opacity: 0.45;
+        }
+        to {
+          transform: translateX(-50%) rotate(26deg);
+          opacity: 0.9;
+        }
+      }
       /* Vignette — above signal beam, below content */
-      .sk-vignette{position:absolute;inset:0;z-index:2;background:radial-gradient(ellipse 80% 75% at 50% 50%,transparent 25%,rgba(0,0,0,.52) 58%,rgba(0,0,0,.84) 77%,rgba(0,0,0,.97) 100%)}
+      .sk-vignette {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        background: radial-gradient(
+          ellipse 80% 75% at 50% 50%,
+          transparent 25%,
+          rgba(0, 0, 0, 0.52) 58%,
+          rgba(0, 0, 0, 0.84) 77%,
+          rgba(0, 0, 0, 0.97) 100%
+        );
+      }
       /* Subtle scanlines */
-      .sk-scanlines{position:absolute;inset:0;z-index:3;background:repeating-linear-gradient(to bottom,transparent 0px,transparent 3px,rgba(0,0,0,.07) 3px,rgba(0,0,0,.07) 4px)}
+      .sk-scanlines {
+        position: absolute;
+        inset: 0;
+        z-index: 3;
+        background: repeating-linear-gradient(
+          to bottom,
+          transparent 0px,
+          transparent 3px,
+          rgba(0, 0, 0, 0.07) 3px,
+          rgba(0, 0, 0, 0.07) 4px
+        );
+      }
       /* Film grain — extends beyond bounds (clipped by .sk-cinema overflow:hidden) */
-      .sk-grain{position:absolute;top:-25%;left:-25%;width:150%;height:150%;z-index:4;opacity:.05;animation:sk-grain-shift .2s steps(1) infinite}
-      .sk-grain-inner{width:100%;height:100%;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)'/%3E%3C/svg%3E");background-size:200px 200px}
-      @keyframes sk-grain-shift{0%{transform:translate(0,0)}14%{transform:translate(-2%,-3%)}28%{transform:translate(-4%,2%)}42%{transform:translate(3%,-1%)}57%{transform:translate(-1%,4%)}71%{transform:translate(3%,1%)}85%{transform:translate(-2%,3%)}100%{transform:translate(1%,-2%)}}
+      .sk-grain {
+        position: absolute;
+        top: -25%;
+        left: -25%;
+        width: 150%;
+        height: 150%;
+        z-index: 4;
+        opacity: 0.05;
+        animation: sk-grain-shift 0.2s steps(1) infinite;
+      }
+      .sk-grain-inner {
+        width: 100%;
+        height: 100%;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)'/%3E%3C/svg%3E");
+        background-size: 200px 200px;
+      }
+      @keyframes sk-grain-shift {
+        0% {
+          transform: translate(0, 0);
+        }
+        14% {
+          transform: translate(-2%, -3%);
+        }
+        28% {
+          transform: translate(-4%, 2%);
+        }
+        42% {
+          transform: translate(3%, -1%);
+        }
+        57% {
+          transform: translate(-1%, 4%);
+        }
+        71% {
+          transform: translate(3%, 1%);
+        }
+        85% {
+          transform: translate(-2%, 3%);
+        }
+        100% {
+          transform: translate(1%, -2%);
+        }
+      }
 
       /* ── Dark variant quote ── */
-      .sk-quote{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;margin-bottom:1.5rem}
-      .sk-word{font-size:1.6rem;font-weight:600;letter-spacing:.04em;opacity:0;animation:sk-pop .5s ease-out forwards}
-      .sk-word:nth-child(1){animation-delay:.2s;color:#58c4dc}
-      .sk-word:nth-child(2){animation-delay:.4s;color:#6b7a90}
-      .sk-word:nth-child(3){animation-delay:.6s;color:#58c4dc}
-      .sk-word:nth-child(4){animation-delay:.8s;color:#6b7a90}
-      .sk-dot{color:#58c4dc;opacity:.5;font-size:1.2rem;align-self:center;animation:sk-pop .5s ease-out forwards}
-      .sk-dot:nth-child(2){animation-delay:.3s}
-      .sk-dot:nth-child(4){animation-delay:.5s}
-      .sk-dot:nth-child(6){animation-delay:.7s}
-      .sk-line{width:120px;height:2px;background:linear-gradient(90deg,transparent,#58c4dc,transparent);margin:0 auto 1.2rem;opacity:0;animation:sk-fade .6s .9s ease-out forwards}
-      .sk-sub{font-size:.8rem;color:#4a5568;letter-spacing:.15em;text-transform:uppercase;opacity:0;animation:sk-fade .5s 1.1s ease-out forwards}
-      .sk-loader{display:flex;gap:6px;justify-content:center;margin-top:1.5rem;opacity:0;animation:sk-fade .4s 1.3s ease-out forwards}
-      .sk-loader span{width:6px;height:6px;border-radius:50%;background:#58c4dc;animation:sk-bounce .8s ease-in-out infinite alternate}
-      .sk-loader span:nth-child(2){animation-delay:.15s}
-      .sk-loader span:nth-child(3){animation-delay:.3s}
+      .sk-quote {
+        display: flex;
+        gap: 0.6rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 1.5rem;
+      }
+      .sk-word {
+        font-size: 1.6rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        opacity: 0;
+        animation: sk-pop 0.5s ease-out forwards;
+      }
+      .sk-word:nth-child(1) {
+        animation-delay: 0.2s;
+        color: #58c4dc;
+      }
+      .sk-word:nth-child(2) {
+        animation-delay: 0.4s;
+        color: #6b7a90;
+      }
+      .sk-word:nth-child(3) {
+        animation-delay: 0.6s;
+        color: #58c4dc;
+      }
+      .sk-word:nth-child(4) {
+        animation-delay: 0.8s;
+        color: #6b7a90;
+      }
+      .sk-dot {
+        color: #58c4dc;
+        opacity: 0.5;
+        font-size: 1.2rem;
+        align-self: center;
+        animation: sk-pop 0.5s ease-out forwards;
+      }
+      .sk-dot:nth-child(2) {
+        animation-delay: 0.3s;
+      }
+      .sk-dot:nth-child(4) {
+        animation-delay: 0.5s;
+      }
+      .sk-dot:nth-child(6) {
+        animation-delay: 0.7s;
+      }
+      .sk-line {
+        width: 120px;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #58c4dc, transparent);
+        margin: 0 auto 1.2rem;
+        opacity: 0;
+        animation: sk-fade 0.6s 0.9s ease-out forwards;
+      }
+      .sk-sub {
+        font-size: 0.8rem;
+        color: #4a5568;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        opacity: 0;
+        animation: sk-fade 0.5s 1.1s ease-out forwards;
+      }
+      .sk-loader {
+        display: flex;
+        gap: 6px;
+        justify-content: center;
+        margin-top: 1.5rem;
+        opacity: 0;
+        animation: sk-fade 0.4s 1.3s ease-out forwards;
+      }
+      .sk-loader span {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #58c4dc;
+        animation: sk-bounce 0.8s ease-in-out infinite alternate;
+      }
+      .sk-loader span:nth-child(2) {
+        animation-delay: 0.15s;
+      }
+      .sk-loader span:nth-child(3) {
+        animation-delay: 0.3s;
+      }
 
       /* ── Batman variant content ── */
-      .sk-bat-icon{width:72px;height:72px;margin:0 auto 1.4rem;opacity:0;animation:sk-pop .7s .1s ease-out forwards;filter:drop-shadow(0 0 14px rgba(212,160,23,.5))}
-      .sk-bat-icon path{fill:#d4a017}
-      .sk-bat-pulse{animation:sk-bat-glow 2.5s 1.2s ease-in-out infinite alternate}
-      @keyframes sk-bat-glow{0%{filter:drop-shadow(0 0 8px rgba(212,160,23,.35))}100%{filter:drop-shadow(0 0 28px rgba(212,160,23,.85))}}
-      .sk-bq{display:flex;flex-direction:column;align-items:center;gap:.4rem;margin-bottom:1.5rem}
-      .sk-bword{font-family:'JetBrains Mono','Space Mono',monospace;font-size:1.3rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;overflow:hidden;border-right:2px solid transparent;width:0;opacity:1}
-      .sk-bword:nth-child(1){color:#d4a017;width:0;animation:sk-type-1 1s .4s steps(15,end) forwards,sk-blink .6s .4s step-end 2}
-      .sk-bword:nth-child(2){color:#c8b57a;width:0;animation:sk-type-2 .9s 1.6s steps(15,end) forwards,sk-blink .6s 1.6s step-end 2}
-      .sk-bword:nth-child(3){color:#d4a017;width:0;animation:sk-type-3 .8s 2.7s steps(12,end) forwards,sk-blink .6s 2.7s step-end 2,sk-blink-stay .6s 3.5s step-end infinite}
-      @keyframes sk-type-1{from{width:0}to{width:15ch}}
-      @keyframes sk-type-2{from{width:0}to{width:15ch}}
-      @keyframes sk-type-3{from{width:0}to{width:12ch}}
-      @keyframes sk-blink{0%,100%{border-color:transparent}50%{border-color:#d4a017}}
-      @keyframes sk-blink-stay{0%,100%{border-color:transparent}50%{border-color:#d4a017}}
-      .sk-bline{width:100px;height:1px;background:linear-gradient(90deg,transparent,#d4a017,transparent);margin:0 auto 1rem;opacity:0;animation:sk-fade .6s 3.6s ease-out forwards}
-      .sk-bsub{font-size:.75rem;color:#5a4e2d;letter-spacing:.2em;text-transform:uppercase;opacity:0;animation:sk-fade .5s 3.8s ease-out forwards}
-      .sk-bloader{display:flex;gap:6px;justify-content:center;margin-top:1.4rem;opacity:0;animation:sk-fade .4s 4s ease-out forwards}
-      .sk-bloader span{width:5px;height:5px;border-radius:50%;background:#d4a017;animation:sk-bounce .9s ease-in-out infinite alternate}
-      .sk-bloader span:nth-child(2){animation-delay:.2s}
-      .sk-bloader span:nth-child(3){animation-delay:.4s}
+      .sk-bat-icon {
+        width: 72px;
+        height: 72px;
+        margin: 0 auto 1.4rem;
+        opacity: 0;
+        animation: sk-pop 0.7s 0.1s ease-out forwards;
+        filter: drop-shadow(0 0 14px rgba(212, 160, 23, 0.5));
+      }
+      .sk-bat-icon path {
+        fill: #d4a017;
+      }
+      .sk-bat-pulse {
+        animation: sk-bat-glow 2.5s 1.2s ease-in-out infinite alternate;
+      }
+      @keyframes sk-bat-glow {
+        0% {
+          filter: drop-shadow(0 0 8px rgba(212, 160, 23, 0.35));
+        }
+        100% {
+          filter: drop-shadow(0 0 28px rgba(212, 160, 23, 0.85));
+        }
+      }
+      .sk-bq {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.4rem;
+        margin-bottom: 1.5rem;
+      }
+      .sk-bword {
+        font-family: "JetBrains Mono", "Space Mono", monospace;
+        font-size: 1.3rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        white-space: nowrap;
+        overflow: hidden;
+        border-right: 2px solid transparent;
+        width: 0;
+        opacity: 1;
+      }
+      .sk-bword:nth-child(1) {
+        color: #d4a017;
+        width: 0;
+        animation:
+          sk-type-1 1s 0.4s steps(15, end) forwards,
+          sk-blink 0.6s 0.4s step-end 2;
+      }
+      .sk-bword:nth-child(2) {
+        color: #c8b57a;
+        width: 0;
+        animation:
+          sk-type-2 0.9s 1.6s steps(15, end) forwards,
+          sk-blink 0.6s 1.6s step-end 2;
+      }
+      .sk-bword:nth-child(3) {
+        color: #d4a017;
+        width: 0;
+        animation:
+          sk-type-3 0.8s 2.7s steps(12, end) forwards,
+          sk-blink 0.6s 2.7s step-end 2,
+          sk-blink-stay 0.6s 3.5s step-end infinite;
+      }
+      @keyframes sk-type-1 {
+        from {
+          width: 0;
+        }
+        to {
+          width: 15ch;
+        }
+      }
+      @keyframes sk-type-2 {
+        from {
+          width: 0;
+        }
+        to {
+          width: 15ch;
+        }
+      }
+      @keyframes sk-type-3 {
+        from {
+          width: 0;
+        }
+        to {
+          width: 12ch;
+        }
+      }
+      @keyframes sk-blink {
+        0%,
+        100% {
+          border-color: transparent;
+        }
+        50% {
+          border-color: #d4a017;
+        }
+      }
+      @keyframes sk-blink-stay {
+        0%,
+        100% {
+          border-color: transparent;
+        }
+        50% {
+          border-color: #d4a017;
+        }
+      }
+      .sk-bline {
+        width: 100px;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #d4a017, transparent);
+        margin: 0 auto 1rem;
+        opacity: 0;
+        animation: sk-fade 0.6s 3.6s ease-out forwards;
+      }
+      .sk-bsub {
+        font-size: 0.75rem;
+        color: #5a4e2d;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        opacity: 0;
+        animation: sk-fade 0.5s 3.8s ease-out forwards;
+      }
+      .sk-bloader {
+        display: flex;
+        gap: 6px;
+        justify-content: center;
+        margin-top: 1.4rem;
+        opacity: 0;
+        animation: sk-fade 0.4s 4s ease-out forwards;
+      }
+      .sk-bloader span {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: #d4a017;
+        animation: sk-bounce 0.9s ease-in-out infinite alternate;
+      }
+      .sk-bloader span:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .sk-bloader span:nth-child(3) {
+        animation-delay: 0.4s;
+      }
 
       /* ── Shared keyframes ── */
-      @keyframes sk-pop{0%{opacity:0;transform:scale(.7) translateY(8px)}100%{opacity:1;transform:scale(1) translateY(0)}}
-      @keyframes sk-fade{0%{opacity:0;transform:translateY(6px)}100%{opacity:1;transform:translateY(0)}}
-      @keyframes sk-bounce{0%{transform:translateY(0);opacity:.4}100%{transform:translateY(-8px);opacity:1}}
+      @keyframes sk-pop {
+        0% {
+          opacity: 0;
+          transform: scale(0.7) translateY(8px);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1) translateY(0);
+        }
+      }
+      @keyframes sk-fade {
+        0% {
+          opacity: 0;
+          transform: translateY(6px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes sk-bounce {
+        0% {
+          transform: translateY(0);
+          opacity: 0.4;
+        }
+        100% {
+          transform: translateY(-8px);
+          opacity: 1;
+        }
+      }
     </style>
   </head>
 
   <body>
     <div id="root"></div>
     <div id="root-skeleton">
-
       <!-- ── Batman cinematic layer — absolute, sits BELOW .sk-wrap (z-index:10) ── -->
       <div class="sk-batman sk-cinema">
         <div class="sk-signal">
@@ -156,7 +599,6 @@
 
       <!-- ── Content wrap — above the cinema layer ── -->
       <div class="sk-wrap">
-
         <!-- Dark mode variant -->
         <div class="sk-dark">
           <div class="sk-quote">
@@ -172,8 +614,14 @@
 
         <!-- Batman mode variant -->
         <div class="sk-batman">
-          <svg class="sk-bat-icon sk-bat-pulse" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 0C12 0 9 5 6.5 7C4.5 8.5 1 9.5 0 10C1.5 10.5 3.5 11.5 5 13C3.5 14 2 16 1 19C3 17 5.5 15.5 8 15C9 17.5 10.5 20 12 24C13.5 20 15 17.5 16 15C18.5 15.5 21 17 23 19C22 16 20.5 14 19 13C20.5 11.5 22.5 10.5 24 10C23 9.5 19.5 8.5 17.5 7C15 5 12 0 12 0Z"/>
+          <svg
+            class="sk-bat-icon sk-bat-pulse"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M12 0C12 0 9 5 6.5 7C4.5 8.5 1 9.5 0 10C1.5 10.5 3.5 11.5 5 13C3.5 14 2 16 1 19C3 17 5.5 15.5 8 15C9 17.5 10.5 20 12 24C13.5 20 15 17.5 16 15C18.5 15.5 21 17 23 19C22 16 20.5 14 19 13C20.5 11.5 22.5 10.5 24 10C23 9.5 19.5 8.5 17.5 7C15 5 12 0 12 0Z"
+            />
           </svg>
           <div class="sk-bq">
             <span class="sk-bword">I Am Vengeance.</span>
@@ -184,11 +632,12 @@
           <p class="sk-bsub">Initializing Batcomputer</p>
           <div class="sk-bloader"><span></span><span></span><span></span></div>
         </div>
+      </div>
+      <!-- /.sk-wrap -->
+    </div>
+    <!-- /#root-skeleton -->
 
-      </div><!-- /.sk-wrap -->
-    </div><!-- /#root-skeleton -->
-    
-    <script type="module" src="/src/main.jsx"></script>
+    <script type="module" src="/src/main.tsx"></script>
     <script>
       // Dismiss the skeleton only when the intro quote animation actually
       // finishes (per-theme), not on a fixed timer. We listen for the
@@ -203,32 +652,35 @@
         function dismiss() {
           if (dismissed) return;
           dismissed = true;
-          document.body.classList.add('sk-ready');
-          var sk = document.getElementById('root-skeleton');
-          if (sk) setTimeout(function () { sk.classList.add('sk-gone'); }, 550);
+          document.body.classList.add("sk-ready");
+          var sk = document.getElementById("root-skeleton");
+          if (sk)
+            setTimeout(function () {
+              sk.classList.add("sk-gone");
+            }, 550);
         }
         function arm() {
-          var isBat = document.documentElement.classList.contains('batman');
+          var isBat = document.documentElement.classList.contains("batman");
           // Last animated element in each variant timeline:
           //   dark   → .sk-dark .sk-loader   (fades in at 1.3s, 0.4s dur)
           //   batman → .sk-batman .sk-bloader (fades in at 4.0s, 0.4s dur)
-          var sel = isBat ? '.sk-batman .sk-bloader' : '.sk-dark .sk-loader';
+          var sel = isBat ? ".sk-batman .sk-bloader" : ".sk-dark .sk-loader";
           var target = document.querySelector(sel);
           if (target) {
-            target.addEventListener('animationend', function handler(e) {
+            target.addEventListener("animationend", function handler(e) {
               // The loader's own fade-in is the gate (not the infinite
               // bouncing children). Match by animation-name or just take
               // the first animationend on the wrapper itself.
               if (e.target === target) {
-                target.removeEventListener('animationend', handler);
+                target.removeEventListener("animationend", handler);
                 dismiss();
               }
             });
           }
           setTimeout(dismiss, SAFETY_MS);
         }
-        if (document.readyState === 'complete') arm();
-        else window.addEventListener('load', arm);
+        if (document.readyState === "complete") arm();
+        else window.addEventListener("load", arm);
       })();
     </script>
   </body>

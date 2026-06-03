@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 import { AlertCircle, RefreshCw, ShieldAlert, Terminal } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 
@@ -22,9 +23,6 @@ class ErrorBoundary extends React.Component {
 
   render() {
     if (this.state.hasError) {
-      // Note: we use a custom hook inside a functional wrapper or just rely on a separate 
-      // component because this is a Class Component and can't use useTheme directly.
-      // We'll wrap the content in a functional helper for theme awareness.
       return (
         <ThemeAwareFallback 
           error={this.state.error} 
@@ -42,13 +40,12 @@ const ThemeAwareFallback = ({ error, reset }) => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-background p-6 overflow-hidden relative">
-      {/* Cinematic Background Elements */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-destructive/20 blur-[120px] rounded-full" />
         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary/20 blur-[120px] rounded-full" />
       </div>
 
-      <motion-div 
+      <motion.div 
         initial={{ opacity: 0, scale: 0.9, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         className="max-w-md w-full z-10 relative"
@@ -100,7 +97,7 @@ const ThemeAwareFallback = ({ error, reset }) => {
             </button>
           </div>
         </div>
-      </motion-div>
+      </motion.div>
     </div>
   );
 };
