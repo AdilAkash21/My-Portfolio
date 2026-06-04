@@ -1,5 +1,5 @@
 import { motion, useInView } from "framer-motion";
-import { Palette, Layout, Code2, Shield, Swords, Search } from "lucide-react";
+import { Palette, Layout, Code2, Smartphone, Shield, Swords, Search } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useRef } from "react";
 const normalSkills = [
@@ -88,7 +88,8 @@ const ProgressRing = ({ name, level, index }) => {
 const normalServices = [
   { icon: Palette, title: "UI/UX Design", desc: "Creating intuitive user interfaces that delight and engage." },
   { icon: Layout, title: "Custom Web Design", desc: "Bespoke layouts tailored to your brand identity." },
-  { icon: Code2, title: "Front-End Development", desc: "Clean, responsive coding with modern frameworks." }
+  { icon: Code2, title: "Front-End Development", desc: "Clean, responsive coding with modern frameworks." },
+  { icon: Smartphone, title: "Mobile App Development", desc: "Cross-platform and native mobile apps built with Kotlin and Flutter." }
 ];
 const batmanServices = [
   { icon: Shield, title: "Gotham Defense", desc: "Protecting the city from criminal masterminds and supervillains, one night at a time." },
