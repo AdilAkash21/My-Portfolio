@@ -7,6 +7,7 @@ const normalSkills = [
   { name: "CSS", level: 90 },
   { name: "Tailwind CSS", level: 85 },
   { name: "JavaScript", level: 80 },
+  { name: "React", level: 82 },
   { name: "Java", level: 70 },
   { name: "C", level: 65 },
   { name: "C++", level: 60 }
