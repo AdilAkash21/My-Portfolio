@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      blog_posts: {
+        Row: {
+          created_at: string
+          date: string | null
+          excerpt: string | null
+          id: string
+          read_time: string | null
+          sort_order: number | null
+          tags: string[] | null
+          theme: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          date?: string | null
+          excerpt?: string | null
+          id?: string
+          read_time?: string | null
+          sort_order?: number | null
+          tags?: string[] | null
+          theme?: string
+          title: string
+        }
+        Update: {
+          created_at?: string
+          date?: string | null
+          excerpt?: string | null
+          id?: string
+          read_time?: string | null
+          sort_order?: number | null
+          tags?: string[] | null
+          theme?: string
+          title?: string
+        }
+        Relationships: []
+      }
       contact_messages: {
         Row: {
           created_at: string
@@ -35,6 +71,45 @@ export type Database = {
           id?: string
           message?: string
           name?: string
+        }
+        Relationships: []
+      }
+      experience: {
+        Row: {
+          created_at: string
+          description: string | null
+          details: string[] | null
+          icon_type: string | null
+          id: string
+          organization: string | null
+          sort_order: number | null
+          theme: string
+          title: string
+          year: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          details?: string[] | null
+          icon_type?: string | null
+          id?: string
+          organization?: string | null
+          sort_order?: number | null
+          theme?: string
+          title: string
+          year?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          details?: string[] | null
+          icon_type?: string | null
+          id?: string
+          organization?: string | null
+          sort_order?: number | null
+          theme?: string
+          title?: string
+          year?: string | null
         }
         Relationships: []
       }
@@ -83,6 +158,45 @@ export type Database = {
           updated_at?: string
           user_id?: string
           website_url?: string | null
+        }
+        Relationships: []
+      }
+      projects: {
+        Row: {
+          category: string | null
+          created_at: string
+          description: string | null
+          github: string | null
+          icon_type: string | null
+          id: string
+          sort_order: number | null
+          tags: string[] | null
+          theme: string
+          title: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          github?: string | null
+          icon_type?: string | null
+          id?: string
+          sort_order?: number | null
+          tags?: string[] | null
+          theme?: string
+          title: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          github?: string | null
+          icon_type?: string | null
+          id?: string
+          sort_order?: number | null
+          tags?: string[] | null
+          theme?: string
+          title?: string
         }
         Relationships: []
       }
