@@ -8,8 +8,7 @@ export function useProjects(theme) {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('projects')
-        .select('*')
-        .eq('theme', theme === 'batman' ? 'batman' : 'normal');
+        .select('*');
       if (error) throw error;
       return data;
     },
@@ -23,7 +22,6 @@ export function useExperience(theme) {
       const { data, error } = await supabase
         .from('experience')
         .select('*')
-        .eq('theme', theme === 'batman' ? 'batman' : 'normal')
         .order('created_at', { ascending: false });
       if (error) throw error;
       return data;
@@ -38,7 +36,6 @@ export function useBlogPosts(theme) {
       const { data, error } = await supabase
         .from('blog_posts')
         .select('*')
-        .eq('theme', theme === 'batman' ? 'batman' : 'normal')
         .order('created_at', { ascending: false });
       if (error) throw error;
       return data;

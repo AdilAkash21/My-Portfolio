@@ -334,7 +334,5 @@ const Index = () => {
       <ScrollToTop />
     </div>;
 };
-var stdin_default = Index;
-export {
-  stdin_default as default
-};
+
+export default Index;

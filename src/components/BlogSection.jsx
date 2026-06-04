@@ -73,8 +73,6 @@ const BlogSection = () => {
       </div>
     </section>;
 };
-var stdin_default = BlogSection;
-export {
-  stdin_default as default
-};
+
+export default BlogSection;
 

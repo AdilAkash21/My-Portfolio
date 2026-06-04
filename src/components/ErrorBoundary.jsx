@@ -17,9 +17,9 @@ class ErrorBoundary extends React.Component {
     console.error("Critical System Failure:", error, errorInfo);
   }
 
-  resetErrorBoundary = () => {
+  resetErrorBoundary() {
     this.setState({ hasError: false, error: null });
-  };
+  }
 
   render() {
     if (this.state.hasError) {
@@ -72,6 +72,7 @@ const ThemeAwareFallback = ({ error, reset }) => {
                 : "An unexpected error occurred while rendering this page. We've logged the incident and our team is investigating."}
             </p>
 
+            {/* eslint-disable-next-line no-undef */}
             {process.env.NODE_ENV === 'development' && error && (
               <div className="w-full mb-6 p-4 bg-muted/50 rounded-lg border border-border text-left overflow-hidden">
                 <div className="flex items-center gap-2 mb-2 text-xs font-mono text-primary uppercase">

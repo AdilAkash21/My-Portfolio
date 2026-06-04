@@ -37,8 +37,6 @@ const App = () => <ErrorBoundary>
       </ThemeProvider>
     </QueryClientProvider>
   </ErrorBoundary>;
-var stdin_default = App;
-export {
-  stdin_default as App
-};
+
+export { App as default };
 

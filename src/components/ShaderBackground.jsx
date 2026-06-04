@@ -327,6 +327,7 @@ const ShaderBackground = ({
       gl.deleteProgram(prog);
       gl.deleteShader(vs);
       // fs may have been swapped during downgrade; deleting the original handle is safe
+      // eslint-disable-next-line no-empty
       try { gl.deleteShader(fs); } catch {}
     };
   }, [theme, intensity, quality, pauseOnLowPower, pauseWhenOffscreen, autoDowngrade]);
