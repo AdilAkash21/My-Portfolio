@@ -11,7 +11,6 @@ import PageTransition from "@/components/PageTransition";
 import SmoothScroll from "@/components/SmoothScroll";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import ProfilePreview from "./pages/ProfilePreview";
 const queryClient = new QueryClient();
 const App = () => <ErrorBoundary>
     <QueryClientProvider client={queryClient}>
@@ -30,7 +29,6 @@ const App = () => <ErrorBoundary>
   >
                 <Routes>
                   <Route path="/" element={<Index />} />
-                  <Route path="/profile-preview" element={<PageTransition><ProfilePreview /></PageTransition>} />
                   <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
                 </Routes>
             </BrowserRouter>
