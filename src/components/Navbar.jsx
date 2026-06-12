@@ -1,8 +1,5 @@
 import { useState } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
-import ThemeToggle from "@/components/ThemeToggle";
-import { useTheme } from "@/contexts/ThemeContext";
-import batLogoImg from "@/assets/bat-logo-gold.png";
 const navLinks = [
   { label: "Home", href: "#home" },
   { label: "About", href: "#about" },
@@ -45,8 +42,6 @@ const itemVariants = {
 };
 const Navbar = () => {
   const [open, setOpen] = useState(false);
-  const { theme } = useTheme();
-  const isBatman = theme === "batman";
   const { scrollYProgress } = useScroll();
   const progressWidth = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
   return <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/80 backdrop-blur-xl">
@@ -64,7 +59,7 @@ const Navbar = () => {
       <div className="container mx-auto flex items-center justify-between px-6 py-4">
         <div className="flex items-center gap-4">
           <a href="#home" className="font-mono text-lg font-semibold text-primary flex items-center gap-2">
-            {isBatman ? <img src={batLogoImg} alt="Bat Logo" className="h-10 w-auto drop-shadow-[0_0_8px_hsl(var(--primary)/0.5)]" /> : "< ARA />"}
+            {"< ARA />"}
           </a>
         </div>
 
@@ -84,14 +79,12 @@ const Navbar = () => {
               </li>)}
 
           </ul>
-          <ThemeToggle />
         </div>
 
         {
     /* Mobile: theme toggle + morphing hamburger */
   }
         <div className="flex md:hidden items-center gap-3">
-          <ThemeToggle />
           <button
     onClick={() => setOpen(!open)}
     className="p-1 text-foreground"
