@@ -354,7 +354,7 @@ const HeroSection = () => {
                   <span
     className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75"
     style={{
-      backgroundColor: isBatman ? "hsl(0 84% 60%)" : "hsl(142 71% 45%)"
+      backgroundColor: "hsl(var(--primary) / 0.75)"
     }}
   />
                   {
@@ -363,7 +363,7 @@ const HeroSection = () => {
                   <span
     className="relative inline-flex rounded-full h-2 w-2"
     style={{
-      backgroundColor: isBatman ? "hsl(0 84% 50%)" : "hsl(142 76% 36%)"
+      backgroundColor: "hsl(var(--primary))"
     }}
   />
                 </span>
