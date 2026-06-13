@@ -149,7 +149,7 @@ const Index = () => {
   }
       <AnimatePresence>
         {showIntro && <motion.div
-    className="fixed inset-0 z-50 flex items-center justify-center bg-background overflow-hidden cursor-pointer"
+    className="fixed inset-0 z-50 flex items-center justify-center bg-black overflow-hidden cursor-pointer"
     onClick={skipIntro}
     initial={{ opacity: 1 }}
     exit={{
@@ -164,13 +164,13 @@ const Index = () => {
     /* Cinematic curtain overlays — slide in from top/bottom on exit */
   }
             <motion.div
-    className="absolute top-0 left-0 right-0 h-1/2 bg-background z-10 origin-top"
+    className="absolute top-0 left-0 right-0 h-1/2 bg-black z-10 origin-top"
     initial={{ scaleY: 0 }}
     exit={{ scaleY: 1 }}
     transition={{ duration: 0.5, ease: [0.76, 0, 0.24, 1] }}
   />
             <motion.div
-    className="absolute bottom-0 left-0 right-0 h-1/2 bg-background z-10 origin-bottom"
+    className="absolute bottom-0 left-0 right-0 h-1/2 bg-black z-10 origin-bottom"
     initial={{ scaleY: 0 }}
     exit={{ scaleY: 1 }}
     transition={{ duration: 0.5, ease: [0.76, 0, 0.24, 1] }}
@@ -194,7 +194,7 @@ const Index = () => {
   /> : <SmartImage
     src={akashLogoImg}
     alt="Akash Logo"
-    className="w-full h-auto object-contain drop-shadow-[0_0_20px_hsl(var(--primary)/0.45)]"
+    className="w-full h-auto object-contain"
     priority
   />}
               </motion.div>
