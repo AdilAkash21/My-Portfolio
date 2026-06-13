@@ -85,6 +85,11 @@ const Index = () => {
     if (window.__introCounter) clearInterval(window.__introCounter);
   }, []);
   useEffect(() => {
+    // Dismiss the pre-React HTML skeleton immediately so the Welcome
+    // intro (rendered below) is not occluded by it.
+    document.body.classList.add("sk-ready");
+    const sk = document.getElementById("root-skeleton");
+    if (sk) setTimeout(() => sk.classList.add("sk-gone"), 550);
     const duration = 3e3;
     const interval = 30;
     const steps = duration / interval;
