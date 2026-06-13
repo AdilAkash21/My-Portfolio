@@ -9,8 +9,10 @@ import ParallaxBackground from "@/components/ParallaxBackground";
 import SmartImage from "@/components/ui/SmartImage";
 import { useTheme } from "@/contexts/ThemeContext";
 import batLogoImg from "@/assets/bat-logo-gold.png";
+import akashLogoAsset from "@/assets/akash-logo.png.asset.json";
 import { lazy, Suspense } from "react";
 const logoImg = "/logo-ara.webp";
+const akashLogoImg = akashLogoAsset.url;
 
 const AboutSection = lazy(() => import("@/components/AboutSection"));
 const ExperienceSection = lazy(() => import("@/components/ExperienceSection"));
@@ -174,7 +176,7 @@ const Index = () => {
     /* Logo — blur-to-sharp focus animation */
   }
               <motion.div
-    className="w-28 h-28 sm:w-36 sm:h-36 mx-auto mb-6 flex items-center justify-center"
+    className="w-56 sm:w-72 mx-auto mb-6 flex items-center justify-center"
     initial={{ scale: 1.3, opacity: 0, filter: "blur(18px)" }}
     animate={{ scale: 1, opacity: 1, filter: "blur(0px)" }}
     transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
@@ -185,11 +187,9 @@ const Index = () => {
     className="w-full h-full object-contain drop-shadow-[0_0_25px_hsl(var(--primary)/0.6)]"
     priority
   /> : <SmartImage
-    src={logoImg}
-    alt="ARA Logo"
-    width={144}
-    height={144}
-    className="w-full h-full object-contain drop-shadow-[0_0_15px_hsl(var(--primary)/0.4)]"
+    src={akashLogoImg}
+    alt="Akash Logo"
+    className="w-full h-auto object-contain drop-shadow-[0_0_20px_hsl(var(--primary)/0.45)]"
     priority
   />}
               </motion.div>
