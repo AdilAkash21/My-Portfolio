@@ -6,12 +6,9 @@ import HeroSection from "@/components/HeroSection";
 import ScrollReveal from "@/components/ScrollReveal";
 import ScrollToTop from "@/components/ScrollToTop";
 import ParallaxBackground from "@/components/ParallaxBackground";
-import SmartImage from "@/components/ui/SmartImage";
 import { useTheme } from "@/contexts/ThemeContext";
-import batLogoImg from "@/assets/bat-logo-gold.png";
 import akashLogoAsset from "@/assets/akash-logo.png.asset.json";
 import { lazy, Suspense } from "react";
-const logoImg = "/logo-ara.webp";
 const akashLogoImg = akashLogoAsset.url;
 
 const AboutSection = lazy(() => import("@/components/AboutSection"));
@@ -121,7 +118,7 @@ const Index = () => {
           <meta name="description" content="High-performance professional portfolio showcasing a blend of creative coding and software engineering." />
           <meta property="og:title" content="ARA | Professional Portfolio" />
           <meta property="og:description" content="Exploring the intersection of design and engineering." />
-          <meta property="og:image" content={logoImg} />
+          <meta property="og:image" content={akashLogoImg} />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <script type="application/ld+json">
             {JSON.stringify({
@@ -130,7 +127,7 @@ const Index = () => {
               "name": "ARA",
               "jobTitle": "Software Engineer",
               "url": window.location.href,
-              "image": logoImg,
+              "image": akashLogoImg,
               "sameAs": [
                 "https://github.com/your-github",
                 "https://linkedin.com/in/your-linkedin"
@@ -177,28 +174,6 @@ const Index = () => {
   />
 
             <motion.div className="text-center flex flex-col items-center relative z-20">
-              {
-    /* Logo — blur-to-sharp focus animation */
-  }
-              <motion.div
-    className="w-56 sm:w-72 mx-auto mb-6 flex items-center justify-center"
-    initial={{ scale: 1.3, opacity: 0, filter: "blur(18px)" }}
-    animate={{ scale: 1, opacity: 1, filter: "blur(0px)" }}
-    transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-  >
-                {isBatman ? <SmartImage
-    src={batLogoImg}
-    alt="Bat Symbol"
-    className="w-full h-full object-contain drop-shadow-[0_0_25px_hsl(var(--primary)/0.6)]"
-    priority
-  /> : <SmartImage
-    src={akashLogoImg}
-    alt="Akash Logo"
-    className="w-full h-auto object-contain"
-    priority
-  />}
-              </motion.div>
-
               {
     /* Staggered name reveal */
   }

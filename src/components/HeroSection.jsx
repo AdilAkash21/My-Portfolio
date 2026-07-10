@@ -4,7 +4,6 @@ import { ArrowDown, Shield, Download } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 import Magnetic from "@/components/ui/Magnetic";
 import profileImg from "@/assets/profile-optimized.webp";
-import batmanImg from "@/assets/batman-profile.png";
 import ShaderBackground from "@/components/ShaderBackground";
 const preloadLink = document.createElement("link");
 preloadLink.rel = "preload";
@@ -191,7 +190,7 @@ const HeroSection = () => {
    }
                <Magnetic>
                  <a
-     href="/resume.pdf"
+      href="#"
      target="_blank"
      rel="noopener noreferrer"
      className="inline-flex items-center gap-2 rounded-lg border border-border px-6 py-3 text-sm font-medium text-muted-foreground btn-float-hover hover:border-primary hover:text-primary hover:shadow-lg transition-colors"
@@ -304,44 +303,7 @@ const HeroSection = () => {
   />
               </div>
 
-              {
-    /* Bat-shaped profile image — shown only in batman mode */
-  }
-              <div
-    className="w-56 h-56 sm:w-72 sm:h-72 overflow-hidden"
-    style={{
-      clipPath: BAT_CLIP,
-      // Bat-shaped mask
-      opacity: isBatman ? 1 : 0,
-      // Visible only in batman mode
-      transition: "opacity 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-      position: isBatman ? "relative" : "absolute",
-      inset: 0,
-      boxShadow: "0 0 40px hsl(var(--primary) / 0.3), 0 0 80px hsl(var(--primary) / 0.15)"
-    }}
-  >
-                <div
-    className="absolute inset-0 ring-2 ring-primary/25 z-[1]"
-    style={{ clipPath: BAT_CLIP }}
-  />
-                <img
-    src={batmanImg}
-    alt="Batman"
-    className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
-    loading="eager"
-    width={288}
-    height={288}
-  />
-                {
-    /* Dark vignette overlay for cinematic effect */
-  }
-                <div
-    className="absolute inset-0 pointer-events-none z-[2]"
-    style={{
-      background: "radial-gradient(circle, transparent 40%, hsl(240 10% 4% / 0.4) 100%)"
-    }}
-  />
-              </div>
+
 
               {
     /* Status badge — green "Available" or red "Unavailable" (batman mode) */
