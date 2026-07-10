@@ -72,7 +72,7 @@ const StaggeredWords = ({
       </motion.span>)}
   </span>;
 const Index = () => {
-  const [showIntro, setShowIntro] = useState(true);
+  const [showIntro, setShowIntro] = useState(false);
   const [progress, setProgress] = useState(0);
   const [burst, setBurst] = useState(false);
   const { theme } = useTheme();
@@ -82,33 +82,44 @@ const Index = () => {
     if (window.__introCounter) clearInterval(window.__introCounter);
   }, []);
   useEffect(() => {
-    // Dismiss the pre-React HTML skeleton immediately so the Welcome
-    // intro (rendered below) is not occluded by it.
-    document.body.classList.add("sk-ready");
-    const sk = document.getElementById("root-skeleton");
-    if (sk) setTimeout(() => sk.classList.add("sk-gone"), 550);
     const duration = 3e3;
     const interval = 30;
     const steps = duration / interval;
     const startDelay = 900;
     let step = 0;
-    const startTimer = setTimeout(() => {
-      const counter = setInterval(() => {
-        step++;
-        const val = Math.min(Math.round(step / steps * 100), 100);
-        setProgress(val);
-        if (val >= 100) {
-          clearInterval(counter);
-          setBurst(true);
-        }
-      }, interval);
-      window.__introCounter = counter;
-    }, startDelay);
-    const hideTimer = setTimeout(() => setShowIntro(false), 4200);
+    let startTimer;
+    let hideTimer;
+    let started = false;
+    const startIntro = () => {
+      if (started) return;
+      started = true;
+      setProgress(0);
+      setBurst(false);
+      setShowIntro(true);
+      startTimer = setTimeout(() => {
+        const counter = setInterval(() => {
+          step++;
+          const val = Math.min(Math.round(step / steps * 100), 100);
+          setProgress(val);
+          if (val >= 100) {
+            clearInterval(counter);
+            setBurst(true);
+          }
+        }, interval);
+        window.__introCounter = counter;
+      }, startDelay);
+      hideTimer = setTimeout(() => setShowIntro(false), 4200);
+    };
+
+    // Start the React welcome screen only after the HTML quote has finished.
+    // Otherwise its full timeline runs invisibly behind the loading overlay.
+    window.addEventListener("skeleton:complete", startIntro, { once: true });
+    if (document.body.classList.contains("sk-ready")) startIntro();
     return () => {
       clearTimeout(startTimer);
       clearTimeout(hideTimer);
       if (window.__introCounter) clearInterval(window.__introCounter);
+      window.removeEventListener("skeleton:complete", startIntro);
     };
   }, []);
   const nameWords = isBatman ? ["The", "Dark", "Knight"] : ["Welcome", "!"];
