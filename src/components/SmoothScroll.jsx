@@ -15,6 +15,15 @@ const SmoothScroll = ({ children }) => {
       mutualScroll: true,
     });
 
+    // expose the instance so other components (e.g., Navbar) can call lenis.scrollTo
+    try {
+      // attach to window for global access; clean up on unmount
+      // eslint-disable-next-line no-undef
+      window.lenis = lenis;
+    } catch (e) {
+      // ignore in environments where window is not writable
+    }
+
     function raf(time) {
       lenis.raf(time);
       requestAnimationFrame(raf);
@@ -24,6 +33,11 @@ const SmoothScroll = ({ children }) => {
 
     return () => {
       lenis.destroy();
+      try {
+        // cleanup global reference
+        // eslint-disable-next-line no-undef
+        if (window.lenis === lenis) window.lenis = undefined;
+      } catch (e) {}
     };
   }, []);
 
