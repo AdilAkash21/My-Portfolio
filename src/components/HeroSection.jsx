@@ -1,345 +1,144 @@
-import { useState, useEffect, useCallback } from "react";
-import { motion } from "framer-motion";
-import { ArrowDown, Shield, Download } from "lucide-react";
-import { useTheme } from "@/contexts/ThemeContext";
+import { motion, useReducedMotion } from "framer-motion";
+import { ArrowDownRight, Download } from "lucide-react";
 import Magnetic from "@/components/ui/Magnetic";
 import profileImg from "@/assets/profile-optimized.webp";
 import ShaderBackground from "@/components/ShaderBackground";
+
 const preloadLink = document.createElement("link");
 preloadLink.rel = "preload";
 preloadLink.as = "image";
 preloadLink.type = "image/webp";
 preloadLink.href = profileImg;
 document.head.appendChild(preloadLink);
-const BAT_CLIP = "polygon(50% 0%, 40% 6%, 32% 1%, 22% 10%, 0% 8%, 4% 28%, 0% 48%, 6% 62%, 1% 78%, 14% 84%, 24% 100%, 38% 92%, 50% 100%, 62% 92%, 76% 100%, 86% 84%, 99% 78%, 94% 62%, 100% 48%, 96% 28%, 100% 8%, 78% 10%, 68% 1%, 60% 6%)";
+
+const reveal = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0 },
+};
+
 const HeroSection = () => {
-  const { theme } = useTheme();
-  const isBatman = theme === "batman";
-  const [scrollY, setScrollY] = useState(0);
-  const sectionRef = useCallback((_node) => {
-  }, []);
-  const handleScroll = useCallback(() => setScrollY(window.scrollY), []);
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [handleScroll]);
-  const parallaxOffset = scrollY * 0.3;
-  return <section ref={sectionRef} id="home" className="relative min-h-screen flex items-center pt-32 overflow-hidden">
+  const reduceMotion = useReducedMotion();
+  const initial = reduceMotion ? false : "hidden";
 
-      {
-    /* ─── WebGL Shader Background (flowing aurora, theme-aware) ─── */
-  }
-      <div className="absolute inset-0 pointer-events-none opacity-70 mix-blend-screen">
-        <ShaderBackground intensity={isBatman ? 0.45 : 0.6} />
+  return (
+    <section
+      id="home"
+      className="relative flex min-h-[88svh] items-center overflow-hidden border-b border-border pt-28 pb-16 sm:pt-32 sm:pb-20 lg:pt-36"
+    >
+      <div className="absolute inset-0 pointer-events-none opacity-35 mix-blend-screen">
+        <ShaderBackground intensity={0.34} />
       </div>
 
-      {
-    /* ─── Geometric Background ─── */
-  }
-      {
-    /* Floating hexagon outlines */
-  }
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {
-    /* Large hexagon — top right */
-  }
-        <motion.div
-    className="absolute -top-16 -right-16 w-80 h-80 border border-primary/[0.06] rounded-[2rem] rotate-45"
-    animate={{ rotate: [45, 90, 45], y: [0, -20, 0] }}
-    transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-  />
-        {
-    /* Medium hexagon — bottom left */
-  }
-        <motion.div
-    className="absolute bottom-[10%] -left-12 w-52 h-52 border border-primary/[0.08] rounded-[1.5rem] -rotate-12"
-    animate={{ rotate: [-12, 15, -12], y: [0, 15, 0] }}
-    transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
-  />
-        {
-    /* Small diamond — center left */
-  }
-        <motion.div
-    className="absolute top-[35%] left-[8%] w-24 h-24 border border-primary/[0.07] rotate-45"
-    animate={{ rotate: [45, 135, 45], scale: [1, 1.1, 1] }}
-    transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-  />
-        {
-    /* Triangle outline — top left */
-  }
-        <motion.svg
-    className="absolute top-[15%] left-[15%] w-20 h-20 text-primary/[0.06]"
-    viewBox="0 0 100 100"
-    animate={{ rotate: [0, 60, 0], y: [0, -10, 0] }}
-    transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-  >
-          <polygon points="50,5 95,95 5,95" fill="none" stroke="currentColor" strokeWidth="1" />
-        </motion.svg>
-        {
-    /* Circle outline — bottom right */
-  }
-        <motion.div
-    className="absolute bottom-[20%] right-[12%] w-32 h-32 rounded-full border border-primary/[0.05]"
-    animate={{ scale: [1, 1.15, 1], opacity: [0.5, 1, 0.5] }}
-    transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-  />
-        {
-    /* Dotted line — horizontal accent */
-  }
-        <motion.div
-    className="absolute top-[55%] right-[5%] w-40 h-px"
-    style={{ backgroundImage: "repeating-linear-gradient(90deg, hsl(var(--primary) / 0.1) 0px, hsl(var(--primary) / 0.1) 4px, transparent 4px, transparent 12px)" }}
-    animate={{ opacity: [0.3, 0.7, 0.3], x: [0, 20, 0] }}
-    transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-  />
-        {
-    /* Small cross — accent */
-  }
-        <motion.div
-    className="absolute top-[25%] right-[25%] text-primary/[0.08] text-2xl font-light"
-    animate={{ rotate: [0, 90, 0], opacity: [0.4, 1, 0.4] }}
-    transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
-  >
-          +
-        </motion.div>
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div className="absolute inset-y-0 left-[7%] w-px bg-border/60" />
+        <div className="absolute inset-y-0 right-[7%] w-px bg-border/60" />
+        <div className="absolute top-[30%] left-0 h-px w-[17%] bg-primary/25" />
+        <div className="absolute right-0 bottom-[22%] h-px w-[20%] bg-primary/20" />
+        <div className="absolute top-36 right-[7%] h-2 w-2 translate-x-1/2 rotate-45 border border-primary/60" />
       </div>
 
-      {
-    /* Subtle background glow — parallax-scrolled radial gradient */
-  }
-      <div
-    className="absolute left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-primary/5 blur-[120px] pointer-events-none will-change-transform"
-    style={{ top: `calc(25% - ${parallaxOffset}px)` }}
-  />
-
-      {
-    /* Secondary glow orb */
-  }
-      <div
-    className="absolute right-[10%] w-[300px] h-[300px] rounded-full bg-primary/[0.03] blur-[100px] pointer-events-none will-change-transform"
-    style={{ top: `calc(60% - ${parallaxOffset * 0.5}px)` }}
-  />
-
-      <div className="container mx-auto px-6">
-        {
-    /* Flex layout: text on left, image on right (reversed on mobile for image-first) */
-  }
-        <div className="flex flex-col-reverse lg:flex-row items-center justify-center gap-12 lg:gap-16 max-w-5xl mx-auto">
-          {
-    /* ─── Text Content ─── */
-  }
+      <div className="container relative z-10 mx-auto px-6">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-14 lg:grid-cols-12 lg:gap-10">
           <motion.div
-    className="flex-1 text-center lg:text-left"
-    initial={{ opacity: 0, y: 30 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.6 }}
-  >
-            {
-    /* Greeting line */
-  }
-            <p className="font-mono text-sm text-primary mb-4">
-              {isBatman ? "I am" : "Hi, my name is"}
-            </p>
-            {
-    /* Main heading with gradient-highlighted last name */
-  }
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-4">
-              {isBatman ? <>
-                  The Dark{" "}
-                  <span className="gradient-text">Knight</span>
-                </> : <>
-                  Adil Rahman{" "}
-                  <span className="gradient-text">Akash</span>
-                </>}
-            </h1>
-            {
-    /* Subtitle / role description */
-  }
-            <h2 className="text-xl sm:text-2xl font-medium text-muted-foreground mb-6">
-              {isBatman ? "Software Engineer by Day. Crime-Fighting Vigilante by Night." : "Software Engineer & Web Developer"}
-            </h2>
-            {
-    /* Brief description paragraph */
-  }
-            <p className="text-muted-foreground max-w-lg mx-auto lg:mx-0 mb-8 leading-relaxed">
-              {isBatman ? "The night is darkest just before the dawn. And I promise you, the dawn is coming. Gotham's silent guardian, writing clean code and cleaning up the streets." : "Building functional, beautiful digital experiences from Nanchong to the world."}
-            </p>
-            {
-    /* CTA buttons — centered on mobile, left-aligned on desktop */
-  }
-             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4">
-               {
-     /* Primary CTA: View Work / Enter Batcave */
-   }
-               <Magnetic>
-                 <a
-     href={isBatman ? "#about" : "#projects"}
-     className="inline-flex items-center gap-2 rounded-lg border border-primary bg-primary/10 px-6 py-3 text-sm font-medium text-primary btn-float-hover hover:bg-primary hover:text-primary-foreground hover:shadow-lg"
-   >
-                     {isBatman ? <>
-                         Enter the Batcave
-                         <Shield size={16} />
-                       </> : <>
-                         View My Work
-                         <ArrowDown size={16} />
-                       </>}
-                 </a>
-               </Magnetic>
-               {
-     /* Secondary CTA: Download CV / Download Dossier */
-   }
-               <Magnetic>
-                 <a
-      href="#"
-     target="_blank"
-     rel="noopener noreferrer"
-     className="inline-flex items-center gap-2 rounded-lg border border-border px-6 py-3 text-sm font-medium text-muted-foreground btn-float-hover hover:border-primary hover:text-primary hover:shadow-lg transition-colors"
-   >
-                     {isBatman ? "Download Dossier" : "Download CV"}
-                     <Download size={16} />
-                 </a>
-               </Magnetic>
-             </div>
+            className="relative lg:col-span-7 lg:pr-6"
+            initial={initial}
+            animate="visible"
+            variants={reveal}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <div className="mb-7 flex items-center gap-4 font-mono text-[11px] uppercase text-primary sm:text-xs">
+              <span className="h-px w-10 bg-primary" />
+              Hi, my name is
+            </div>
 
+            <h1 className="max-w-4xl font-sans text-5xl font-bold leading-[0.92] text-foreground sm:text-7xl lg:text-8xl xl:text-9xl">
+              Adil Rahman
+              <span className="mt-1 block text-primary">Akash.</span>
+            </h1>
+
+            <div className="mt-8 grid max-w-2xl gap-5 border-t border-border pt-6 sm:grid-cols-[1fr_1.2fr] sm:gap-8">
+              <h2 className="text-base font-semibold text-foreground sm:text-lg">
+                Software Engineer
+                <span className="block text-primary">&amp; Web Developer</span>
+              </h2>
+              <p className="max-w-md text-sm leading-relaxed text-muted-foreground sm:text-base">
+                Building functional, beautiful digital experiences from Nanchong to the world.
+              </p>
+            </div>
+
+            <div className="mt-9 flex flex-wrap items-center gap-4">
+              <Magnetic>
+                <a
+                  href="#projects"
+                  className="group relative inline-flex min-h-12 items-center gap-3 border border-primary bg-primary px-6 py-3 text-xs font-bold uppercase text-primary-foreground transition-transform duration-300 hover:-translate-y-1"
+                >
+                  View My Work
+                  <ArrowDownRight className="transition-transform duration-300 group-hover:translate-x-1 group-hover:translate-y-1" size={16} />
+                  <span className="absolute inset-0 -z-10 translate-x-1.5 translate-y-1.5 border border-primary/45 transition-transform duration-300 group-hover:translate-x-0 group-hover:translate-y-0" />
+                </a>
+              </Magnetic>
+              <Magnetic>
+                <a
+                  href="#"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex min-h-12 items-center gap-3 border border-border bg-background/40 px-6 py-3 text-xs font-bold uppercase text-foreground backdrop-blur-sm transition-colors duration-300 hover:border-primary hover:text-primary"
+                >
+                  Download CV
+                  <Download size={15} />
+                </a>
+              </Magnetic>
+            </div>
           </motion.div>
 
-          {
-    /* ─── Profile Image ─── */
-  }
           <motion.div
-    className="flex-shrink-0"
-    initial={{ opacity: 0, scale: 0.9 }}
-    animate={{ opacity: 1, scale: 1 }}
-    transition={{ duration: 0.6, delay: 0.2 }}
-  >
-            <div className="relative group">
-              {
-    /* Outer orbit ring with animated dots — visible only in dark mode */
-  }
-              {!isBatman && <div className="absolute -inset-6 rounded-full animate-spin-slow pointer-events-none">
-                  <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-primary/60 shadow-[0_0_8px_hsl(var(--primary)/0.4)]" />
-                  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-1.5 h-1.5 rounded-full bg-primary/30" />
-                </div>}
-
-              {
-    /* Inner orbit ring with dashed border — visible only in dark mode */
-  }
-              {!isBatman && <div className="absolute -inset-4 rounded-full border border-dashed border-primary/10 animate-spin-slow-reverse pointer-events-none">
-                  <div className="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-primary/40" />
-                </div>}
-
-              {
-    /* Batman pulsing golden aura — only visible in batman mode */
-  }
-              {isBatman && <div
-    className="absolute -inset-4 pointer-events-none"
-    style={{
-      clipPath: BAT_CLIP,
-      // Bat-shaped aura
-      animation: "bat-aura-pulse 3s ease-in-out infinite",
-      // Pulsing scale + opacity
-      background: "radial-gradient(circle, hsl(45 100% 55% / 0.15), hsl(45 100% 50% / 0.05) 60%, transparent 80%)",
-      filter: "blur(12px)"
-    }}
-  />}
-
-              {
-    /* Gradient glow behind the profile image */
-  }
-              <div
-    className="absolute -inset-1 opacity-50 blur-md group-hover:opacity-75"
-    style={{
-      borderRadius: isBatman ? void 0 : "9999px",
-      // Circle for dark mode
-      clipPath: isBatman ? BAT_CLIP : void 0,
-      // Bat shape for batman mode
-      background: isBatman ? "radial-gradient(circle, hsl(var(--primary) / 0.4), transparent 70%)" : "linear-gradient(to bottom right, hsl(var(--primary)), hsl(var(--primary) / 0.3), transparent)",
-      transition: "opacity 0.5s ease"
-    }}
-  />
-
-              {
-    /* Circle profile image — shown in dark mode */
-  }
-              <div
-    className="relative w-56 h-56 sm:w-72 sm:h-72 overflow-hidden shadow-xl rounded-full"
-    style={{
-      opacity: isBatman ? 0 : 1,
-      // Hidden in batman mode
-      transition: "opacity 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-      position: isBatman ? "absolute" : "relative",
-      // Stacked positioning for crossfade
-      inset: 0
-    }}
-  >
-                <div className="absolute inset-0 ring-2 ring-primary/25 rounded-full z-[1]" />
-                <img
-    src={profileImg}
-    alt="Adil Rahman Akash"
-    className="w-full h-full object-cover scale-125 transition-transform duration-700 group-hover:scale-[1.35]"
-    fetchPriority="high"
-    loading="eager"
-    width={288}
-    height={288}
-    decoding="sync"
-  />
-                {
-    /* "Eyelid" opening animation — top half slides up to reveal image */
-  }
-                <motion.div
-    className="absolute inset-x-0 top-0 h-1/2 bg-background z-10 origin-top"
-    initial={{ scaleY: 1 }}
-    animate={{ scaleY: 0 }}
-    transition={{ duration: 1.4, delay: 2.2, ease: [0.22, 1, 0.36, 1] }}
-  />
-                {
-    /* "Eyelid" opening animation — bottom half slides down */
-  }
-                <motion.div
-    className="absolute inset-x-0 bottom-0 h-1/2 bg-background z-10 origin-bottom"
-    initial={{ scaleY: 1 }}
-    animate={{ scaleY: 0 }}
-    transition={{ duration: 1.4, delay: 2.2, ease: [0.22, 1, 0.36, 1] }}
-  />
+            className="relative mx-auto w-full max-w-sm lg:col-span-5 lg:max-w-none"
+            initial={initial}
+            animate="visible"
+            variants={reveal}
+            transition={{ duration: 0.8, delay: reduceMotion ? 0 : 0.16, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <div className="absolute -top-6 -left-6 hidden font-mono text-[10px] uppercase text-muted-foreground md:block">
+              Portrait / 01
+            </div>
+            <div className="absolute -top-3 -right-3 h-16 w-16 border-t border-r border-primary/70" aria-hidden="true" />
+            <div className="relative aspect-[4/5] overflow-hidden border border-border bg-card">
+              <img
+                src={profileImg}
+                alt="Adil Rahman Akash overlooking the Shanghai skyline"
+                className="h-full w-full object-cover object-top saturate-[0.85] transition-transform duration-700 ease-out hover:scale-[1.025]"
+                fetchPriority="high"
+                loading="eager"
+                width={720}
+                height={900}
+                decoding="async"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5 sm:p-6">
+                <div>
+                  <p className="font-mono text-[10px] uppercase text-primary">Based in</p>
+                  <p className="mt-1 text-sm font-medium text-foreground">Nanchong, China</p>
+                </div>
+                <div className="flex items-center gap-2 border border-border bg-background/80 px-3 py-2 backdrop-blur-md">
+                  <span className="relative flex h-2 w-2">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-70" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+                  </span>
+                  <span className="text-[10px] font-semibold uppercase text-foreground">Available</span>
+                </div>
               </div>
-
-
-
-              {
-    /* Status badge — green "Available" or red "Unavailable" (batman mode) */
-  }
-              <div className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full bg-card px-3 py-1.5 shadow-lg ring-1 ring-border z-10">
-                <span className="relative flex h-2 w-2">
-                  {
-    /* Pinging animation ring */
-  }
-                  <span
-    className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75"
-    style={{
-      backgroundColor: "hsl(var(--primary) / 0.75)"
-    }}
-  />
-                  {
-    /* Solid dot */
-  }
-                  <span
-    className="relative inline-flex rounded-full h-2 w-2"
-    style={{
-      backgroundColor: "hsl(var(--primary))"
-    }}
-  />
-                </span>
-                <span className="text-xs font-medium text-foreground">
-                  {isBatman ? "Unavailable" : "Available"}
-                </span>
-              </div>
+            </div>
+            <div className="absolute -bottom-5 left-6 right-6 flex items-center gap-3 border border-border bg-card/95 px-5 py-4 shadow-xl backdrop-blur-md sm:left-auto sm:right-[-1.5rem] sm:w-64">
+              <span className="h-px w-8 flex-none bg-primary" />
+              <p className="text-xs font-medium leading-relaxed text-foreground">
+                Functional craft. Beautiful execution.
+              </p>
             </div>
           </motion.div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
-var stdin_default = HeroSection;
-export {
-  stdin_default as default
-};
+
+export default HeroSection;
