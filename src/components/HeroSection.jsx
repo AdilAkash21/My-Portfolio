@@ -107,7 +107,7 @@ const HeroSection = () => {
                 src={profileImg}
                 alt="Adil Rahman Akash overlooking the Shanghai skyline"
                 className="h-full w-full object-cover object-top saturate-[0.85] transition-transform duration-700 ease-out hover:scale-[1.025]"
-                fetchPriority="high"
+                fetchpriority="high"
                 loading="eager"
                 width={720}
                 height={900}
