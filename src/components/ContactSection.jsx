@@ -1,56 +1,50 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Mail, Github, Phone, MapPin, Send, Shield, Loader2, ExternalLink } from "lucide-react";
+import { Mail, Github, Phone, MapPin, Send, Loader2, ArrowUpRight } from "lucide-react";
 import { z } from "zod";
-import { useTheme } from "@/contexts/ThemeContext";
+
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100, "Name must be under 100 characters"),
   email: z.string().trim().email("Please enter a valid email").max(255, "Email must be under 255 characters"),
-  message: z.string().trim().min(1, "Message is required").max(1e3, "Message must be under 1000 characters")
+  message: z.string().trim().min(1, "Message is required").max(1000, "Message must be under 1000 characters"),
 });
+
 const contactInfo = [
   {
     icon: MapPin,
     label: "Location",
     value: "Nanchong, China",
     href: "https://maps.google.com/?q=Nanchong,China",
-    batmanValue: "Gotham City",
-    batmanHref: void 0
-    // No link in batman mode
   },
   {
     icon: Mail,
     label: "Email",
     value: "adilakash23@gmail.com",
     href: "mailto:adilakash23@gmail.com",
-    batmanValue: "\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588@\u2588\u2588\u2588\u2588.\u2588\u2588\u2588",
-    // Redacted in batman mode
-    batmanHref: void 0
   },
   {
     icon: Github,
     label: "GitHub",
     value: "AdilAkash21",
     href: "https://github.com/AdilAkash21",
-    batmanValue: "\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588",
-    batmanHref: void 0
   },
   {
     icon: Phone,
     label: "Mobile",
     value: "+86 17390219212",
     href: "tel:+8617390219212",
-    batmanValue: "\u2588\u2588\u2588 \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588",
-    batmanHref: void 0
-  }
+  },
 ];
+
+const inputClass =
+  "w-full rounded-xl border border-border/70 bg-background/60 px-4 py-3.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-colors";
+
 const ContactSection = () => {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState("idle");
-  const { theme } = useTheme();
-  const isBatman = theme === "batman";
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const result = contactSchema.safeParse(form);
@@ -70,184 +64,160 @@ const ContactSection = () => {
     setSubmitStatus("success");
     setForm({ name: "", email: "", message: "" });
   };
-  return <section id="contact" className="py-24 bg-card/50">
+
+  return (
+    <section id="contact" className="relative py-28 overflow-hidden">
+      <div className="absolute left-1/2 top-0 h-px w-3/4 -translate-x-1/2 bg-gradient-to-r from-transparent via-primary/25 to-transparent" />
+      <div className="absolute left-1/2 bottom-0 h-[460px] w-[560px] -translate-x-1/2 rounded-full bg-primary/[0.05] blur-[150px] pointer-events-none" />
+
       <div className="container mx-auto px-6">
-        {
-    /* Section header */
-  }
         <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.5 }}
-    className="text-center mb-16"
-  >
-          <h2 className="font-mono text-sm text-primary mb-2">07.</h2>
-          <h3 className="text-3xl font-bold mb-4">
-            {isBatman ? "Light the Signal" : "Get In Touch"}
-          </h3>
-          <p className="text-muted-foreground max-w-md mx-auto">
-            {isBatman ? "Gotham needs you? Send a signal into the night sky." : "Have a project in mind or just want to say hello? I'd love to hear from you."}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center max-w-2xl mx-auto mb-16"
+        >
+          <p className="font-mono text-[0.7rem] tracking-[0.35em] uppercase text-muted-foreground mb-4">
+            07 — Contact
+          </p>
+          <h2 className="font-serif text-4xl sm:text-5xl leading-tight mb-5">
+            Let's build something <span className="gradient-text">together</span>
+          </h2>
+          <p className="text-muted-foreground">
+            Have a project in mind or just want to say hello? I'd love to hear from you.
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-5 gap-12 max-w-5xl mx-auto">
-          {
-    /* ─── Left Column: Contact Info Cards ─── */
-  }
+        <div className="grid lg:grid-cols-5 gap-8 lg:gap-12 max-w-5xl mx-auto items-start">
+          {/* Contact details */}
           <motion.div
-    initial={{ opacity: 0, x: -20 }}
-    whileInView={{ opacity: 1, x: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.5, delay: 0.1 }}
-    className="lg:col-span-2 space-y-4"
-  >
-            <h4 className="text-lg font-semibold mb-6">
-              {isBatman ? "Batcomputer Channels" : "Contact Info"}
-            </h4>
-            {contactInfo.map((item, i) => {
-    const displayValue = isBatman ? item.batmanValue ?? item.value : item.value;
-    const displayHref = isBatman ? item.batmanHref : item.href;
-    return <motion.div
-      key={item.label}
-      initial={{ opacity: 0, y: 12 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.4, delay: 0.15 + i * 0.08 }}
-    >
-                {displayHref ? (
-      /* Clickable card with external link */
-      <a
-        href={displayHref}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="group flex items-start gap-4 p-4 rounded-xl border border-border bg-background hover:border-primary/50 hover:bg-primary/5 transition-all duration-300"
-      >
-                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors">
-                      <item.icon size={18} className="text-primary" />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-0.5">
-                        {item.label}
-                      </p>
-                      <p className="text-sm font-medium text-foreground group-hover:text-primary transition-colors flex items-center gap-1.5">
-                        {displayValue}
-                        <ExternalLink size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" />
-                      </p>
-                    </div>
-                  </a>
-    ) : (
-      /* Non-clickable card (redacted in batman mode) */
-      <div className={`flex items-start gap-4 p-4 rounded-xl border border-border bg-background ${isBatman ? "opacity-90" : ""}`}>
-                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <item.icon size={18} className="text-primary" />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-0.5">
-                        {isBatman ? "Classified" : item.label}
-                      </p>
-                      <p className={`text-sm font-medium text-foreground ${isBatman ? "font-mono tracking-widest" : ""}`}>{displayValue}</p>
-                    </div>
-                  </div>
-    )}
-              </motion.div>;
-  })}
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="lg:col-span-2 space-y-3"
+          >
+            {contactInfo.map((item, i) => (
+              <motion.a
+                key={item.label}
+                href={item.href}
+                target={item.href.startsWith("http") ? "_blank" : undefined}
+                rel="noopener noreferrer"
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: 0.15 + i * 0.07 }}
+                className="group flex items-center gap-4 rounded-2xl border border-border/70 bg-card/40 backdrop-blur-sm p-4 hover:border-primary/45 hover:bg-primary/[0.04] transition-all duration-300"
+              >
+                <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors">
+                  <item.icon size={18} className="text-primary" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="font-mono text-[0.6rem] tracking-[0.25em] uppercase text-muted-foreground mb-1">
+                    {item.label}
+                  </p>
+                  <p className="text-sm font-medium text-foreground group-hover:text-primary transition-colors truncate">
+                    {item.value}
+                  </p>
+                </div>
+                <ArrowUpRight
+                  size={16}
+                  className="text-muted-foreground opacity-0 group-hover:opacity-100 group-hover:text-primary transition-all"
+                />
+              </motion.a>
+            ))}
           </motion.div>
 
-          {
-    /* ─── Right Column: Contact Form ─── */
-  }
+          {/* Form */}
           <motion.form
-    onSubmit={handleSubmit}
-    initial={{ opacity: 0, x: 20 }}
-    whileInView={{ opacity: 1, x: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.5, delay: 0.2 }}
-    className="lg:col-span-3 space-y-5"
-  >
-            <h4 className="text-lg font-semibold mb-6">
-              {isBatman ? "Send a Signal" : "Send a Message"}
-            </h4>
-            {
-    /* Name and email inputs side by side */
-  }
+            onSubmit={handleSubmit}
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="lg:col-span-3 rounded-[1.75rem] border border-primary/15 bg-card/40 backdrop-blur-sm p-6 sm:p-8 space-y-5"
+          >
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
                 <label htmlFor="contact-name" className="sr-only">Name</label>
                 <input
-    id="contact-name"
-    type="text"
-    placeholder={isBatman ? "Your Alias" : "Your Name"}
-    required
-    maxLength={100}
-    value={form.name}
-    onChange={(e) => {
-      setForm({ ...form, name: e.target.value });
-      setErrors((prev) => ({ ...prev, name: "" }));
-    }}
-    className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-colors"
-  />
+                  id="contact-name"
+                  type="text"
+                  placeholder="Your Name"
+                  required
+                  maxLength={100}
+                  value={form.name}
+                  onChange={(e) => {
+                    setForm({ ...form, name: e.target.value });
+                    setErrors((prev) => ({ ...prev, name: "" }));
+                  }}
+                  className={inputClass}
+                />
                 {errors.name && <p className="text-destructive text-xs mt-1">{errors.name}</p>}
               </div>
               <div>
                 <label htmlFor="contact-email" className="sr-only">Email</label>
                 <input
-    id="contact-email"
-    type="email"
-    placeholder={isBatman ? "Secure Channel" : "Your Email"}
-    required
-    maxLength={255}
-    value={form.email}
-    onChange={(e) => {
-      setForm({ ...form, email: e.target.value });
-      setErrors((prev) => ({ ...prev, email: "" }));
-    }}
-    className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-colors"
-  />
+                  id="contact-email"
+                  type="email"
+                  placeholder="Your Email"
+                  required
+                  maxLength={255}
+                  value={form.email}
+                  onChange={(e) => {
+                    setForm({ ...form, email: e.target.value });
+                    setErrors((prev) => ({ ...prev, email: "" }));
+                  }}
+                  className={inputClass}
+                />
                 {errors.email && <p className="text-destructive text-xs mt-1">{errors.email}</p>}
               </div>
             </div>
-            {
-    /* Message textarea */
-  }
+
             <div>
               <label htmlFor="contact-message" className="sr-only">Message</label>
               <textarea
-    id="contact-message"
-    placeholder={isBatman ? "Your Intel Report" : "Your Message"}
-    required
-    rows={6}
-    maxLength={1e3}
-    value={form.message}
-    onChange={(e) => {
-      setForm({ ...form, message: e.target.value });
-      setErrors((prev) => ({ ...prev, message: "" }));
-    }}
-    className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-colors resize-none"
-  />
+                id="contact-message"
+                placeholder="Tell me about your project..."
+                required
+                rows={6}
+                maxLength={1000}
+                value={form.message}
+                onChange={(e) => {
+                  setForm({ ...form, message: e.target.value });
+                  setErrors((prev) => ({ ...prev, message: "" }));
+                }}
+                className={`${inputClass} resize-none`}
+              />
               {errors.message && <p className="text-destructive text-xs mt-1">{errors.message}</p>}
             </div>
-            {
-    /* Submit button with loading state */
-  }
+
             <button
-    type="submit"
-    disabled={isSubmitting}
-    className="inline-flex items-center gap-2 rounded-xl border border-primary bg-primary/10 px-6 py-3 text-sm font-medium text-primary btn-float-hover hover:bg-primary hover:text-primary-foreground hover:shadow-lg disabled:opacity-50 disabled:pointer-events-none transition-all duration-300"
-  >
-              {isSubmitting ? <><Loader2 size={16} className="animate-spin" /> Sending...</> : <>{isBatman ? "Send Signal" : "Send Message"} {isBatman ? <Shield size={16} /> : <Send size={16} />}</>}
+              type="submit"
+              disabled={isSubmitting}
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground btn-float-hover hover:shadow-[0_0_30px_hsl(var(--primary)/0.35)] disabled:opacity-50 disabled:pointer-events-none transition-shadow"
+            >
+              {isSubmitting ? (
+                <><Loader2 size={16} className="animate-spin" /> Sending...</>
+              ) : (
+                <>Send Message <Send size={16} /></>
+              )}
             </button>
-            {
-    /* Success / error feedback messages */
-  }
-            {submitStatus === "success" && <p className="text-sm text-primary">{isBatman ? "Signal received. The Dark Knight will respond." : "Thanks for reaching out! I'll get back to you soon."}</p>}
-            {submitStatus === "error" && <p className="text-sm text-destructive">Something went wrong. Please try again.</p>}
+
+            {submitStatus === "success" && (
+              <p className="text-sm text-primary">
+                Thanks for reaching out! I'll get back to you soon.
+              </p>
+            )}
+            {submitStatus === "error" && (
+              <p className="text-sm text-destructive">Something went wrong. Please try again.</p>
+            )}
           </motion.form>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
-var stdin_default = ContactSection;
-export {
-  stdin_default as default
-};
+
+export default ContactSection;
