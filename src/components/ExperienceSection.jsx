@@ -39,7 +39,8 @@ const ExperienceSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
             className="mb-14"
-          >n            <p className="font-mono text-[0.7rem] tracking-[0.35em] uppercase text-muted-foreground mb-4">
+          >
+            <p className="font-mono text-[0.7rem] tracking-[0.35em] uppercase text-muted-foreground mb-4">
               02 — Education
             </p>
             <h2 className="font-serif text-4xl sm:text-5xl leading-tight">
