@@ -59,14 +59,26 @@ const HeroSection = () => {
         <ShaderBackground intensity={0.55} />
       </div>
 
-      {/* Ambient glows */}
-      <div
-        className="absolute left-[10%] w-[560px] h-[560px] rounded-full bg-primary/[0.07] blur-[140px] pointer-events-none will-change-transform"
+      {/* Live geometric + particle field */}
+      <ParticleField className="opacity-70" />
+
+      {/* Animated ambient glows */}
+      <motion.div
+        className="absolute left-[10%] w-[560px] h-[560px] rounded-full bg-primary/[0.09] blur-[140px] pointer-events-none will-change-transform"
         style={{ top: `calc(20% - ${parallaxOffset}px)` }}
+        animate={{ opacity: [0.55, 1, 0.55], scale: [1, 1.12, 1], x: [0, 40, 0] }}
+        transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
       />
-      <div
-        className="absolute right-[8%] w-[420px] h-[420px] rounded-full bg-primary/[0.05] blur-[120px] pointer-events-none will-change-transform"
+      <motion.div
+        className="absolute right-[8%] w-[420px] h-[420px] rounded-full bg-primary/[0.07] blur-[120px] pointer-events-none will-change-transform"
         style={{ top: `calc(45% - ${parallaxOffset * 0.5}px)` }}
+        animate={{ opacity: [0.9, 0.45, 0.9], scale: [1.1, 1, 1.1], y: [0, -30, 0] }}
+        transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute left-1/2 top-1/2 w-[700px] h-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/[0.04] blur-[160px] pointer-events-none"
+        animate={{ opacity: [0.35, 0.8, 0.35] }}
+        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
       />
 
       <div className="container mx-auto px-6 relative">
