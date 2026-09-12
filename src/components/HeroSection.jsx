@@ -192,7 +192,7 @@ const HeroSection = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.9 }}
               >
-                <p className="font-serif text-xl text-primary leading-none mb-1.5">2028</p>
+                <p className="font-serif text-xl text-primary leading-none mb-1.5">2026</p>
                 <p className="text-xs text-muted-foreground leading-snug">
                   Currently in progress — B.Sc. in Software Engineering
                 </p>
