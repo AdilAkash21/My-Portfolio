@@ -4,6 +4,7 @@ import { ArrowUpRight, Download, Mail, MapPin } from "lucide-react";
 import Magnetic from "@/components/ui/Magnetic";
 import profileImg from "@/assets/profile-optimized.webp";
 import ShaderBackground from "@/components/ShaderBackground";
+import ParticleField from "@/components/ParticleField";
 
 const preloadLink = document.createElement("link");
 preloadLink.rel = "preload";
