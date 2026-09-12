@@ -1,92 +1,81 @@
 import { motion } from "framer-motion";
 import { Quote } from "lucide-react";
-import { useTheme } from "@/contexts/ThemeContext";
-const normalTestimonials = [
+
+const testimonials = [
   {
-    quote: "Akash delivered an outstanding website with clean code and pixel-perfect design. His attention to detail is remarkable.",
+    quote:
+      "Akash delivered an outstanding website with clean code and pixel-perfect design. His attention to detail is remarkable.",
     name: "Sarah Chen",
     role: "Product Manager, TechCorp",
-    initials: "SC"
+    initials: "SC",
   },
   {
-    quote: "Working with Akash was a great experience. He understood our requirements perfectly and delivered ahead of schedule.",
+    quote:
+      "Working with Akash was a great experience. He understood our requirements perfectly and delivered ahead of schedule.",
     name: "James Wilson",
     role: "Founder, StartupXYZ",
-    initials: "JW"
+    initials: "JW",
   },
   {
-    quote: "Impressive problem-solving skills and a true passion for development. Akash is the kind of developer every team needs.",
+    quote:
+      "Impressive problem-solving skills and a true passion for development. Akash is the kind of developer every team needs.",
     name: "Maria Rodriguez",
     role: "Senior Developer, WebFlow Inc.",
-    initials: "MR"
-  }
-];
-const batmanTestimonials = [
-  {
-    quote: "After decades of service, I can confidently say Master Wayne's code is as disciplined as his combat training. Impeccable, sir.",
-    name: "Alfred Pennyworth",
-    role: "Butler & Systems Administrator",
-    initials: "AP"
+    initials: "MR",
   },
-  {
-    quote: "He's a vigilante, but I'll be damned if his crime-tracking software hasn't cut Gotham's crime rate by 40%. Off the record, of course.",
-    name: "James Gordon",
-    role: "Commissioner, GCPD",
-    initials: "JG"
-  },
-  {
-    quote: "The Batcomputer's neural network is... annoyingly superior to anything at S.T.A.R. Labs. Not that I'd ever admit that publicly.",
-    name: "Lucius Fox",
-    role: "CEO, Wayne Enterprises",
-    initials: "LF"
-  }
 ];
+
 const TestimonialsSection = () => {
-  const { theme } = useTheme();
-  const isBatman = theme === "batman";
-  const testimonials = isBatman ? batmanTestimonials : normalTestimonials;
-  return <section id="testimonials" className="py-24">
+  return (
+    <section id="testimonials" className="relative py-28 overflow-hidden">
+      <div className="absolute left-1/2 top-0 h-px w-3/4 -translate-x-1/2 bg-gradient-to-r from-transparent via-primary/25 to-transparent" />
+      <div className="absolute -right-32 top-1/3 h-[420px] w-[420px] rounded-full bg-primary/[0.05] blur-[130px] pointer-events-none" />
+
       <div className="container mx-auto px-6">
         <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.5 }}
-  >
-          <h2 className="font-mono text-sm text-primary mb-2">06.</h2>
-          <h3 className="text-3xl font-bold mb-12">
-            {isBatman ? "Allied Testimonies" : "What People Say"}
-          </h3>
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="max-w-6xl mx-auto mb-14"
+        >
+          <p className="font-mono text-[0.7rem] tracking-[0.35em] uppercase text-muted-foreground mb-4">
+            06 — Testimonials
+          </p>
+          <h2 className="font-serif text-4xl sm:text-5xl leading-tight">
+            What people <span className="gradient-text">say</span>
+          </h2>
         </motion.div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-          {testimonials.map((t, i) => <motion.div
-    key={t.name}
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.4, delay: 0.1 * i }}
-    className="group rounded-xl border border-border bg-card p-6 hover:border-primary/40 transition-colors flex flex-col"
-  >
-              <Quote className="text-primary/30 mb-4" size={24} />
-              <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-1 italic">
-                "{t.quote}"
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold text-sm">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          {testimonials.map((t, i) => (
+            <motion.figure
+              key={t.name}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 * i }}
+              className="group flex flex-col rounded-2xl border border-primary/15 bg-card/40 backdrop-blur-sm p-7 transition-colors hover:border-primary/40"
+            >
+              <Quote className="text-primary/40 mb-5" size={26} />
+              <blockquote className="font-serif text-[1.02rem] leading-relaxed text-foreground/85 flex-1">
+                “{t.quote}”
+              </blockquote>
+              <figcaption className="mt-7 flex items-center gap-3 border-t border-border/60 pt-5">
+                <div className="w-10 h-10 rounded-full border border-primary/25 bg-primary/10 flex items-center justify-center text-primary font-semibold text-sm">
                   {t.initials}
                 </div>
                 <div>
                   <p className="text-sm font-semibold text-foreground">{t.name}</p>
                   <p className="text-xs text-muted-foreground">{t.role}</p>
                 </div>
-              </div>
-            </motion.div>)}
+              </figcaption>
+            </motion.figure>
+          ))}
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
-var stdin_default = TestimonialsSection;
-export {
-  stdin_default as default
-};
+
+export default TestimonialsSection;
