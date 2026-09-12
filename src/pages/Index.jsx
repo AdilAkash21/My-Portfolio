@@ -1,0 +1,379 @@
+import { useState, useEffect, useMemo, useCallback } from "react";
+import { Helmet } from "react-helmet-async";
+import { motion, AnimatePresence } from "framer-motion";
+import Navbar from "@/components/Navbar";
+import HeroSection from "@/components/HeroSection";
+import ScrollReveal from "@/components/ScrollReveal";
+import ScrollToTop from "@/components/ScrollToTop";
+import ParallaxBackground from "@/components/ParallaxBackground";
+import akashLogoAsset from "@/assets/akash-logo.png.asset.json";
+import { lazy, Suspense } from "react";
+const akashLogoImg = akashLogoAsset.url;
+
+const AboutSection = lazy(() => import("@/components/AboutSection"));
+const ExperienceSection = lazy(() => import("@/components/ExperienceSection"));
+const SkillsSection = lazy(() => import("@/components/SkillsSection"));
+const ProjectsSection = lazy(() => import("@/components/ProjectsSection"));
+const BlogSection = lazy(() => import("@/components/BlogSection"));
+const TestimonialsSection = lazy(() => import("@/components/TestimonialsSection"));
+const ContactSection = lazy(() => import("@/components/ContactSection"));
+const StatsCounter = lazy(() => import("@/components/StatsCounter"));
+const Footer = lazy(() => import("@/components/Footer"));
+const ParticleBurst = () => {
+  const particles = useMemo(
+    () => Array.from({ length: 24 }, (_, i) => {
+      const angle = i / 24 * 360;
+      const rad = angle * Math.PI / 180;
+      const dist = 60 + Math.random() * 50;
+      return {
+        id: i,
+        x: Math.cos(rad) * dist,
+        // X destination
+        y: Math.sin(rad) * dist,
+        // Y destination
+        size: 2 + Math.random() * 3,
+        // Random dot size
+        delay: Math.random() * 0.15
+        // Slight stagger
+      };
+    }),
+    []
+  );
+  return <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+      {particles.map((p) => <motion.span
+    key={p.id}
+    className="absolute rounded-full bg-primary"
+    style={{ width: p.size, height: p.size }}
+    initial={{ x: 0, y: 0, opacity: 1, scale: 1 }}
+    animate={{ x: p.x, y: p.y, opacity: 0, scale: 0 }}
+    transition={{ duration: 0.7, delay: p.delay, ease: "easeOut" }}
+  />)}
+    </div>;
+};
+const StaggeredWords = ({
+  words,
+  highlightLast
+}) => <span className="inline-flex flex-wrap justify-center gap-x-3">
+    {words.map((word, i) => <motion.span
+  key={i}
+  className={highlightLast && i === words.length - 1 ? "gradient-text" : ""}
+  initial={{ opacity: 0, y: 24, filter: "blur(6px)" }}
+  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+  transition={{
+    // Reveal the welcome message after the quote finishes on the same screen.
+    delay: 2.025 + i * 0.225,
+    // Each word appears 150ms after the previous
+    duration: 1.125,
+    ease: [0.22, 1, 0.36, 1]
+    // Custom easing for smooth deceleration
+  }}
+>
+        {word}
+      </motion.span>)}
+  </span>;
+const Index = () => {
+  const [showIntro, setShowIntro] = useState(true);
+  const [progress, setProgress] = useState(0);
+  const [burst, setBurst] = useState(false);
+  const skipIntro = useCallback(() => {
+    setShowIntro(false);
+    if (window.__introCounter) clearInterval(window.__introCounter);
+  }, []);
+  useEffect(() => {
+    const duration = 4.5e3;
+    const interval = 30;
+    const steps = duration / interval;
+    let step = 0;
+    let hideTimer;
+    setProgress(0);
+    setBurst(false);
+    const counter = setInterval(() => {
+      step++;
+      const val = Math.min(Math.round(step / steps * 100), 100);
+      setProgress(val);
+      if (val >= 100) {
+        clearInterval(counter);
+        setBurst(true);
+      }
+    }, interval);
+    hideTimer = setTimeout(() => setShowIntro(false), 6300);
+    return () => {
+      clearTimeout(hideTimer);
+      clearInterval(counter);
+    };
+  }, []);
+  const nameWords = ["Welcome", "!"];
+  const quoteWords = ["Eat", "Sleep", "CODE", "Repeat"];
+  return <div className="min-h-screen bg-background text-foreground">
+        {/* Fixed parallax background with gradient orbs and particles */}
+        <ParallaxBackground />
+
+        <Helmet>
+          <title>ARA | Professional Portfolio</title>
+          <meta name="description" content="High-performance professional portfolio showcasing a blend of creative coding and software engineering." />
+          <meta property="og:title" content="ARA | Professional Portfolio" />
+          <meta property="og:description" content="Exploring the intersection of design and engineering." />
+          <meta property="og:image" content={akashLogoImg} />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <script type="application/ld+json">
+            {JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              "name": "ARA",
+              "jobTitle": "Software Engineer",
+              "url": window.location.href,
+              "image": akashLogoImg,
+              "sameAs": [
+                "https://github.com/your-github",
+                "https://linkedin.com/in/your-linkedin"
+              ]
+            })}
+          </script>
+        </Helmet>
+      {
+    /* ─── Intro Loading Screen ─── */
+  }
+      <AnimatePresence>
+        {showIntro && <motion.div
+    className="fixed inset-0 z-50 flex items-center justify-center bg-black overflow-hidden cursor-pointer"
+    onClick={skipIntro}
+    initial={{ opacity: 1 }}
+    exit={{
+      clipPath: "inset(50% 0% 50% 0%)",
+      // Horizontal iris-out effect
+      opacity: 0,
+      scale: 1.08
+    }}
+    transition={{ duration: 1.05, ease: [0.76, 0, 0.24, 1] }}
+  >
+            {
+    /* Cinematic curtain overlays — slide in from top/bottom on exit */
+  }
+            <motion.div
+    className="absolute top-0 left-0 right-0 h-1/2 bg-black z-10 origin-top"
+    initial={{ scaleY: 0 }}
+    exit={{ scaleY: 1 }}
+    transition={{ duration: 0.75, ease: [0.76, 0, 0.24, 1] }}
+  />
+            <motion.div
+    className="absolute bottom-0 left-0 right-0 h-1/2 bg-black z-10 origin-bottom"
+    initial={{ scaleY: 0 }}
+    exit={{ scaleY: 1 }}
+    transition={{ duration: 0.75, ease: [0.76, 0, 0.24, 1] }}
+  />
+
+            <motion.div
+              className="relative z-20 flex w-[min(92vw,34rem)] flex-col items-center rounded-2xl border border-primary/15 bg-black/70 px-6 py-8 text-center shadow-[0_0_80px_-30px_hsl(var(--primary)/0.35)] backdrop-blur-sm sm:px-10 sm:py-10"
+              initial={{ opacity: 0, y: 12, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 1.05, ease: [0.22, 1, 0.36, 1] }}
+            >
+              {
+    /* The quote and welcome message share one continuous intro screen. */
+  }
+              <motion.p
+                className="mb-5 font-mono text-[10px] uppercase tracking-[0.35em] text-muted-foreground/70"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{
+                  delay: 0.225,
+                  duration: 0.9,
+                  ease: [0.22, 1, 0.36, 1]
+                }}
+              >
+                Initializing portfolio
+              </motion.p>
+              <div className="mb-7 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 sm:gap-x-3">
+                {quoteWords.map((word, i) => (
+                  <motion.span
+                    key={word}
+                    className={`font-mono text-xl font-semibold tracking-wide sm:text-2xl ${
+                      word === "CODE" ? "text-white" : "text-primary"
+                    }`}
+                    initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
+                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                    transition={{
+                      delay: 0.3 + i * 0.375,
+                      duration: 1.0125,
+                      ease: [0.22, 1, 0.36, 1]
+                    }}
+                  >
+                    {word}
+                    {i < quoteWords.length - 1 && (
+                      <span className="ml-2 text-primary/40 sm:ml-3">·</span>
+                    )}
+                  </motion.span>
+                ))}
+              </div>
+              <div className="mb-3 h-px w-20 bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
+              <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
+                <StaggeredWords words={nameWords} highlightLast />
+              </h1>
+              <motion.p
+                className="mt-3 max-w-xs text-xs leading-relaxed text-muted-foreground sm:text-sm"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  delay: 2.7,
+                  duration: 1.125,
+                  ease: [0.22, 1, 0.36, 1]
+                }}
+              >
+                Exploring the intersection of design and engineering.
+              </motion.p>
+
+              {
+    /* Progress bar with animated fill and shimmer effect */
+  }
+              <motion.div
+    className="relative mt-7 mb-3 h-1.5 w-48 overflow-hidden rounded-full bg-muted/70 sm:w-56"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{
+      delay: 1.2,
+      duration: 0.675,
+      ease: [0.22, 1, 0.36, 1]
+    }}
+  >
+                <motion.div
+    className="h-full rounded-full bg-primary relative"
+    initial={{ width: "0%" }}
+    animate={{ width: "100%" }}
+    transition={{
+      duration: 4.5,
+      delay: 1.35,
+      ease: [0.4, 0, 0.2, 1]
+    }}
+  >
+                  {
+    /* Glow trail at the leading edge of the progress bar */
+  }
+                  <div className="absolute right-0 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-primary/50 blur-md" />
+                  {
+    /* Shimmer sweep across the progress bar */
+  }
+                  <motion.div
+    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+    initial={{ x: "-100%" }}
+    animate={{ x: "200%" }}
+    transition={{
+      duration: 1.8,
+      delay: 2.25,
+      repeat: 2,
+      ease: [0.4, 0, 0.2, 1]
+    }}
+  />
+                </motion.div>
+              </motion.div>
+
+              {
+    /* Percentage counter + particle burst at 100% */
+  }
+              <div className="relative">
+                <motion.p
+    className="text-muted-foreground font-mono text-sm tabular-nums"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{
+      delay: 1.2,
+      duration: 0.675,
+      ease: [0.22, 1, 0.36, 1]
+    }}
+  >
+                  {progress}%
+                </motion.p>
+                {burst && <ParticleBurst />}
+              </div>
+
+              {
+    /* Loading status text */
+  }
+              <motion.p
+    className="text-muted-foreground font-mono text-xs mt-1"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{
+      delay: 1.8,
+      duration: 0.9,
+      ease: [0.22, 1, 0.36, 1]
+    }}
+  >
+                Crafting pixels & writing code \u2726
+              </motion.p>
+
+              {
+    /* Skip hint — fades in after a short delay */
+  }
+              <motion.p
+    className="text-muted-foreground font-mono text-[10px] mt-4 tracking-wider uppercase"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{
+      delay: 2.7,
+      duration: 1.125,
+      ease: [0.22, 1, 0.36, 1]
+    }}
+  >
+                Click anywhere to skip
+              </motion.p>
+            </motion.div>
+          </motion.div>}
+      </AnimatePresence>
+
+      {
+    /* ─── Main Content ─── */
+  }
+      {
+    /* Hidden while intro is visible, then fades in */
+  }
+      <motion.div
+    style={{ visibility: showIntro ? "hidden" : "visible" }}
+    initial={{ opacity: 0 }}
+    animate={{ opacity: showIntro ? 0 : 1 }}
+    transition={{ duration: 0.6, delay: 0.1 }}
+  >
+        <Navbar />
+        {
+    /* Each section is wrapped in ScrollReveal for fade-in-on-scroll animation */
+  }
+        <ScrollReveal direction="up" delay={0}>
+          <HeroSection />
+        </ScrollReveal>
+        <Suspense fallback={null}>
+          <ScrollReveal direction="up" delay={0}>
+            <AboutSection />
+          </ScrollReveal>
+          <ScrollReveal direction="left" delay={0.05}>
+            <ExperienceSection />
+          </ScrollReveal>
+          <ScrollReveal direction="right" delay={0.05}>
+            <SkillsSection />
+          </ScrollReveal>
+          <ScrollReveal direction="left" delay={0.05}>
+            <ProjectsSection />
+          </ScrollReveal>
+          <ScrollReveal direction="right" delay={0.05}>
+            <BlogSection />
+          </ScrollReveal>
+          <ScrollReveal direction="up" delay={0.05}>
+            <TestimonialsSection />
+          </ScrollReveal>
+          <ScrollReveal direction="up" delay={0.05}>
+            <StatsCounter />
+          </ScrollReveal>
+          <ScrollReveal direction="up" delay={0.05}>
+            <ContactSection />
+          </ScrollReveal>
+          <ScrollReveal direction="up" delay={0} duration={0.4}>
+            <Footer />
+          </ScrollReveal>
+        </Suspense>
+      </motion.div>
+      {
+    /* Floating scroll-to-top button */
+  }
+      <ScrollToTop />
+    </div>;
+};
+
+export default Index;
