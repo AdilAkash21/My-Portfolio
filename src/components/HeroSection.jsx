@@ -47,12 +47,12 @@ const HeroSection = () => {
   return (
     <section id="home" className="relative min-h-screen flex items-center pt-32 pb-20 overflow-hidden">
       {/* WebGL aurora */}
-      <div className="absolute inset-0 pointer-events-none opacity-60 mix-blend-screen">
-        <ShaderBackground intensity={0.55} />
+      <div className="absolute inset-0 pointer-events-none opacity-80 sm:opacity-60 mix-blend-screen">
+        <ShaderBackground intensity={0.65} />
       </div>
 
       {/* Live geometric + particle field */}
-      <ParticleField className="opacity-70" />
+      <ParticleField className="opacity-90 sm:opacity-70" />
 
       <div className="container mx-auto px-6 relative">
         <div className="grid lg:grid-cols-[1.15fr_0.85fr] items-center gap-14 lg:gap-20 max-w-6xl mx-auto">

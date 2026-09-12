@@ -178,7 +178,7 @@ const Navbar = () => {
           <button
             ref={buttonRef}
             onClick={() => setOpen(!open)}
-            className="p-1 text-foreground"
+            className="flex min-h-11 min-w-11 items-center justify-center rounded-lg p-1 text-foreground"
             aria-label="Toggle menu"
             aria-expanded={open}
             aria-controls="mobile-menu"

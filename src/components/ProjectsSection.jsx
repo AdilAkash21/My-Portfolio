@@ -103,8 +103,6 @@ const ProjectsSection = () => {
             <div className="grid sm:grid-cols-2 gap-6">
               <AnimatePresence mode="popLayout">
                 {filtered.map((p, i) => {
-                  const displayTitle = p.title === "Realtime Chat" ? "C.W.N.U Website Design" : p.title;
-
                   return (
                   <motion.div
                     key={p.id || p.title}
@@ -128,7 +126,7 @@ const ProjectsSection = () => {
                               target="_blank"
                               rel="noopener noreferrer"
                               className="text-muted-foreground hover:text-primary transition-colors"
-                              aria-label={`${displayTitle} on GitHub`}
+                              aria-label={`${p.title} on GitHub`}
                             >
                               <Github size={18} />
                             </a>
@@ -141,7 +139,7 @@ const ProjectsSection = () => {
                       </div>
 
                       <h3 className="relative font-serif text-2xl text-foreground mb-3 group-hover:text-primary transition-colors">
-                        {displayTitle}
+                        {p.title}
                       </h3>
                       <p className="relative text-sm text-muted-foreground leading-relaxed mb-6 flex-1">
                         {p.description}

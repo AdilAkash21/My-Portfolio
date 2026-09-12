@@ -15,11 +15,14 @@ const ParticleField = ({ density = 46, className = "" }) => {
     if (!ctx) return;
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const coarse = window.matchMedia("(pointer: coarse)").matches;
     let width = 0;
     let height = 0;
     let raf = 0;
     let running = true;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const dpr = Math.min(window.devicePixelRatio || 1, coarse ? 1.25 : 2);
+    const frameInterval = coarse ? 1000 / 30 : 0;
+    let lastFrame = 0;
 
     let particles = [];
 
@@ -109,7 +112,10 @@ const ParticleField = ({ density = 46, className = "" }) => {
 
     const loop = (t) => {
       if (!running) return;
-      draw(t);
+      if (!frameInterval || t - lastFrame >= frameInterval) {
+        draw(t);
+        lastFrame = t;
+      }
       raf = requestAnimationFrame(loop);
     };
 

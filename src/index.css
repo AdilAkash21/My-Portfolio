@@ -1055,6 +1055,31 @@
     }
   }
 
+  @media (hover: none) {
+    .hover-box:hover,
+    .hover-lift:hover,
+    .btn-float-hover:hover {
+      transform: none;
+      filter: none;
+      box-shadow: none;
+    }
+
+    .btn-float-hover:hover::before {
+      animation: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
   .custom-cursor__core {
     width: 7px;
     height: 7px;
