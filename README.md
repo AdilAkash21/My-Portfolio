@@ -30,6 +30,22 @@ Build for production:
 npm run build
 ```
 
+## Netlify deployment
+
+Netlify can deploy this Vite app directly from the repository using the included
+`netlify.toml` configuration. The site renders without Supabase configuration;
+projects, education, and articles are loaded when the following optional
+production environment variables are configured in Netlify:
+
+```text
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_PUBLISHABLE_KEY=your_publishable_key
+```
+
+After adding or changing these variables, trigger a new deploy so Vite includes
+them in the production bundle. Do not commit a real `.env` file or secret keys
+to the repository.
+
 Run tests:
 
 ```sh
