@@ -1,6 +1,7 @@
 import { motion, useInView } from "framer-motion";
 import { Palette, Layout, Code2, Smartphone } from "lucide-react";
 import { useRef } from "react";
+import ParticleField from "@/components/ParticleField";
 
 const skills = [
   { name: "HTML", level: 95 },
@@ -90,9 +91,21 @@ const SkillsSection = () => {
   return (
     <section id="skills" className="relative py-28 overflow-hidden">
       <div className="absolute left-1/2 top-0 h-px w-3/4 -translate-x-1/2 bg-gradient-to-r from-transparent via-primary/25 to-transparent" />
-      <div className="absolute -left-32 top-1/4 h-[420px] w-[420px] rounded-full bg-primary/[0.05] blur-[130px] pointer-events-none" />
+      <ParticleField density={34} className="opacity-35" />
+      <motion.div
+        aria-hidden="true"
+        className="absolute -left-32 top-1/4 h-[420px] w-[420px] rounded-full bg-primary/[0.06] blur-[130px] pointer-events-none"
+        animate={{ x: [0, 90, 0], y: [0, -35, 0], scale: [1, 1.12, 1], opacity: [0.45, 0.9, 0.45] }}
+        transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        aria-hidden="true"
+        className="absolute -right-40 bottom-16 h-[360px] w-[360px] rounded-full bg-primary/[0.045] blur-[120px] pointer-events-none"
+        animate={{ x: [0, -70, 0], y: [0, 45, 0], scale: [1.08, 0.96, 1.08], opacity: [0.7, 0.35, 0.7] }}
+        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+      />
 
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto px-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
