@@ -89,6 +89,10 @@ To deploy:
 The site can deploy and render without Supabase variables. Add them when live
 projects, education, and article data should replace the fallback content.
 
+The contact form uses Netlify Forms. In Netlify, enable form notifications for
+the `contact` form and send them to `adilakash23@gmail.com`. Supabase remains
+optional for portfolio content and is not used to deliver contact messages.
+
 ## Quality checks
 
 Run the production build:

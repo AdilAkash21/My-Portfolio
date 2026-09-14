@@ -7,6 +7,16 @@ import SectionBackground from "@/components/SectionBackground";
 
 const categories = ["All", "Web", "App", "Design"];
 
+const getProjectCategories = (category) => {
+  if (Array.isArray(category)) return category;
+  if (typeof category !== "string" || !category.trim()) return ["Project"];
+
+  return category
+    .split(/\s*[,/]\s*/)
+    .map((value) => value.trim())
+    .filter(Boolean);
+};
+
 const TiltCard = ({ children, className }) => {
   const ref = useRef(null);
   const [rotate, setRotate] = useState({ x: 0, y: 0 });
@@ -47,7 +57,9 @@ const ProjectsSection = () => {
   const filtered =
     activeFilter === "All"
       ? projects
-      : projects.filter((p) => p.category === activeFilter);
+      : projects.filter((p) =>
+          getProjectCategories(p.category).includes(activeFilter),
+        );
 
   return (
     <section id="projects" className="relative py-28 overflow-hidden">
@@ -117,7 +129,12 @@ const ProjectsSection = () => {
 
                       <div className="relative flex items-start justify-between mb-6">
                         <span className="font-mono text-[0.65rem] tracking-[0.3em] uppercase text-primary/80">
-                          {p.category || "Project"}
+                          {getProjectCategories(p.category).map((category, index) => (
+                            <span key={category}>
+                              {index > 0 ? " / " : ""}
+                              {category}
+                            </span>
+                          ))}
                         </span>
                         <div className="flex items-center gap-3">
                           {p.github && (
@@ -139,7 +156,18 @@ const ProjectsSection = () => {
                       </div>
 
                       <h3 className="relative font-serif text-2xl text-foreground mb-3 group-hover:text-primary transition-colors">
-                        {p.title}
+                        {p.github ? (
+                          <a
+                            href={p.github}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-sm"
+                          >
+                            {p.title}
+                          </a>
+                        ) : (
+                          p.title
+                        )}
                       </h3>
                       <p className="relative text-sm text-muted-foreground leading-relaxed mb-6 flex-1">
                         {p.description}

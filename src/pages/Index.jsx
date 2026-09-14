@@ -77,7 +77,6 @@ const Index = () => {
   const [burst, setBurst] = useState(false);
   const skipIntro = useCallback(() => {
     setShowIntro(false);
-    if (window.__introCounter) clearInterval(window.__introCounter);
   }, []);
   useEffect(() => {
     const duration = 4.5e3;

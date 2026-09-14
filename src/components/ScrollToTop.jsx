@@ -25,7 +25,17 @@ const ScrollToTop = forwardRef((_, ref) => {
   }, []);
   return <div ref={ref}>
       <AnimatePresence>
-        {visible && <ScrollToTopButton onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} />}
+        {visible && (
+          <ScrollToTopButton
+            onClick={() => {
+              if (window.lenis && typeof window.lenis.scrollTo === "function") {
+                window.lenis.scrollTo(0);
+              } else {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }
+            }}
+          />
+        )}
       </AnimatePresence>
     </div>;
 });

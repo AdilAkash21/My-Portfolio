@@ -60,10 +60,25 @@ const ContactSection = () => {
     setErrors({});
     setIsSubmitting(true);
     setSubmitStatus("idle");
-    await new Promise((resolve) => setTimeout(resolve, 800));
-    setIsSubmitting(false);
-    setSubmitStatus("success");
-    setForm({ name: "", email: "", message: "" });
+    try {
+      const body = new URLSearchParams({
+        "form-name": "contact",
+        ...result.data,
+      });
+      const response = await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body,
+      });
+      if (!response.ok) throw new Error("Netlify Forms submission failed");
+      setSubmitStatus("success");
+      setForm({ name: "", email: "", message: "" });
+    } catch (error) {
+      console.error("Contact form submission failed:", error);
+      setSubmitStatus("error");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -132,17 +147,30 @@ const ContactSection = () => {
           {/* Form */}
           <motion.form
             onSubmit={handleSubmit}
+            name="contact"
+            method="POST"
+            data-netlify="true"
+            netlify-honeypot="bot-field"
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
             className="hover-box lg:col-span-3 rounded-[1.75rem] border border-primary/15 bg-card/40 backdrop-blur-sm p-6 sm:p-8 space-y-5"
           >
+            <input type="hidden" name="form-name" value="contact" />
+            <input
+              type="text"
+              name="bot-field"
+              tabIndex="-1"
+              autoComplete="off"
+              className="hidden"
+            />
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
                 <label htmlFor="contact-name" className="sr-only">Name</label>
                 <input
                   id="contact-name"
+                  name="name"
                   type="text"
                   placeholder="Your Name"
                   required
@@ -160,6 +188,7 @@ const ContactSection = () => {
                 <label htmlFor="contact-email" className="sr-only">Email</label>
                 <input
                   id="contact-email"
+                  name="email"
                   type="email"
                   placeholder="Your Email"
                   required
@@ -179,6 +208,7 @@ const ContactSection = () => {
               <label htmlFor="contact-message" className="sr-only">Message</label>
               <textarea
                 id="contact-message"
+                name="message"
                 placeholder="Tell me about your project..."
                 required
                 rows={6}

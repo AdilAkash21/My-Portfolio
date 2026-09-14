@@ -6,6 +6,41 @@ import {
   fallbackProjects,
 } from '@/data/portfolioFallback';
 
+const normalizeProject = (project) => {
+  if (
+    project.title !== 'C.W.N.U Website Design' &&
+    project.title !== 'Portfolio Experience' &&
+    project.title !== 'Weather Insights' &&
+    project.title !== 'Personal_Finance_Tracker'
+  ) {
+    return project;
+  }
+
+  return {
+    ...project,
+    category: ['Web', 'Design'],
+    ...(project.title === 'C.W.N.U Website Design'
+      ? {
+          title: 'C.W.N.U_website_Design',
+          github: 'https://github.com/AdilAkash21/C.W.N.U-website-Design',
+        }
+      : project.title === 'Portfolio Experience'
+        ? { github: 'https://github.com/AdilAkash21/My-Portfolio' }
+        : project.title === 'Weather Insights'
+          ? {
+            title: 'Fitness_Tracker',
+            description: 'A practical fitness tracking application for monitoring daily activity, tracking progress, and supporting healthier routines.',
+            category: 'App',
+            tags: ['React', 'Health Tracking', 'Responsive'],
+            github: 'https://github.com/AdilAkash21/Fitness-Tracker',
+          }
+          : {
+              category: ['App', 'Design'],
+              github: 'https://github.com/AdilAkash21/Personal_Finance_Tracker',
+            }),
+  };
+};
+
 export function useProjects(theme) {
   const selectedTheme = theme || 'normal';
   return useQuery({
@@ -19,7 +54,7 @@ export function useProjects(theme) {
         .eq('theme', selectedTheme)
         .order('sort_order', { ascending: true });
       if (error) throw error;
-      return data?.length ? data : fallbackProjects;
+      return data?.length ? data.map(normalizeProject) : fallbackProjects;
     },
   });
 }
