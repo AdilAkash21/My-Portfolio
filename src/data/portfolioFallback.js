@@ -65,12 +65,22 @@ export const fallbackExperience = [
   {
     id: "fallback-experience-1",
     theme: "normal",
-    year: "2021 — 2025",
+    year: "2024 — At Present",
     title: "B.Sc. Software Engineering",
     organization: "China West Normal University",
-    description: "Studied software engineering with a focus on web development, software design, and practical problem solving.",
-    details: ["Built projects with modern JavaScript frameworks", "Developed responsive and user-focused interfaces"],
+    description: "Software engineering student focused on web development, software design, and practical problem solving.",
+    details: ["Building projects with modern JavaScript frameworks", "Developing responsive and user-focused interfaces"],
     sort_order: 1,
+  },
+  {
+    id: "fallback-experience-2",
+    theme: "normal",
+    year: "Completed",
+    title: "H.S.C. — Science",
+    organization: "Ghatail Cantonment Public School & College",
+    description: "Completed higher secondary education in the science stream.",
+    details: ["Studied mathematics, physics, chemistry, and related science subjects"],
+    sort_order: 2,
   },
 ];
 

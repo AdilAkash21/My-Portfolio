@@ -8,7 +8,7 @@ const education = [
     title: "B.Sc. Software Engineering",
     place: "China West Normal University",
     location: "Nanchong, China",
-    period: "2024 — 2028",
+    period: "2024 — At Present",
   },
   {
     icon: GraduationCap,
