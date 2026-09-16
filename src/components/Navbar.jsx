@@ -136,7 +136,7 @@ const Navbar = () => {
         {
     /* Desktop nav */
   }
-        <div className="hidden md:flex items-center gap-8">
+        <div className="navbar-nav-shell hidden md:flex items-center gap-8">
           <ul className="flex items-center gap-8">
             {navLinks.map((l) => <li key={l.href}>
                 <a
@@ -178,7 +178,7 @@ const Navbar = () => {
           <button
             ref={buttonRef}
             onClick={() => setOpen(!open)}
-            className="flex min-h-11 min-w-11 items-center justify-center rounded-lg p-1 text-foreground"
+            className="navbar-menu-toggle flex min-h-11 min-w-11 items-center justify-center rounded-lg p-1 text-foreground"
             aria-label="Toggle menu"
             aria-expanded={open}
             aria-controls="mobile-menu"

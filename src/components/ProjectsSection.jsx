@@ -27,7 +27,7 @@ const TiltCard = ({ children, className }) => {
     const rect = el.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
-    setRotate({ x: -y * 6, y: x * 6 });
+    setRotate({ x: -y * 18.225, y: x * 18.225 });
   }, []);
 
   const handleMouseLeave = useCallback(() => setRotate({ x: 0, y: 0 }), []);
@@ -124,7 +124,8 @@ const ProjectsSection = () => {
                     exit={{ opacity: 0, scale: 0.96 }}
                     transition={{ duration: 0.4, delay: 0.05 * i }}
                   >
-                    <TiltCard className="group hover-box relative h-full rounded-[1.5rem] border border-border/70 bg-card/40 backdrop-blur-sm p-7 flex flex-col overflow-hidden">
+                    <div className="group service-float project-card-float h-full">
+                    <TiltCard className="project-tilt-card relative h-full rounded-[1.5rem] border border-border/70 bg-card/40 backdrop-blur-sm p-7 flex flex-col overflow-hidden">
                       <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[radial-gradient(circle_at_top_right,hsl(var(--primary)/0.12),transparent_60%)]" />
 
                       <div className="relative flex items-start justify-between mb-6">
@@ -184,6 +185,7 @@ const ProjectsSection = () => {
                         ))}
                       </div>
                     </TiltCard>
+                    </div>
                   </motion.div>
                   );
                 })}

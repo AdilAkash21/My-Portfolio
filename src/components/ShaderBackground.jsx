@@ -222,7 +222,7 @@ const ShaderBackground = ({
     let visible = true;        // intersection observer
     let lowPower = false;      // battery
     let pageVisible = !document.hidden;
-    let userPaused = reduced;  // honor prefers-reduced-motion (single static frame)
+    let userPaused = false;    // keep the background visible; reduced motion is handled by a lower frame rate
 
     // Sliding window of frame durations for downgrade decision
     const frameSamples = [];
@@ -251,7 +251,7 @@ const ShaderBackground = ({
       if (now - downgradeCheckedAt < 2000) return;
       downgradeCheckedAt = now;
       const avg = frameSamples.reduce((a, b) => a + b, 0) / frameSamples.length;
-      const targetMs = 1000 / preset.fps;
+      const targetMs = 1000 / (reduced ? Math.min(preset.fps, 12) : preset.fps);
       // If averaging >35% slower than target, drop one tier
       if (avg > targetMs * 1.35) {
         const idx = tierOrder.indexOf(tier);
@@ -274,7 +274,7 @@ const ShaderBackground = ({
 
     const render = (now) => {
       if (!isRunning()) { raf = 0; return; }
-      const targetMs = 1000 / preset.fps;
+      const targetMs = 1000 / (reduced ? Math.min(preset.fps, 12) : preset.fps);
       const dt = now - lastFrame;
       if (dt + 0.5 >= targetMs) {
         drawFrame(now);
@@ -289,9 +289,9 @@ const ShaderBackground = ({
       lastFrame = performance.now();
       raf = requestAnimationFrame(render);
     };
-    // Render at least one frame so reduced-motion users see the static art
+    // Render an initial frame before starting the regular loop.
     drawFrame(performance.now());
-    if (!reduced) startLoop();
+    startLoop();
 
     // Re-sync color a few times after theme toggle (CSS vars swap mid-transition)
     const syncTimers = [80, 250, 600].map((d) => setTimeout(updateColors, d));

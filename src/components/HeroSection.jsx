@@ -47,7 +47,7 @@ const HeroSection = () => {
   return (
     <section id="home" className="relative min-h-screen flex items-center pt-32 pb-20 overflow-hidden">
       {/* WebGL aurora */}
-      <div className="absolute inset-0 pointer-events-none opacity-80 sm:opacity-60 mix-blend-screen">
+      <div className="live-background-layer absolute inset-0 pointer-events-none opacity-80 sm:opacity-60 mix-blend-screen">
         <ShaderBackground intensity={0.65} />
       </div>
 

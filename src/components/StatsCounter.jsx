@@ -42,7 +42,7 @@ const StatsCounter = () => {
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
     transition={{ duration: 0.5, delay: i * 0.1 }}
-    className="text-center group"
+    className="text-center group hover-box rounded-2xl px-4 py-5"
   >
               <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-3 group-hover:bg-primary/20 transition-colors">
                 <stat.icon className="text-primary" size={22} />

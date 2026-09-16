@@ -1,18 +1,19 @@
 import { motion } from "framer-motion";
 import { Palette, Layout, Code2, Smartphone } from "lucide-react";
 import SectionBackground from "@/components/SectionBackground";
+import maskImage from "@/assets/v-mask.png";
 
 const skills = [
-  { name: "HTML", level: 95 },
-  { name: "CSS", level: 90 },
-  { name: "Tailwind CSS", level: 85 },
-  { name: "JavaScript", level: 80 },
-  { name: "React", level: 82 },
-  { name: "Kotlin", level: 75 },
-  { name: "Flutter", level: 72 },
-  { name: "Java", level: 70 },
-  { name: "C", level: 65 },
-  { name: "C++", level: 60 },
+  { name: "HTML", level: 95, category: "structure" },
+  { name: "CSS", level: 90, category: "visual systems" },
+  { name: "Tailwind CSS", level: 85, category: "visual systems" },
+  { name: "JavaScript", level: 80, category: "interaction" },
+  { name: "React", level: 82, category: "interaction" },
+  { name: "Kotlin", level: 75, category: "mobile" },
+  { name: "Flutter", level: 72, category: "mobile" },
+  { name: "Java", level: 70, category: "systems" },
+  { name: "C", level: 65, category: "systems" },
+  { name: "C++", level: 60, category: "systems" },
 ];
 
 const services = [
@@ -26,52 +27,7 @@ const services = [
   },
 ];
 
-const trainItems = [
-  ...skills.map((skill) => ({ ...skill, type: "skill" })),
-];
 
-const TrainLocomotive = () => (
-  <div className="skills-train__locomotive" aria-hidden="true">
-    <div className="skills-train__nose">
-      <span className="skills-train__nose-light" />
-      <span className="skills-train__nose-line" />
-    </div>
-    <div className="skills-train__body">
-      <div className="skills-train__body-line" />
-      <div className="skills-train__body-line skills-train__body-line--lower" />
-    </div>
-    <div className="skills-train__cab">
-      <div className="skills-train__cab-window skills-train__cab-window--front" />
-      <div className="skills-train__cab-window skills-train__cab-window--rear" />
-    </div>
-    <div className="skills-train__locomotive-copy">
-      <span className="skills-train__brand-mark">&lt; ARA /&gt;</span>
-      <strong className="font-serif text-lg tracking-tight text-foreground">Adil's Express</strong>
-    </div>
-    <span className="skills-train__drive-wheel skills-train__drive-wheel--front" />
-    <span className="skills-train__drive-wheel skills-train__drive-wheel--rear" />
-  </div>
-);
-
-const TrainItem = ({ item }) => {
-  const Icon = item.icon;
-
-  return (
-    <div className="skills-train__item">
-      <div className="skills-train__icon">
-        {Icon ? <Icon size={23} strokeWidth={1.7} /> : <span>{item.name.slice(0, 1)}</span>}
-      </div>
-      <div className="min-w-0">
-        <p className="truncate font-serif text-lg text-foreground">{item.name || item.title}</p>
-        <p className="font-mono text-[0.62rem] uppercase tracking-[0.18em] text-muted-foreground">
-          {item.type === "skill" ? `${item.level}% proficiency` : "service"}
-        </p>
-      </div>
-      <span className="skills-train__wheel skills-train__wheel--left" />
-      <span className="skills-train__wheel skills-train__wheel--right" />
-    </div>
-  );
-};
 
 const SkillsSection = () => {
   return (
@@ -97,22 +53,51 @@ const SkillsSection = () => {
           </p>
         </motion.div>
 
-        <div className="skills-train mb-12" aria-label="Skills train">
-          <div className="skills-train__fade skills-train__fade--left" />
-          <div className="skills-train__fade skills-train__fade--right" />
-          <div className="skills-train__track">
-            <div className="skills-train__set">
-              <TrainLocomotive />
-              {trainItems.map((item) => (
-                <TrainItem key={`${item.type}-${item.name || item.title}`} item={item} />
-              ))}
+        <div className="skills-circuit mb-16" aria-label="Technical skills circuit board">
+          <div className="skills-circuit__header">
+            <span className="skills-circuit__eyebrow">SYS / 03</span>
+            <span className="skills-circuit__status"><i /> all systems operational</span>
+            <span className="skills-circuit__serial">ARA—SKILLS—2024</span>
+          </div>
+          <div className="skills-circuit__board">
+            <div className="skills-circuit__traces" aria-hidden="true">
+              <span /><span /><span /><span /><span /><span />
             </div>
-            <div className="skills-train__set" aria-hidden="true">
-              <TrainLocomotive />
-              {trainItems.map((item) => (
-                <TrainItem key={`duplicate-${item.type}-${item.name || item.title}`} item={item} />
-              ))}
+            <div className="skills-circuit__hud skills-circuit__hud--top" aria-hidden="true">
+              <span>ARCHITECTURE / 04</span>
+              <span>LATENCY <b>012ms</b></span>
             </div>
+            <div className="skills-circuit__hud skills-circuit__hud--bottom" aria-hidden="true">
+              <span>CREATIVE OUTPUT</span>
+              <span>100% HUMAN / 0% TEMPLATE</span>
+            </div>
+            <div className="skills-circuit__core">
+              <img className="skills-circuit__mask" src={maskImage} alt="Gold theatrical mask" />
+            </div>
+          {skills.map((skill, index) => (
+            <div
+              key={skill.name}
+              className="skills-circuit__module"
+              data-category={skill.category}
+              style={{
+                "--module-index": index,
+                "--module-delay": `${index * 0.12}s`,
+              }}
+            >
+              <div className="skills-circuit__module-top">
+                <span className="skills-circuit__module-index">0{index + 1}</span>
+                <span className="skills-circuit__module-category">module / {skill.category}</span>
+              </div>
+              <strong>{skill.name}</strong>
+              <div className="skills-circuit__meter"><span style={{ width: `${skill.level}%` }} /></div>
+              <small><b>{skill.level}%</b> / proficiency</small>
+            </div>
+          ))}
+          </div>
+          <div className="skills-circuit__footer">
+            <span>INPUT: CURIOSITY</span>
+            <span>PROCESS: PRACTICE + PLAY</span>
+            <span>OUTPUT: DIGITAL EXPERIENCES</span>
           </div>
         </div>
 
