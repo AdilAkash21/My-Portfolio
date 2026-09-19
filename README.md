@@ -1,4 +1,4 @@
-# Adil Rahman Akash Portfolio
+# Adil Rahman Akash Personal Portfolio
 
 Personal portfolio website for Adil Rahman Akash — a responsive, animation-rich
 React portfolio focused on software engineering, web development, and interface
