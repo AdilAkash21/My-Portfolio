@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { Calendar, Clock, ArrowUpRight, FileText } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useBlogPosts } from "@/hooks/useSupabaseData";
-import SectionBackground from "@/components/SectionBackground";
 
 const BlogSection = () => {
   const { theme } = useTheme();
@@ -10,7 +9,6 @@ const BlogSection = () => {
 
   return (
     <section id="blog" className="relative py-28 overflow-hidden">
-      <SectionBackground density={22} />
       <div className="absolute left-1/2 top-0 h-px w-3/4 -translate-x-1/2 bg-gradient-to-r from-transparent via-primary/25 to-transparent" />
       <div className="container mx-auto px-6 relative z-10">
         <motion.div

@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
  * Draws a slowly drifting grid of gold points with connecting lines,
  * plus floating particles. Respects reduced-motion and pauses offscreen.
  */
-const ParticleField = ({ density = 46, className = "" }) => {
+const ParticleField = ({ density = 46, className = "", animateOnMobile = false }) => {
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -16,11 +16,10 @@ const ParticleField = ({ density = 46, className = "" }) => {
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const coarse = window.matchMedia("(pointer: coarse), (max-width: 767px)").matches;
-    const staticBackground =
-      reduced || window.matchMedia("(prefers-reduced-motion: reduce)").matches || coarse;
+    const staticBackground = reduced || (coarse && !animateOnMobile);
     let width = 0;
     let height = 0;
-    let raf = 0;
+    let frameId = 0;
     let running = true;
     // Match the shader layer's DPR floor (1 on small screens) so both
     // background canvases render at the same effective resolution.
@@ -34,10 +33,10 @@ const ParticleField = ({ density = 46, className = "" }) => {
       particles = Array.from({ length: Math.max(minParticles, count) }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.22,
-        vy: (Math.random() - 0.5) * 0.22,
-        r: Math.random() * 1.6 + 0.6,
-        a: Math.random() * 0.5 + 0.2,
+        vx: (Math.random() - 0.5) * (coarse ? 0.8 : 0.22),
+        vy: (Math.random() - 0.5) * (coarse ? 0.8 : 0.22),
+        r: Math.random() * (coarse ? 1.8 : 1.6) + (coarse ? 1.8 : 0.6),
+        a: Math.random() * (coarse ? 0.35 : 0.5) + (coarse ? 0.5 : 0.2),
       }));
     };
 
@@ -56,7 +55,7 @@ const ParticleField = ({ density = 46, className = "" }) => {
       const step = 64;
       const offset = (t * 0.008) % step;
       ctx.lineWidth = 1;
-      ctx.strokeStyle = `rgba(255, 184, 0, ${staticBackground ? 0.07 : 0.045})`;
+      ctx.strokeStyle = `rgba(255, 184, 0, ${coarse ? 0.1 : staticBackground ? 0.07 : 0.045})`;
       ctx.beginPath();
       for (let x = -step + offset; x < width + step; x += step) {
         ctx.moveTo(x, 0);
@@ -82,7 +81,7 @@ const ParticleField = ({ density = 46, className = "" }) => {
           const dy = p.y - q.y;
           const d2 = dx * dx + dy * dy;
           if (d2 < 17000) {
-            const alpha = (1 - d2 / 17000) * 0.16;
+            const alpha = (1 - d2 / 17000) * (coarse ? 0.24 : 0.16);
             ctx.strokeStyle = `rgba(255, 184, 0, ${alpha})`;
             ctx.lineWidth = 0.8;
             ctx.beginPath();
@@ -96,7 +95,7 @@ const ParticleField = ({ density = 46, className = "" }) => {
       // dots
       for (const p of particles) {
         const pulse = 0.65 + Math.sin(t * 0.001 + p.x * 0.01) * 0.35;
-        ctx.fillStyle = `rgba(255, 184, 0, ${p.a * pulse})`;
+        ctx.fillStyle = `rgba(255, 184, 0, ${p.a * pulse * (coarse ? 1.1 : 1)})`;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fill();
@@ -115,13 +114,27 @@ const ParticleField = ({ density = 46, className = "" }) => {
     const loop = (t) => {
       if (!running) return;
       draw(t);
-      raf = requestAnimationFrame(loop);
+      frameId = coarse
+        ? window.setTimeout(() => loop(performance.now()), 1000 / 30)
+        : requestAnimationFrame(loop);
+    };
+
+    const startLoop = () => {
+      if (!running || frameId) return;
+      frameId = coarse
+        ? window.setTimeout(() => loop(performance.now()), 0)
+        : requestAnimationFrame(loop);
+    };
+
+    const stopLoop = () => {
+      if (!frameId) return;
+      if (coarse) window.clearTimeout(frameId);
+      else cancelAnimationFrame(frameId);
+      frameId = 0;
     };
 
     resize();
-    if (!staticBackground) {
-      raf = requestAnimationFrame(loop);
-    }
+    if (!staticBackground) startLoop();
 
     const ro = new ResizeObserver(resize);
     ro.observe(canvas);
@@ -131,10 +144,10 @@ const ParticleField = ({ density = 46, className = "" }) => {
       io = new IntersectionObserver(([entry]) => {
         if (entry.isIntersecting && !running) {
           running = true;
-          raf = requestAnimationFrame(loop);
+          startLoop();
         } else if (!entry.isIntersecting) {
           running = false;
-          cancelAnimationFrame(raf);
+          stopLoop();
         }
       });
       io.observe(canvas);
@@ -144,22 +157,22 @@ const ParticleField = ({ density = 46, className = "" }) => {
       if (staticBackground) return;
       if (document.hidden) {
         running = false;
-        cancelAnimationFrame(raf);
+        stopLoop();
       } else if (!running) {
         running = true;
-        raf = requestAnimationFrame(loop);
+        startLoop();
       }
     };
     if (!staticBackground) document.addEventListener("visibilitychange", onVisibility);
 
     return () => {
       running = false;
-      cancelAnimationFrame(raf);
+      stopLoop();
       ro.disconnect();
       io?.disconnect();
       if (!staticBackground) document.removeEventListener("visibilitychange", onVisibility);
     };
-  }, [density]);
+  }, [density, animateOnMobile]);
 
   return (
     <canvas

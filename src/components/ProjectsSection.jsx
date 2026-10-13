@@ -3,7 +3,6 @@ import { ArrowUpRight, Github } from "lucide-react";
 import { useRef, useCallback, useState } from "react";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useProjects } from "@/hooks/useSupabaseData";
-import SectionBackground from "@/components/SectionBackground";
 
 const categories = ["All", "Web", "App", "Design"];
 
@@ -63,7 +62,6 @@ const ProjectsSection = () => {
 
   return (
     <section id="projects" className="relative py-28 overflow-hidden">
-      <SectionBackground density={24} />
       <div className="absolute left-1/2 top-0 h-px w-3/4 -translate-x-1/2 bg-gradient-to-r from-transparent via-primary/25 to-transparent" />
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-6xl mx-auto">

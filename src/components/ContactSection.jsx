@@ -2,7 +2,6 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, Github, Phone, MapPin, Send, Loader2, ArrowUpRight } from "lucide-react";
 import { z } from "zod";
-import SectionBackground from "@/components/SectionBackground";
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100, "Name must be under 100 characters"),
@@ -83,7 +82,6 @@ const ContactSection = () => {
 
   return (
     <section id="contact" className="relative py-28 overflow-hidden">
-      <SectionBackground density={24} />
       <div className="absolute left-1/2 top-0 h-px w-3/4 -translate-x-1/2 bg-gradient-to-r from-transparent via-primary/25 to-transparent" />
       <div className="container mx-auto px-6 relative z-10">
         <motion.div

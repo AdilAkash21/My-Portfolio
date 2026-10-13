@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { Code, FolderGit2, Clock, Coffee } from "lucide-react";
-import SectionBackground from "@/components/SectionBackground";
 const normalStats = [
   { label: "Projects Completed", value: 15, suffix: "+", icon: FolderGit2 },
   { label: "Years of Experience", value: 4, suffix: "+", icon: Clock },
@@ -33,7 +32,6 @@ const AnimatedNumber = ({ value, suffix }) => {
 };
 const StatsCounter = () => {
   return <section className="relative py-16 overflow-hidden">
-      <SectionBackground density={18} intensity={0.24} />
       <div className="container mx-auto px-6 relative z-10">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
           {normalStats.map((stat, i) => <motion.div

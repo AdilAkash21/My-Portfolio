@@ -3,8 +3,6 @@ import { motion } from "framer-motion";
 import { ArrowUpRight, Download, Mail, MapPin } from "lucide-react";
 import Magnetic from "@/components/ui/Magnetic";
 import profileImg from "@/assets/profile-optimized.webp";
-import ShaderBackground from "@/components/ShaderBackground";
-import ParticleField from "@/components/ParticleField";
 
 const preloadLink = document.createElement("link");
 preloadLink.rel = "preload";
@@ -46,14 +44,6 @@ const HeroSection = () => {
 
   return (
     <section id="home" className="relative min-h-screen flex items-center pt-24 sm:pt-32 pb-16 sm:pb-20 overflow-hidden">
-      {/* WebGL aurora */}
-      <div className="live-background-layer absolute inset-0 pointer-events-none opacity-90 sm:opacity-60 mix-blend-screen">
-        <ShaderBackground intensity={0.65} />
-      </div>
-
-      {/* Live geometric + particle field */}
-      <ParticleField className="opacity-90 sm:opacity-70" />
-
       <div className="container mx-auto px-6 relative">
         <div className="grid lg:grid-cols-[1.15fr_0.85fr] items-center gap-10 sm:gap-14 lg:gap-20 max-w-6xl mx-auto">
           {/* ─── Left: copy ─── */}

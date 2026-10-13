@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { Quote } from "lucide-react";
-import SectionBackground from "@/components/SectionBackground";
 
 const testimonials = [
   {
@@ -29,7 +28,6 @@ const testimonials = [
 const TestimonialsSection = () => {
   return (
     <section id="testimonials" className="relative py-28 overflow-hidden">
-      <SectionBackground density={22} />
       <div className="absolute left-1/2 top-0 h-px w-3/4 -translate-x-1/2 bg-gradient-to-r from-transparent via-primary/25 to-transparent" />
       <div className="container mx-auto px-6 relative z-10">
         <motion.div

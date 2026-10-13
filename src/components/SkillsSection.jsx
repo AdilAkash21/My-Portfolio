@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { Palette, Layout, Code2, Smartphone } from "lucide-react";
-import SectionBackground from "@/components/SectionBackground";
-import maskImage from "@/assets/v-mask.png";
+import maskImage from "@/assets/v-mask-optimized.webp";
 
 const skills = [
   { name: "HTML", level: 95, category: "structure" },
@@ -32,7 +31,6 @@ const services = [
 const SkillsSection = () => {
   return (
     <section id="skills" className="relative py-28 overflow-hidden">
-      <SectionBackground density={34} />
       <div className="absolute left-1/2 top-0 h-px w-3/4 -translate-x-1/2 bg-gradient-to-r from-transparent via-primary/25 to-transparent" />
       <div className="container mx-auto px-6 relative z-10">
         <motion.div
@@ -72,7 +70,13 @@ const SkillsSection = () => {
               <span>100% HUMAN / 0% TEMPLATE</span>
             </div>
             <div className="skills-circuit__core">
-              <img className="skills-circuit__mask" src={maskImage} alt="Gold theatrical mask" />
+              <img
+                className="skills-circuit__mask"
+                src={maskImage}
+                alt="Gold theatrical mask"
+                loading="lazy"
+                decoding="async"
+              />
             </div>
           {skills.map((skill, index) => (
             <div

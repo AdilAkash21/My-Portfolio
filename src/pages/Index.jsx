@@ -116,8 +116,7 @@ const Index = () => {
   }, []);
   const nameWords = ["Welcome", "!"];
   const quoteWords = ["Eat", "Sleep", "CODE", "Repeat"];
-  return <div className="min-h-screen bg-background text-foreground">
-        {/* Fixed parallax background with gradient orbs and particles */}
+  return <div className="relative isolate min-h-screen text-foreground">
         <ParallaxBackground />
 
         <Helmet>
@@ -339,6 +338,7 @@ const Index = () => {
     /* Hidden while intro is visible, then fades in */
   }
       <motion.div
+    className="relative z-10"
     style={{ visibility: showIntro ? "hidden" : "visible" }}
     initial={{ opacity: 0 }}
     animate={{ opacity: showIntro ? 0 : 1 }}
