@@ -171,34 +171,58 @@ const ShaderBackground = ({
     let preset = QUALITY_PRESETS[tier];
 
     const vs = compile(gl, gl.VERTEX_SHADER, VERT);
-    const fs = compile(gl, gl.FRAGMENT_SHADER, buildFrag(preset.octaves));
-    if (!vs || !fs) return;
-    const prog = gl.createProgram();
-    gl.attachShader(prog, vs); gl.attachShader(prog, fs); gl.linkProgram(prog);
-    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
-      console.error("link error:", gl.getProgramInfoLog(prog));
+    let fragmentShader = compile(gl, gl.FRAGMENT_SHADER, buildFrag(preset.octaves));
+    if (!vs || !fragmentShader) {
+      if (vs) gl.deleteShader(vs);
+      if (fragmentShader) gl.deleteShader(fragmentShader);
       return;
     }
-    gl.useProgram(prog);
+    let prog = gl.createProgram();
+    gl.attachShader(prog, vs);
+    gl.attachShader(prog, fragmentShader);
+    gl.linkProgram(prog);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
+      console.error("link error:", gl.getProgramInfoLog(prog));
+      gl.deleteProgram(prog);
+      gl.deleteShader(vs);
+      gl.deleteShader(fragmentShader);
+      return;
+    }
 
     const buf = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, buf);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
-    const loc = gl.getAttribLocation(prog, "a_pos");
-    gl.enableVertexAttribArray(loc);
-    gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
 
-    const uRes = gl.getUniformLocation(prog, "u_res");
-    const uTime = gl.getUniformLocation(prog, "u_time");
-    const uColor = gl.getUniformLocation(prog, "u_color");
-    const uColor2 = gl.getUniformLocation(prog, "u_color2");
-    const uIntensity = gl.getUniformLocation(prog, "u_intensity");
-    gl.uniform1f(uIntensity, intensity);
+    let locations;
+    const setColors = (target) => {
+      gl.uniform3fv(target.uColor, new Float32Array(readThemeColor("--primary")));
+      gl.uniform3fv(target.uColor2, new Float32Array(readThemeColor("--glow")));
+    };
 
     const updateColors = () => {
-      gl.uniform3fv(uColor, new Float32Array(readThemeColor("--primary")));
-      gl.uniform3fv(uColor2, new Float32Array(readThemeColor("--glow")));
+      setColors(locations);
     };
+
+    const configureProgram = (targetProgram) => {
+      gl.useProgram(targetProgram);
+      const position = gl.getAttribLocation(targetProgram, "a_pos");
+      gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+      gl.enableVertexAttribArray(position);
+      gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
+
+      const nextLocations = {
+        uRes: gl.getUniformLocation(targetProgram, "u_res"),
+        uTime: gl.getUniformLocation(targetProgram, "u_time"),
+        uColor: gl.getUniformLocation(targetProgram, "u_color"),
+        uColor2: gl.getUniformLocation(targetProgram, "u_color2"),
+        uIntensity: gl.getUniformLocation(targetProgram, "u_intensity"),
+      };
+      gl.uniform1f(nextLocations.uIntensity, intensity);
+      setColors(nextLocations);
+      return nextLocations;
+    };
+
+    locations = configureProgram(prog);
     updateColors();
 
     // Effective DPR caps native dpr by the tier's scale factor, but never
@@ -215,7 +239,7 @@ const ShaderBackground = ({
       canvas.width = Math.max(1, Math.floor(w * dpr()));
       canvas.height = Math.max(1, Math.floor(h * dpr()));
       gl.viewport(0, 0, canvas.width, canvas.height);
-      gl.uniform2f(uRes, canvas.width, canvas.height);
+      gl.uniform2f(locations.uRes, canvas.width, canvas.height);
     };
     resize();
     const ro = new ResizeObserver(resize);
@@ -240,18 +264,34 @@ const ShaderBackground = ({
 
     const isRunning = () => visible && pageVisible && !lowPower && !userPaused;
 
-    const recompileForTier = () => {
-      const newFs = compile(gl, gl.FRAGMENT_SHADER, buildFrag(preset.octaves));
-      if (!newFs) return;
-      gl.detachShader(prog, fs);
-      gl.deleteShader(fs);
-      gl.attachShader(prog, newFs);
-      gl.linkProgram(prog);
-      gl.useProgram(prog);
-      // uniforms reset on re-link → restore
-      gl.uniform1f(uIntensity, intensity);
-      updateColors();
+    const recompileForTier = (nextTier) => {
+      const nextPreset = QUALITY_PRESETS[nextTier];
+      const nextFragmentShader = compile(gl, gl.FRAGMENT_SHADER, buildFrag(nextPreset.octaves));
+      if (!nextFragmentShader) return false;
+
+      const nextProgram = gl.createProgram();
+      gl.attachShader(nextProgram, vs);
+      gl.attachShader(nextProgram, nextFragmentShader);
+      gl.linkProgram(nextProgram);
+      if (!gl.getProgramParameter(nextProgram, gl.LINK_STATUS)) {
+        console.error("link error:", gl.getProgramInfoLog(nextProgram));
+        gl.deleteProgram(nextProgram);
+        gl.deleteShader(nextFragmentShader);
+        return false;
+      }
+
+      const nextLocations = configureProgram(nextProgram);
+      const previousProgram = prog;
+      const previousFragmentShader = fragmentShader;
+      prog = nextProgram;
+      fragmentShader = nextFragmentShader;
+      locations = nextLocations;
+      tier = nextTier;
+      preset = nextPreset;
+      gl.deleteProgram(previousProgram);
+      gl.deleteShader(previousFragmentShader);
       resize();
+      return true;
     };
 
     const tryDowngrade = (now) => {
@@ -265,17 +305,16 @@ const ShaderBackground = ({
       if (avg > targetMs * 1.35) {
         const idx = tierOrder.indexOf(tier);
         if (idx < tierOrder.length - 1) {
-          tier = tierOrder[idx + 1];
-          preset = QUALITY_PRESETS[tier];
+          const nextTier = tierOrder[idx + 1];
           frameSamples.length = 0;
-          recompileForTier();
+          recompileForTier(nextTier);
         }
       }
     };
 
     const drawFrame = (now) => {
       const t = (now - start) / 1000;
-      gl.uniform1f(uTime, t);
+      gl.uniform1f(locations.uTime, t);
       gl.clearColor(0, 0, 0, 0);
       gl.clear(gl.COLOR_BUFFER_BIT);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
@@ -335,9 +374,7 @@ const ShaderBackground = ({
       gl.deleteBuffer(buf);
       gl.deleteProgram(prog);
       gl.deleteShader(vs);
-      // fs may have been swapped during downgrade; deleting the original handle is safe
-      // eslint-disable-next-line no-empty
-      try { gl.deleteShader(fs); } catch {}
+      gl.deleteShader(fragmentShader);
     };
   }, [theme, intensity, quality, pauseOnLowPower, pauseWhenOffscreen, autoDowngrade]);
 
