@@ -36,7 +36,9 @@ float fbm(vec2 p){
 }
 
 void main(){
-  vec2 uv = (gl_FragCoord.xy - 0.5 * u_res) / u_res.y;
+  // Normalize by the smaller axis so the aurora keeps a consistent scale
+  // on very tall (mobile portrait) or very wide canvases.
+  vec2 uv = (gl_FragCoord.xy - 0.5 * u_res) / min(u_res.x, u_res.y);
   float t = u_time * 0.05;
 
   // Domain warp for organic flowing shapes
