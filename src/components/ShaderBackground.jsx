@@ -199,8 +199,15 @@ const ShaderBackground = ({
     };
     updateColors();
 
-    // Effective DPR caps native dpr by the tier's scale factor
-    const dpr = () => Math.min(window.devicePixelRatio || 1, preset.scale);
+    // Effective DPR caps native dpr by the tier's scale factor, but never
+    // drops below 1 on small screens — sub-1 scaling on mobile makes the
+    // aurora visibly blurry against the sharper particle canvas layered above.
+    const dpr = () => {
+      const native = window.devicePixelRatio || 1;
+      const smallScreen = Math.min(window.innerWidth, window.innerHeight) < 700;
+      const floor = smallScreen ? 1 : 0;
+      return Math.min(native, Math.max(preset.scale, floor));
+    };
     const resize = () => {
       const w = canvas.clientWidth, h = canvas.clientHeight;
       canvas.width = Math.max(1, Math.floor(w * dpr()));

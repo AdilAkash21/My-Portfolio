@@ -20,7 +20,9 @@ const ParticleField = ({ density = 46, className = "" }) => {
     let height = 0;
     let raf = 0;
     let running = true;
-    const dpr = Math.min(window.devicePixelRatio || 1, coarse ? 1.25 : 2);
+    // Match the shader layer's DPR floor (1 on small screens) so both
+    // background canvases render at the same effective resolution.
+    const dpr = Math.min(window.devicePixelRatio || 1, coarse ? 1 : 2);
     const frameInterval = coarse ? 1000 / 30 : 0;
     let lastFrame = 0;
 
