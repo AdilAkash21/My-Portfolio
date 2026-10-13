@@ -45,9 +45,9 @@ const HeroSection = () => {
   }, [typed, deleting, roleIdx]);
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center pt-32 pb-20 overflow-hidden">
+    <section id="home" className="relative min-h-screen flex items-center pt-24 sm:pt-32 pb-16 sm:pb-20 overflow-hidden">
       {/* WebGL aurora */}
-      <div className="live-background-layer absolute inset-0 pointer-events-none opacity-80 sm:opacity-60 mix-blend-screen">
+      <div className="live-background-layer absolute inset-0 pointer-events-none opacity-90 sm:opacity-60 mix-blend-screen">
         <ShaderBackground intensity={0.65} />
       </div>
 
@@ -55,7 +55,7 @@ const HeroSection = () => {
       <ParticleField className="opacity-90 sm:opacity-70" />
 
       <div className="container mx-auto px-6 relative">
-        <div className="grid lg:grid-cols-[1.15fr_0.85fr] items-center gap-14 lg:gap-20 max-w-6xl mx-auto">
+        <div className="grid lg:grid-cols-[1.15fr_0.85fr] items-center gap-10 sm:gap-14 lg:gap-20 max-w-6xl mx-auto">
           {/* ─── Left: copy ─── */}
           <motion.div
             className="text-center lg:text-left order-2 lg:order-1"
@@ -129,7 +129,7 @@ const HeroSection = () => {
               {/* Outer nested frames */}
               <div className="rounded-[2.25rem] border border-primary/15 bg-primary/[0.03] p-3 sm:p-4 shadow-[0_30px_80px_-40px_hsl(var(--primary)/0.5)]">
                 <div className="rounded-[1.75rem] border border-primary/20 bg-card/40 p-2.5 sm:p-3 backdrop-blur-sm">
-                  <div className="relative w-60 h-[19rem] sm:w-[19rem] sm:h-[24rem] overflow-hidden rounded-[1.25rem] ring-1 ring-primary/25">
+                  <div className="relative w-52 h-64 sm:w-[19rem] sm:h-[24rem] overflow-hidden rounded-[1.25rem] ring-1 ring-primary/25">
                     <img
                       src={profileImg}
                       alt="Adil Rahman Akash"
@@ -159,7 +159,7 @@ const HeroSection = () => {
 
               {/* Floating info card */}
               <motion.div
-                className="hero-info-float absolute -bottom-6 -left-6 sm:-left-10 rounded-2xl border border-primary/20 bg-card/80 backdrop-blur-md px-5 py-4 shadow-xl max-w-[16rem]"
+                className="hero-info-float absolute -bottom-5 -left-3 sm:-left-10 rounded-2xl border border-primary/20 bg-card/80 backdrop-blur-md px-4 py-3 sm:px-5 sm:py-4 shadow-xl max-w-[13rem] sm:max-w-[16rem]"
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.9 }}
