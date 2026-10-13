@@ -4,9 +4,15 @@ const ParallaxBackground = () => {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll();
   const y3 = useTransform(scrollYProgress, [0, 1], ["0%", "-20%"]);
+  const staticBackground =
+    typeof window !== "undefined" &&
+    window.matchMedia(
+      "(pointer: coarse), (max-width: 767px), (prefers-reduced-motion: reduce)"
+    ).matches;
   const particles = useMemo(() => {
     const seed = 42;
-    return Array.from({ length: 45 }, (_, i) => {
+    const count = staticBackground ? 16 : 45;
+    return Array.from({ length: count }, (_, i) => {
       const pseudoRand = (n) => (Math.sin(seed + n * 9301 + 49297) % 1 + 1) % 1;
       return {
         id: i,
@@ -18,37 +24,47 @@ const ParallaxBackground = () => {
         opacity: 0.35 + pseudoRand(i * 19 + 5) * 0.55
       };
     });
-  }, []);
+  }, [staticBackground]);
   return <div ref={ref} className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
       {
     /* Floating ring — middle left: subtle border-only circle */
   }
-      <motion.div
-    className="absolute top-[40%] -left-20 w-72 h-72 rounded-full border border-primary/[0.07]"
-    style={{ y: y3 }}
-  />
+      {staticBackground ? (
+        <div className="absolute top-[40%] -left-20 w-72 h-72 rounded-full border border-primary/[0.07]" />
+      ) : (
+        <motion.div
+          className="absolute top-[40%] -left-20 w-72 h-72 rounded-full border border-primary/[0.07]"
+          style={{ y: y3 }}
+        />
+      )}
 
       {
     /* Star / particle field — 300vh tall so particles remain visible at all scroll positions */
   }
       <div className="absolute inset-x-0 top-0" style={{ height: "300vh" }}>
-        {particles.map((p) => <motion.div
-    key={p.id}
-    className="absolute rounded-full bg-primary"
-    style={{ left: p.x, top: p.y, width: p.size, height: p.size }}
-    animate={{
-      opacity: [0, p.opacity, 0],
-      // Twinkle: fade in → hold → fade out
-      scale: [0.5, 1, 0.5]
-      // Pulse: small → full → small
-    }}
-    transition={{
-      duration: p.duration,
-      delay: p.delay,
-      repeat: Infinity,
-      ease: "easeInOut"
-    }}
-  />)}
+        {particles.map((p) => staticBackground ? (
+          <div
+            key={p.id}
+            className="absolute rounded-full bg-primary"
+            style={{ left: p.x, top: p.y, width: p.size, height: p.size, opacity: p.opacity * 0.45 }}
+          />
+        ) : (
+          <motion.div
+            key={p.id}
+            className="absolute rounded-full bg-primary"
+            style={{ left: p.x, top: p.y, width: p.size, height: p.size }}
+            animate={{
+              opacity: [0, p.opacity, 0],
+              scale: [0.5, 1, 0.5]
+            }}
+            transition={{
+              duration: p.duration,
+              delay: p.delay,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
+        ))}
       </div>
 
       {

@@ -161,6 +161,11 @@ const ShaderBackground = ({
     if (!canvas) return;
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const staticDevice = window.matchMedia(
+      "(pointer: coarse), (max-width: 767px), (prefers-reduced-motion: reduce)"
+    ).matches;
+    if (reduced || staticDevice) return;
+
     const gl = canvas.getContext("webgl", { premultipliedAlpha: false, antialias: false, alpha: true });
     if (!gl) return;
 

@@ -72,13 +72,26 @@ const StaggeredWords = ({
       </motion.span>)}
   </span>;
 const Index = () => {
-  const [showIntro, setShowIntro] = useState(true);
+  const [showIntro, setShowIntro] = useState(
+    () =>
+      !window.matchMedia(
+        "(pointer: coarse), (max-width: 767px), (prefers-reduced-motion: reduce)"
+      ).matches
+  );
   const [progress, setProgress] = useState(0);
   const [burst, setBurst] = useState(false);
   const skipIntro = useCallback(() => {
     setShowIntro(false);
   }, []);
   useEffect(() => {
+    const staticExperience = window.matchMedia(
+      "(pointer: coarse), (max-width: 767px), (prefers-reduced-motion: reduce)"
+    ).matches;
+    if (staticExperience) {
+      setShowIntro(false);
+      return;
+    }
+
     const duration = 4.5e3;
     const interval = 30;
     const steps = duration / interval;

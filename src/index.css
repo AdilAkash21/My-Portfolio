@@ -97,6 +97,22 @@
     animation: live-atmosphere-drift 18s ease-in-out infinite alternate;
   }
 
+  @media (pointer: coarse), (max-width: 767px), (prefers-reduced-motion: reduce) {
+    .live-background-layer {
+      background:
+        radial-gradient(ellipse at 12% 32%, hsl(205 85% 60% / 0.2), transparent 48%),
+        radial-gradient(ellipse at 88% 68%, hsl(280 70% 58% / 0.17), transparent 50%),
+        radial-gradient(ellipse at 52% 55%, hsl(var(--primary) / 0.14), transparent 54%),
+        hsl(var(--background));
+      background-size: 100% 100%;
+      animation: none;
+    }
+
+    .hero-info-float {
+      animation: none;
+    }
+  }
+
   @keyframes live-atmosphere-drift {
     0% {
       background-position: 0% 18%, 100% 82%;

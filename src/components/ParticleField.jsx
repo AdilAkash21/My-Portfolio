@@ -15,7 +15,9 @@ const ParticleField = ({ density = 46, className = "" }) => {
     if (!ctx) return;
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const coarse = window.matchMedia("(pointer: coarse)").matches;
+    const coarse = window.matchMedia("(pointer: coarse), (max-width: 767px)").matches;
+    const staticBackground =
+      reduced || window.matchMedia("(prefers-reduced-motion: reduce)").matches || coarse;
     let width = 0;
     let height = 0;
     let raf = 0;
@@ -23,16 +25,13 @@ const ParticleField = ({ density = 46, className = "" }) => {
     // Match the shader layer's DPR floor (1 on small screens) so both
     // background canvases render at the same effective resolution.
     const dpr = Math.min(window.devicePixelRatio || 1, coarse ? 1 : 2);
-    const frameInterval = coarse ? 1000 / 30 : 0;
-    let lastFrame = 0;
-
     let particles = [];
 
     const seed = () => {
-      const count = Math.round(
-        Math.min(density, (width * height) / 22000)
-      );
-      particles = Array.from({ length: Math.max(18, count) }, () => ({
+      const maxParticles = coarse ? 12 : density;
+      const minParticles = coarse ? 8 : 18;
+      const count = Math.round(Math.min(maxParticles, (width * height) / 22000));
+      particles = Array.from({ length: Math.max(minParticles, count) }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
         vx: (Math.random() - 0.5) * 0.22,
@@ -50,13 +49,14 @@ const ParticleField = ({ density = 46, className = "" }) => {
       canvas.height = height * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       seed();
+      if (staticBackground) draw(0);
     };
 
     const drawGrid = (t) => {
       const step = 64;
       const offset = (t * 0.008) % step;
       ctx.lineWidth = 1;
-      ctx.strokeStyle = "rgba(255, 184, 0, 0.045)";
+      ctx.strokeStyle = `rgba(255, 184, 0, ${staticBackground ? 0.07 : 0.045})`;
       ctx.beginPath();
       for (let x = -step + offset; x < width + step; x += step) {
         ctx.moveTo(x, 0);
@@ -101,7 +101,7 @@ const ParticleField = ({ density = 46, className = "" }) => {
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fill();
 
-        if (!reduced) {
+        if (!staticBackground) {
           p.x += p.vx;
           p.y += p.vy;
           if (p.x < -20) p.x = width + 20;
@@ -114,37 +114,34 @@ const ParticleField = ({ density = 46, className = "" }) => {
 
     const loop = (t) => {
       if (!running) return;
-      if (!frameInterval || t - lastFrame >= frameInterval) {
-        draw(t);
-        lastFrame = t;
-      }
+      draw(t);
       raf = requestAnimationFrame(loop);
     };
 
     resize();
-    if (reduced) {
-      draw(0);
-    } else {
+    if (!staticBackground) {
       raf = requestAnimationFrame(loop);
     }
 
     const ro = new ResizeObserver(resize);
     ro.observe(canvas);
 
-    const io = new IntersectionObserver(([entry]) => {
-      if (reduced) return;
-      if (entry.isIntersecting && !running) {
-        running = true;
-        raf = requestAnimationFrame(loop);
-      } else if (!entry.isIntersecting) {
-        running = false;
-        cancelAnimationFrame(raf);
-      }
-    });
-    io.observe(canvas);
+    let io;
+    if (!staticBackground) {
+      io = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting && !running) {
+          running = true;
+          raf = requestAnimationFrame(loop);
+        } else if (!entry.isIntersecting) {
+          running = false;
+          cancelAnimationFrame(raf);
+        }
+      });
+      io.observe(canvas);
+    }
 
     const onVisibility = () => {
-      if (reduced) return;
+      if (staticBackground) return;
       if (document.hidden) {
         running = false;
         cancelAnimationFrame(raf);
@@ -153,14 +150,14 @@ const ParticleField = ({ density = 46, className = "" }) => {
         raf = requestAnimationFrame(loop);
       }
     };
-    document.addEventListener("visibilitychange", onVisibility);
+    if (!staticBackground) document.addEventListener("visibilitychange", onVisibility);
 
     return () => {
       running = false;
       cancelAnimationFrame(raf);
       ro.disconnect();
-      io.disconnect();
-      document.removeEventListener("visibilitychange", onVisibility);
+      io?.disconnect();
+      if (!staticBackground) document.removeEventListener("visibilitychange", onVisibility);
     };
   }, [density]);
 
